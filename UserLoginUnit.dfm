@@ -1,0 +1,49 @@
+object UserLoginForm: TUserLoginForm
+  Left = 338
+  Top = 291
+  BorderStyle = bsDialog
+  Caption = #25910#38134#21592#30331#24405
+  ClientHeight = 123
+  ClientWidth = 266
+  Color = clBtnFace
+  Font.Charset = GB2312_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = #23435#20307
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  PixelsPerInch = 96
+  TextHeight = 12
+  object Serial: TLabeledEdit
+    Left = 42
+    Top = 40
+    Width = 185
+    Height = 20
+    EditLabel.Width = 60
+    EditLabel.Height = 12
+    EditLabel.Caption = #25910#38134#21592#32534#21495
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 0
+  end
+  object Ok: TButton
+    Left = 53
+    Top = 84
+    Width = 75
+    Height = 22
+    Caption = #30830#23450
+    Default = True
+    TabOrder = 1
+    OnClick = OkClick
+  end
+  object Cancel: TButton
+    Left = 141
+    Top = 84
+    Width = 75
+    Height = 22
+    Caption = #21462#28040
+    ModalResult = 2
+    TabOrder = 2
+  end
+end

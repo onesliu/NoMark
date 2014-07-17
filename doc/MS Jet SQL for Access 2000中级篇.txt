@@ -1,0 +1,1102 @@
+该系列的文章解释了什么是Microsoft? Jet SQL，并说明了它如何在Access 2000的应用程序中使用。本文是基础、中级和高级三篇中的第二篇。这些文章循序渐进的说明了使用Jet SQL的语法和一些方法，并示范了对于Access 2000来说较新的Jet SQL的特征。最后，本文的所有SQL参考都是针对Microsoft Jet 4.0 数据引擎所用的。
+
+中级SQL说明
+通过了解中级结构化查询语言的一些概念，用户可以增强控制数据库的结构和对象的能力，并且可以通过许多有趣的和强有力的途径操纵这些机构中包含的数据。结合使用诸如DAO和ADO之类的数据访问方法，中级SQL 可以很大程度的提高用户应用程序的灵活性及其表现。
+
+基础、中级和高级SQL的不同点
+在基础、中级和高级SQL之间划分一条明显的界限并不是一件容易的事情，在很多情况下，决定其所属都只是简单的决断。但是对于该系列在Access 2000中使用SQL的文章来说，还考虑了如下的一些方面：
+
+首先一点在于SQL语句本身的复杂级别。在前面的文章中，我们努力使用那些常用的语句，而且是最简单的形式。本文则在前面基础篇的基础上介绍了更复杂的语句。
+其次是在Access 2000中已经包含了一些新的SQL语句、子句和关键词。尽管在本文中仍将使用Access上一版本中所包含的SQL语句，但是一定会出现一些在Access中第一次出现的SQL语句，在高级SQL一文中也是如此。
+最后，那些关于安全性和多用户解决方案的SQL语句将在高级篇中介绍，因为这些语句常常是用于更复杂的应用程序中的
+通过使用中级SQL，用户可以为你的Access应用程序增加更强的灵活性和能力。尽管简单的和直接的SQL语句能够完成很多的事情，但是使用更复杂的语句将扩展在数据库中访问和处理信息的方法范围。使用中级SQL也将使得用户可以更好的控制你的数据库使用和维护工作
+
+增强SQL
+在Access 2000中，为了支持Access的新特性，为了和ANSI-92的标准更加一致，并且允许在Access 和 Microsoft? SQL Server?间的更好的兼容性，包含在Microsoft Jet 4.0数据引擎中的SQL作了许多增强。Jet数据引擎现在有两种格式的SQL语法：一种是支持以前使用的SQL语法，另一种是支持新的SQL语法规范。需要格外注意的是，只有在用户使用ActiveX? Data Objects (ADO)和Jet OLE DB provider时新的语法才是可用的，而当前通过Access SQL View接口或者DAO是无法使用新的语法的。本文指出只有通过Jet OLE DB provider 和 ADO才能够使用某个特定的SQL命令。
+
+在Access的上一版本中，数据访问对象(DAO)是主要的数据访问方法。而现在发生了改变，尽管DAO 仍旧被支持，但新的数据访问方法是使用ADO。ADO是微软的通用数据访问战略（Microsoft's Universal Data Access strategy）的一部分，其最基本的假设是无论数据存在那里都是可以访问的，不管是数据库、目录结构还是某重用户自定义的数据库。
+
+在讨论Microsoft Jet SQL 时，ADO是非常重要的，正如在前面提到的，一些新的SQL语句只有在使用ADO 和Jet OLE DB provider时才是可用的。在本文和与本文相配套的示范数据库中，所有的代码都是使用ADO些的。那些没有特意指明为只有通过ADO才可用的SQL语句都可以通过Access SQL View 用户接口或 DAO来执行。详尽的关于ADO的讨论超出了本文的范围，用户可以在下面的网站中找到最近的信息
+http://www.microsoft.com/data/ado/
+
+SQL代码规范
+本文使用一致性的SQL代码规范。与所有的代码规范相同，目的是使用易读和易于理解的方式来显示代码。这就要通过空格、换行和大写关键字的结合使用来实现。通常来说，要使用大写字母来打印SQL的关键字，如果SQL语句必须换行，尽量使SQL语句的主要部分一起换行。看过一些例子之后，相信读者会对此有较好的感觉。
+
+不合格式的SQL代码
+CREATE TABLE tblCustomers (CustomerID INTEGER NOT NULL, [Last Name] TEXT(50) NOT NULL, [First Name] TEXT(50) NOT NULL, Phone TEXT(10), Email TEXT(50))
+
+良好格式的SQL代码
+
+CREATE TABLE tblCustomers (
+...CustomerID INTEGER NOT NULL,
+...[Last Name] TEXT(5) NOT NULL,
+...[First Name] TEXT(50) NOT NULL,
+...Phone TEXT(10),
+...Email TEXT(50))
+
+
+改变数据表
+在建立或倒入一个数据表之后，用户可能需要修改表的设计。这时就可以使用ALTER TABLE语句。但是注意，改变现存的表的结构可能会导致用户丢失一些数据。比如，改变一个域的数据类型将导致数据丢失或舍入错误，这取决于用户现在使用的数据类型。改变数据表也可能会破坏用户的应用程序中涉及到所改变的域的部分。所以用户在修改现有表的结构之前一定要格外小心。
+
+使用ALTER TABLE 语句，用户可以增加，删除或改变列或域，也可以增加或删除一个约束。还可以为某个域设定缺省值，但是一次只能修改一个域。假设我们有一个记账单的数据库，而我们想在顾客数据表中增加一个域，这时可以使用ALTER TABLE 语句，在其ADD COLUMN 子句后写上域的名称、数据类型和数据的大小（如果需要的话）。
+
+ALTER TABLE tblCustomers
+ADD COLUMN Address TEXT(30)
+要改变域的数据类型或大小，可以使用ALTER COLUMN子句，在后面加上期望的数据类型和数据的大小。
+
+ALTER TABLE tblCustomers
+ALTER COLUMN Address TEXT(40)
+如果需要改变域的名称，则必须删除该域并重新创建。删除一个域要使用DROP COLUMN 子句，在其后跟上域的名称。
+
+ALTER TABLE tblCustomers
+DROP COLUMN Address
+注意使用这种方法将会删除该域的现存数据。如果需要保存这些数据，则用户需要在Access的用户界面的设计模式中改变该域的名称，或者编写代码将现存的数据保存在一个临时的表中然后将其添加到改名后的表中。
+
+缺省值是指在表中增加新纪录并且没有为该列赋值时自动填充到该域中的值。为某域设置缺省值，要在定义域的类型后使用使用DEFAULT关键字，不管是使用ADD COLUMN或 ALTER COLUMN 子句。
+
+ALTER TABLE tblCustomers
+ALTER COLUMN Address TEXT(40) DEFAULT Unknown
+注意缺省值并不使用单引号包含，如果用了单引号，则引号也会插入到记录中。在CREATE TABLE语句中也可以使用DEFAULT关键字。
+
+CREATE TABLE tblCustomers (
+CustomerID INTEGER CONSTRAINT PK_tblCustomers
+PRIMARY KEY,
+[Last Name] TEXT(50) NOT NULL,
+[First Name] TEXT(50) NOT NULL,
+Phone TEXT(10),
+Email TEXT(50),
+Address TEXT(40) DEFAULT Unknown)
+
+注意： DEFAULT 语句只有在Jet OLE DB provider和ADO中可以执行，在Access SQL View的用户界面中使用将会返回错误信息。
+
+下面的部分将讨论如何在ALTER TABLE语句中使用约束。要获得更详细的有关ALTER TABLE的说明，请在Office 助手中或在Microsoft Access 帮助的回答向导的标签页中输入ALTER TABLE ，然后单击查找。
+
+约束
+在《Access 2000的基础Microsoft Jet SQL》一文中，我们讨论了建立表之间的联系的约束方法。约束也能用于建立主键和参考完整性，来限制插入到一个域中的数据值。通常，约束可以用于保持用户数据库中的数据完整性和一致性。
+
+共有两种类型的约束：单数据域（或称域级的）的约束和多数据域（或称表级的）的约束。两种约束都可以用在CREATE TABLE 或 ALTER TABLE 语句中。
+
+单域的约束，也就是通常所说的列级的约束，是在域及其数据类型定义后针对该域定义的。下面我们使用用户表，在CustomerID域生成一个单域的主键。增加约束时，在域名后使用CONSTRAINT关键字。
+
+ALTER TABLE tblCustomers
+ALTER COLUMN CustomerID INTEGER
+CONSTRAINT PK_tblCustomers PRIMARY KEY
+
+注意这里给出了约束的名称。用户还可以在定义主键时使用简称而省略CONSTRAINT子句。
+
+ALTER TABLE tblCustomers
+ALTER COLUMN CustomerID INTEGER PRIMARY KEY
+
+然而，使用简称的方法将导致Access随机的生成约束的名称，从而使得在代码中难以引用。所以，最好给约束制定名称。
+
+要删除一个约束，可以在ALTER TABLE 语句中使用DROP CONSTRAINT 子句，并给出约束的名称。
+
+ALTER TABLE tblCustomers
+DROP CONSTRAINT PK_tblCustomers
+
+约束还可以用来给域限制允许值。用户可以将限制值设为非空（NOT NULL）或唯一（ UNIQUE），或者定义一个检验性的约束，该约束指一种可以应用于某个域的规则。比如用户希望限制姓和名的域是唯一的，就意味着在表中永远不会有两个相同姓名的记录存在。这是因为这种约束是多域的性的，是在表的级别定义的，而非域的级别。使用ADD CONSTRAINT子句可以定义一个多域的列表。
+
+ALTER TABLE tblCustomers
+ADD CONSTRAINT CustomerNames UNIQUE
+([Last Name], [First Name])
+
+注意：我们在这里只是示范一下如何使用约束，而在实际的应用程序中，用户可能并不希望彻底限制姓名的唯一性。
+
+检验性约束是一种新的强有力的SQL特性，它通过一个表达式从而允许用户在表中添加数据合法性检验，该表达式可以指向一个单域，也可以指向跨越一个或多个表的多个域。比如用户希望确定输入到发票记录中的数值是否总是大于0，则可以在ALTER TABLE语句的ADD CONSTRAINT子句中定义一个CHECK关键字。
+
+ALTER TABLE tblInvoices
+ADD CONSTRAINT CheckAmount
+CHECK (Amount > 0)
+
+注意： 检验性约束语句只能通过Jet OLE DB provider和ADO来执行，在Access SQL View的用户界面中使用将返回错误信息。而且，要删除一个检验性约束，也必须在Jet OLE DB provider 和ADO中执行DROP CONSTRAINT语句。另外，如果用户已经定义了一个检验性约束： (1) 在Access的用户界面中并不会显示为一个合法性规则，(2) 用户也不能在该界面中定义合法性文本的属性，否则将给出一般性错误信息，(3) 在用户通过ADO使用DROP CONSTRAINT语句之前，不能够通过Access的用户界面或者在代码中删除数据表。
+
+用来定义一个检验性约束的表达式也可以用来指向同一个表中的多个域，甚至是其他表中的域。其中可以使用任何在Microsoft Jet SQL 中合法的操作符，比如SELECT 语句、数学运算符、以及集合函数等。用来定义检验性约束的表达式的长度不能超过64个字符。
+
+设想用户希望在将顾客加入到Customers 表之前检查每个顾客的信用额度。则可以使用带有ADD COLUMN 和CONSTRAINT 子句的ALTER TABLE 语句生成一个约束，该约束将查找在CreditLimit表中的值来验证顾客的信用额度。下面的SQL语句将生成一个tblCreditLimit 表，然后将CustomerLimit域加入到tblCustomers 表中，并将检验性约束加到tblCustomers表，最后对该检验性约束进行测试。
+
+CREATE TABLE tblCreditLimit (
+Limit DOUBLE)
+INSERT INTO tblCreditLimit
+VALUES (100)
+ALTER TABLE tblCustomers
+ADD COLUMN CustomerLimit DOUBLE
+ALTER TABLE tblCustomers
+ADD CONSTRAINT LimitRule
+CHECK (CustomerLimit <= (SELECT Limit
+FROM tblCreditLimit))
+UPDATE TABLE tblCustomers
+SET CustomerLimit = 200
+WHERE CustomerID = 1
+
+注意：当用户执行UPDATE TABLE语句时，将被提示更新失败，因为该语句违反了检验性约束。如果用户使用小于等于100的值来更新CustomerLimit域，就能够成功。
+
+约束-II
+级联性更新和删除
+约束还可以用来在数据库中的表间建立参考完整性。具有参考完整性意味着数据是一致的和未被破坏的。比如，如果删除了一个顾客的记录但是该顾客的运单记录仍旧存在数据库中，这时数据就是非一致的，即指数据库中存在着一个孤立的顾客运单记录。参考完整性是在用户建立各个表间的关系时建立的。除了建立参考完整性之外，用户还可以使用级联性更新和删除来确保相互参考的表保持同步。例如，一旦定义了级联性更新和删除，当用户删除顾客记录时，该顾客的运单记录也将自动删除。
+
+要使用级联性更新和删除，用户可以在ALTER TABLE 语句的CONSTRAINT子句中使用ON UPDATE CASCADE 和/或 ON DELETE CASCADE 关键字。注意他们都必须是应用于外键的。
+
+ALTER TABLE tblShipping
+ADD CONSTRAINT FK_tblShipping
+FOREIGN KEY (CustomerID) REFERENCES
+tblCustomers (CustomerID)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+
+外键
+在处理外键时，有关快速外键（fast foreign key）的概念是很有用的。快速外键即是一种没有索引的外键。尽管这乍听起来有点不合理，但却可以得到很好的解释。在缺省情况下，一旦定义了一个外键，将会自动生成一个基于该外键中列的索引，这在很多情况下提高了执行保持参考完整性的操作的表现。然而，如果在定义外键的域中存在许多重复值，外键索引将会影响增加和删除数据使得效率。要防止基于外键的索引的生成，我们可以在定义外键是NO INDEX关键字。
+
+ALTER TABLE tblInvoices
+ADD CONSTRAINT FK_tblInvoices
+FOREIGN KEY NO INDEX (CustomerID) REFERENCES
+tblCustomers (CustomerID)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+
+注意: 快速外键语句只能通过Jet OLE DB provider 和 ADO来执行。在Access SQL View的用户界面中使用将返回错误信息。而且，要删除一个快速外键，也必须在Jet OLE DB provider 和ADO中执行DROP CONSTRAINT语句。
+
+在记录按序排列的数据库应用中，快速外键也将发挥作用。比如这里有一个用来辨别所跟踪的顾客类型的 CustomerTypes的表，一个Customer 表和一个Orders 表。在CustomerTypes表中有10行，在 Customer 表中有100000行，在Orders表中有350000行。这时采用在Customers 表中指向CustomerTypes表中的主键的快速外键将是很好的选择，因为在100000行记录外最多只有10行唯一的记录。这时索引对于提取数据毫无用处，并且在CustomerType中插入、删除和更新数据是成为累赘。
+
+而另一方面，快速外键应用于Orders 表中的CustomerID 列很可能是没有用处的，因为那些值每一个都代表了不同的客户，所以一般是唯一的。在这种情况下，使用通常的带有索引的外键将会很有裨益，这是因为它是应用在连结和其他查找规则上的。
+
+注意： 尽管在本节的大部分例子中使用的是ALTER TABLE语句，但是所有这些都是可以写在CREATE TABLE 语句中的。
+
+要了解有关CONSTRAINT子句的更多信息，请在Office 助手中或在Microsoft Access 帮助的回答向导的标签页中输入ALTER TABLE ，然后单击查找。
+
+ 
+
+ 
+
+数据类型
+在努力使基Jet数据引擎的Access应用程序易于向那些基于Microsoft SQL Server 或 MSDE的应用转化方面，Jet 数据引擎改变了一些数据类型，增加了一些新的数据类型字。下面的部分将讨论主要的数据类型及其如何实现的。
+
+文本（TEXT）数据类型
+文本（TEXT）数据类型是用来设置一个可以存储纯文本的域的，也可以用来存储同时包含文本和数字的内容，但其中的数字并不是用于计算的，比如电话号码或者电子邮件地址。当用户通过ACESS的用户界面创建表时，用户有两种基本的文本类型：文本（TEXT）和备注（MEMO）。但是通过SQL语句如 CREATE TABLE或者 ALTER TABLE 来创建表时，则还有其他许多的TEXT 和 MEMO类型的同义字可供选择。
+
+总的来说，文本域最多可以有255个字符，而备注域则最多可以有65,535 个字符，但是如果备注域不包含任何二进制数据的话，其唯一的限制就是整个数据库的最大容量（大概是2.14GB 或 1,070,000,000 双字节字符）。另外，没有用到的文本与部分并不会保存在内存中。
+
+下面的表格列示了最基本的Jet 文本数据类型，它的同义字以及所分配的字节数。
+
+Jet 数据类型
+同义字
+存储容量
+
+TEXT（文本）
+TEXT, TEXT(n), CHAR, CHAR(n), ALPHANUMERIC, ALPHANUMERIC(n), STRING, STRING(n), VARCHAR, VARCHAR(n), NTEXT(n), NCHAR, NCHAR(n), CHAR VARYING, CHAR VARYING(n), CHARACTER VARYING, CHARACTER VARYING(n), NATIONAL CHAR, NATIONAL CHAR(n), NATIONAL CHARACTER, NATIONAL CHARACTER(n), NATIONAL CHAR VARYING, NATIONAL CHAR VARYING(n), NATIONAL CHARACTER VARYING, NATIONAL CHARACTER VARYING(n)
+最多可以有255个字符，每个字符两个子节（如果不进行压缩）。
+
+MEMO（备注）
+LONGTEXT, LONGCHAR, 注意, NTEXT
+65,535 个字符；如果非二进制数据可以有2.14 GB
+
+下面的CREATE TABLE语句示范了可以用来通过Access SQL View用户界面创建表的TEXT 和MEMO的不同形式的同义词。
+
+CREATE TABLE tblUITextDataTypes (
+Field1_TEXT TEXT,
+Field2_TEXT25 TEXT(25),
+Field3_MEMO MEMO,
+Field4_CHAR CHAR,
+Field5_CHAR25 CHAR(25),
+Field6_LONGTEXT LONGTEXT,
+Field7_LONGCHAR LONGCHAR,
+Field8_ALPHA ALPHANUMERIC,
+Field9_ALPHA25 ALPHANUMERIC(25),
+Field10_STRING STRING,
+Field11_STRING25 STRING(25),
+Field12_VARCHAR VARCHAR,
+Field13_VARCHAR25 VARCHAR(25),
+Field14_NOTE NOTE)
+
+如果用户通过Access的用户界面察看上面的tblUITextDataTypes表的设计的话，将会看到MEMO、 LONGTEXT、 LONGCHAR、和注意同义字都是MEMO 的数据类型，其他的所有同义字都是TEXT数据类型。对于那些没有定义长度的TEXT 数据类型，缺省的长度为255个字符。
+
+虽说上面的SQL语句也可以通过Jet OLE DB provider和 ADO来执行，但还是有一些其他的TEXT 和MEMO 数据类型的不同定义只能通过Jet OLE DB provider 和ADO来执行。
+
+CREATE TABLE tblCodeTextDataTypes
+Field1_NTEXT NTEXT,
+Field2_NTEXT25 NTEXT(25),
+Field3_NCHAR NCHAR,
+Field4_NCHAR NCHAR(25),
+Field5_VARYING CHAR VARYING,
+Field6_VARYING CHAR VARYING(25),
+Field7_VARYING CHARACTER VARYING,
+Field8_VARYING CHARACTER VARYING(25),
+Field9_NATIONAL NATIONAL CHAR,
+Field10_NATIONAL NATIONAL CHAR(25),
+Field11_NATIONAL NATIONAL CHARACTER,
+Field12_NATIONAL NATIONAL CHARACTER(25),
+Field13_NATIONAL NATIONAL CHAR VARYING,
+Field14_NATIONAL NATIONAL CHAR VARYING(25),
+Field15_NATIONAL NATIONAL CHARACTER VARYING,
+Field16_NATIONAL NATIONAL CHARACTER VARYING(25))
+
+如果用户通过Access的用户界面察看上面的tblUITextDataTypes表的设计的话，将会看到只有NCHAR数据类型是MEMO，其他的都是TEXT数据类型。对于那些没有定义长度的TEXT 数据类型，缺省的长度为255个字符。
+
+注意： 在上面的SQL语句中列示的这些数据类型只能通过Jet OLE DB provider 和ADO来执行，在Access SQL View的用户界面中使用将导致错误信息。还要注意如果通过Jet OLE DB provider和 ADO创建了一个TEXT数据类型的域，则通过Access用户界面看到的将是MEMO的数据类型。
+
+Unicode压缩
+
+现在在Microsoft Jet 4.0 数据引擎中，所有的TEXT数据类型都是以两个字节的统一编码形式存储的。它取代了前面版本中采用的多字节字符集（Multi-byte Character Set ，MBCS）格式。虽然双字节的格式需要更多的空间来存储每个字符，但可以定义使用TEXT数据类型的自动进行压缩。
+
+在用户使用SQL建立的TEXT的数据类型时，双字节编码的压缩属性缺省设置为NO，如果需要将该属性设置为Yes，用户可以在定义域的时候使用WITHCOMPRESSION （或者 WITH COMP）关键字。
+
+下面的CREATE TABLE 语句将创建一个新的顾客表，这里将双字节编码的压缩属性设置为Yes。
+
+CREATE TABLE tblCompressedCustomers (
+CustomerID INTEGER CONSTRAINT
+PK_tblCompCustomers PRIMARY KEY,
+[Last Name] TEXT(50) WITH COMP NOT NULL,
+[First Name] TEXT(50) WITH COMPRESSION NOT NULL,
+Phone TEXT(10),
+Email TEXT(50),
+Address TEXT(40) DEFAULT Unknown)
+
+ 
+
+注意WITH COMPRESSION 和WITH COMP关键字要在NOT NULL之前定义。用户也可以使用ALTER TABLE语句改变现存域的双字节编码的压缩属性，如下所示：
+
+ALTER TABLE tblCustomers
+ALTER COLUMN [Last Name] TEXT(50) WITH COMPRESSION
+
+注意： 在上面的SQL语句中列示的WITH COMPRESSION and WITH COMP关键字只能通过Jet OLE DB provider 和ADO来执行，在Access SQL View的用户界面中使用将导致错误信息。
+
+在用户设计数据表时采取那种数据类型取决于用户的应用程序的目的。如果该应用程序总是应用在Jet数据库的基础上，则应该使用最适宜的那些数据类型。但如果该应用程序最终要用到ODBC-compliant的数据库上，比如SQL Server 或 MSDE，则要使用那些是一致最方便的数据类型。
+
+数字（ NUMERIC）数据类型
+数字（NUMERIC）数据类型是用来定义存储计算用数字的域的。通常，将某种NUMERIC类型与其他的区别开来的是用来存储数据的字节数，它也影响着所存储数字的精度。许多Jet SQL 的数据类型豆油协同义字可以用来进行定义，到底使用哪一个取决于该数据表是仅在某个Jet数据库中还是将移植到诸如Microsoft SQL Server的数据库服务器中。如果将进行移植，用户应选择那些使得移植最容易进行的数据类型。
+
+下面的表格列示了基本的Jet NUMERIC数据类型，它的各种同义字以及为期分配的字节数。
+
+Jet 数据类型
+同义字
+存储大小
+
+TINYINT
+INTEGER1, BYTE
+1 byte
+
+SMALLINT
+SHORT, INTEGER2
+2 bytes
+
+INTEGER
+LONG, INT, INTEGER4
+4 bytes
+
+REAL
+SINGLE, FLOAT4, IEEESINGLE
+4 bytes
+
+FLOAT
+DOUBLE, FLOAT8, IEEEDOUBLE, NUMBER
+8 bytes
+
+DECIMAL
+NUMERIC, DEC
+17 bytes
+
+下面的CREATE TABLE 语句示范了各种可以在通过Access SQL View 的用户界面创建表时使用的SNUMERIC 数据类型。
+
+CREATE TABLE tblUINumericDataTypes (
+Field1_INT INT,
+Field2_INTEGER INTEGER,
+Field3_LONG LONG,
+Field4_INTEGER1 INTEGER1,
+Field5_BYTE BYTE,
+Field6_NUMERIC NUMERIC,
+Field7_REAL REAL,
+Field8_SINGLE SINGLE,
+Field9_FLOAT FLOAT,
+Field10_FLOAT4 FLOAT4,
+Field11_FLOAT8 FLOAT8,
+Field12_DOUBLE DOUBLE,
+Field13_IEEESINGLE IEEESINGLE,
+Field14_IEEEDOUBLE IEEEDOUBLE,
+Field15_NUMBER NUMBER,
+Field16_SMALLINT SMALLINT,
+Field17_SHORT SHORT,
+Field18_INTEGER2 INTEGER2,
+Field19_INTEGER4 INTEGER4)
+
+虽然上面的SQL 语句也可以通过Jet OLE DB provider 和ADO来执行，仍有一些其他的NUMERIC 数据类型的形式只能通过Jet OLE DB provider 和 ADO来执行。
+
+CREATE TABLE tblCodeNumericDataTypes (
+Field1_TINYINT TINYINT,
+Field2_DECIMAL DECIMAL,
+Field3_DEC DECIMAL,
+Field4_DPRECISION DOUBLE PRECISION)
+
+注意: 上面的SQL 语句中的数据类型只能通过Jet OLE DB provider 和 ADO来执行，在Access SQL View的用户界面中使用将导致错误信息。还要注意如果通过Access SQL View 建立了一个NUMERIC 数据类型的域，通过Access 用户界面察看表的设计时看到的将是DOUBLE 数据类型，但是如果通过Jet OLE DB provider 和 ADO建立NUMERIC数据类型，通过Access 用户界面看到的将是DECIMAL数据类型.
+
+使用新的DECIMAL 数据类型，用户可以设定数值的精度和小数位。精度就是该域所能包含的数字的总数，而小数位则决定了小数点右面能有几位数字，精度缺省值是18，最大的允许值28，而小数位缺省的是0，最大值时28。
+
+CREATE TABLE tblDecimalDataTypes (
+DefaultType DECIMAL,
+SpecificType DECIMAL(10,5))
+
+货币（CURRENCY）数据类型
+货币（CURRENCY）数据类型是用来存储15位整数和4位小数的数字值的，它使用8个字节的存储量，其唯一的同义字是MONEY。
+
+下面的CREATE TABLE 语句示范了CURRENCY 数据类型在创建数据表时的用法，它既可以在Access SQL View 用户界面中也可以在Jet OLE DB provider 和 ADO中使用。
+
+CREATE TABLE tblCurrencyDataTypes (
+Field1_CURRENCY CURRENCY,
+Field2_MONEY MONEY)
+
+是否（BOOLEAN ）数据类型
+
+是否（BOOLEAN）是逻辑数据类型，其值为是（TRUE）或否(FALSE)。它们使用一个字节的存储量，同义字有BIT、 LOGICAL、 LOGICAL1 和 YESNO。 True的值等于–1， False的值等于0。
+
+下面的CREATE TABLE 语句示范了通过Jet OLE DB provider 和 ADO 来创建BOOLEAN 数据类型的不同形式。
+
+CREATE TABLE tblUIBooleandataTypes (
+Field1_BIT BIT,
+Field2_LOGICAL LOGICAL,
+Field3_LOGICAL1 LOGICAL1,
+Field4_YESNO YESNO)
+
+字节（BINARY ）数据类型
+
+字节（BINARY ）数据类型以二进制的本来面目存储小容量的任何类型的数据。它对于所存储的每个字符只使用1个字节的存储量，用户可以指定所分配的字节数。如果没有制定字节数，缺省的值是510，这也是所能允许的最大字节数。它的同义字有BINARY、 VARBINARY和 BINARY VARYING。BINARY 数据类型在Access 用户界面中是不可用的。
+
+下面的 CREATE TABLE 语句示范了可以用来在Access SQL View 用户界面中使用的BINARY 数据类型的不同形式。
+
+CREATE TABLE tblUIBinaryDataTypes (
+Field1_BINARY BINARY,
+Field2_BINARY250 BINARY(250),
+Field3_VARBINARY VARBINARY,
+Field4_VARBINARY250 VARBINARY(250))
+
+虽然上面的SQL语句也可以通过Jet OLE DB provider 和 ADO执行，但仍然有些其他的binary 数据类型的同义字只能通过Jet OLE DB provider 和 ADO来执行，如下所示：
+
+CREATE TABLE tblCodeBinaryDataTypes (
+Field1_BVARYING BINARY VARYING,
+Field2_BVARYING250 BINARY VARYING(250))
+
+OLEOBJECT 数据类型
+OLEOBJECT 数据类型用来存储大的二进制对象，比如Word文档或者Excel表单。它的字节数并不确定，最大可达2.14 GB。其同义字有：IMAGE、LONGBINARY、GENERAL 和 OLEOBJECT
+
+下面的 CREATE TABLE 语句展示了通过Access SQL View 用户界面或Jet OLE DB provider和ADO 来创建表时使用OLEOBJECT 数据类型。
+
+CREATE TABLE tblImageDataTypes (
+Field1_IMAGE IMAGE,
+Field2_LONGBINARY LONGBINARY,
+Field3_GENERAL GENERAL,
+Field4_OLEOBJECT OLEOBJECT)
+
+日期时间（DATETIME）数据类型
+
+日期时间（DATETIME）数据类型用来存储日期、时间以及日期和时间的结合值，年数可以从100到 9999。它使用8个字节的存储量，其同义字有DATE、TIME、DATETIME和 TIMESTAMP
+
+下面的 CREATE TABLE 语句展示了通过Access SQL View 用户界面或Jet OLE DB provider 和 ADO 创建表示所使用的DATETIME 数据类型的不同形式。
+
+CREATE TABLE tblDateTimeDataTypes (
+Field1_DATE DATE,
+Field2_TIME TIME,
+Field3_DATETIME DATETIME,
+Field4_TIMESTAMP TIMESTAMP)
+
+COUNTER 数据类型
+
+COUNTER 数据类型用来存储长整型数值，该数值在表中每增加一条新的纪录时能够自动增加。使用COUNTER 数据类型，用户可以设定一个种子值和增加值，种子值是当第一个记录插入到表中时将输入到域中的数值，而增加值用来加到上一个记数值上作为下一个记数值。如果没有指定种子值和增加值，它们都将缺省的使用1。在一个表中只能有一个COUNTER域。其同义字有 COUNTER、AUTOINCREMENT和IDENTITY。
+
+下面的 CREATE TABLE 语句展示了通过Access SQL View 用户界面创建表时使用的COUNTER 数据类型的同义字。
+
+CREATE TABLE tblUICounterDataTypes (
+Field1 COUNTER,
+Field2 TEXT(10))
+
+注意这里没有指定种子值和增加值，所有都将采用缺省值1。定义COUNTER 数据类型的另一种方式是使用AUTOINCREMENT 关键字，如下所示：
+
+CREATE TABLE tblUICounterDataTypes (
+Field1 AUTOINCREMENT(10,5),
+Field2 TEXT(10))
+
+这一次种子值和增加值都指定了，则开始值时10，每次将加5。上面的SQL 语句也可以通过Jet OLE DB provider 和 ADO执行，另外还有counter 数据类型的另一种形式，只能通过Jet OLE DB provider 和 ADO来执行，即IDENTITY 关键字，它和SQL Server的 IDENTITY 数据类型是相兼容的。
+
+CREATE TABLE tblCodeCounterDataTypes
+Field1_IDENTITY IDENTITY(10,5),
+Field2 TEXT(10))
+
+这里的种子值和增加值都可以通过ALTER TABLE 语句进行修改，修改后所有新插入的行将使用新的值。但是， COUNTER 数据类型常常都是用于主键的，而主键要求每列唯一。如果你改变了种子值, 将可能导致主键域的重复值，从而发生错误。
+
+ALTER TABLE tblUICounterDataTypes
+ALTER COLUMN Field1 COUNTER(10,10)
+注意: 如果某个现存的列已经包含了数据的话，用户不能使用ALTER TABLE 语句来将该列的数据类型改变为COUNTER 数据类型。
+
+在以前版本的Jet数据库中，压缩数据库之后，种子值将被置为可能的最大值。在Jet 4.0中仍然如此，只要种子值和增加值的采用的是缺省值1的话。如果用户指定了不等于缺省值的种子值和增加值，在压缩数据库是并不会重置种子值。
+
+@@IDENTITY 变量
+
+@@IDENTITY 变量是一个全局的SQL变量，用户可以用它来提取使用COUNTER数据类型的列的最后使用值。用户在提取@@IDENTITY 变量时，不能指定表的名称。返回值总是最近的通过代码插入了数据的表的COUNTER域。
+
+SELECT @@IDENTITY
+要给@@IDENTITY 值加上某个值，要将该变量用方括号括起来。
+
+SELECT [@@IDENTITY] + 1
+注意 上面SQL 语句中的@@IDENTITY变量只能通过Jet OLE DB provider 和 ADO执行提取，通过Access SQL View 用户界面提取的值将是0，另外，该值只有在通过代码插入记录时才会改变，如果通过用户接口，不管是数据表单、窗体还是Access SQL View窗口中的SQL语句， @@IDENTITY返回值都是0。因此， @@IDENTITY 的值只有在刚刚通过代码加入了记录是才是准确的。
+
+要获得更详细的有关数据类型的说明，请在Office 助手中或在Microsoft Access 帮助的回答向导的标签页中输入ALTER TABLE ，然后单击查找。
+
+中级数据操纵语言
+《基础Microsoft Jet SQL for Access 2000》一文告诉我们如何使用SQL来检索和管理存储在数据库中的信息。本文的后面部分将讨论中级数据操纵语言（DML）语句，这将使得用户可以更好的控制信息检索和处理的方式。
+
+谓词
+谓词指限定一个SELECT 语句的子句，同WHERE 子句类似，但是谓词是在书写列的列表之前定义的。谓词还可以进一步的限制用户所提取的记录集，在某些情况下，过滤出任何可能存在的重复值。
+
+ALL关键字
+在SQL语句中，如果没有定义任何谓词的话，将使用缺省的ALL关键字。它意味着所有的符合SQL语句所设定的条件的记录都将被提取出来。回到我们的发票数据库中，从顾客表中提取所域的记录如下：
+
+SELECT *
+FROM tblCustomers
+
+注意尽管这里ALL关键词并没有定义，但它是缺省值。我们也可以如下书写该语句：
+
+SELECT ALL *
+FROM tblCustomers
+
+DISTINCT关键字
+
+DISTINCT关键字用来控制结果集中重复的值如何进行处理，那些对于指定的列来说用户相同值的行将被过滤掉。如果多于指定的列大于一，则所有指定的列的结合将作为过滤条件。例如，如果用户查询Customers表中姓氏不同的记录，则返回的值都将是唯一的，任何重复姓氏的名字都将以结果集中的一个记录作为其结果。
+
+SELECT DISTINCT [Last Name]
+FROM tblCustomers
+
+尤其要注意的是，使用DISTINCT关键字的查询所返回的结果集不能更新，即是只读的。
+
+DISTINCTROW 关键字
+DISTINCTROW 关键字和DISTINCT关键字类似，但前者是基于整行而非个别的域的。他只有在处理多个表时，并且只有在用户从某几个但非全部的表中选择数据域时才是有用的。如果用户的查询是基于一个表的，或者要从所有的表中选择数据域，则DISTINCTROW 关键字本质上和ALL关键字相同。
+
+例如，在我们的发票数据库中，每个顾客都可能没有、有一个或多个发票记录。假设我们希望找出有多少拥有多于一张发票的顾客，这时可以使用DISTINCTROW关键字来进行选择。
+
+SELECT DISTINCTROW [Last Name], [First Name]
+FROM tblCustomers INNER JOIN tblInvoices
+ON tblCustomers.CustomerID = tblInvoices.CustomerID
+
+如果我们不使用DISTINCTROW 关键字，得到的将是每个顾客的所有发票记录的行。（这里的 INNER JOIN 语句将在后面的部分讲解）。
+
+TOP关键字
+TOP关键字用来返回通过ORDER BY子句所指定的数据行中顶部或底部的某些行。ORDER BY 子句用来指定这些数据列是用升序还是降序排列。如果存在相等值，则TOP关键字将返回所有值相等的行。比如我们希望确定我们的发票数据库中最高额的三条发票记录，可以如下书写SQL语句：
+
+SELECT TOP 3 InvoiceDate, Amount
+FROM tblInvoices
+ORDER BY Amount DESC
+
+我们也可以将PERCENT关键字和TOP关键字同时使用，来返回由ORDER BY子句所指定的数据行中顶部或底部的一定比例的行，如下所示：
+
+SELECT TOP 25 PERCENT InvoiceDate, Amount
+FROM tblInvoices
+ORDER BY Amount DESC
+
+注意如果用户没有定义ORDER BY 子句，则TOP关键字将毫无意义，返回的是随机采样的一些行。
+
+要了解有关谓词的更多信息，请在Office 助手中或在Microsoft Access 帮助的回答向导的标签页中输入ALL、DISTINCT等谓词，然后单击查找。
+
+SQL 表达式
+一个SQL表达式就是作为SQL语句的一部分的一个字符串，并可以得到一个值。你可以任意组合运算符、常数、文字值、函数、域名、控制和属性来建立你的SQL表达式。而" Microsoft Jet SQL for Access 2000高级版"一文就向你描述了如何在WHERE子句中使用表达式来限制SQL语句；而且在本文随后的部分，我们将学习各种能够用于表达式的SQL操作符。
+
+IN操作
+IN操作是用来判断一个表达式的值是否属于一个指定列表中的值。如果这个表达式等于列表中的一个值，IN操作的返回值为True。而当没有找到，IN操作返回值为False。让我们假设我们想找到所有住在华盛顿州或乔治亚州的销售部成员。我们可以写一个带着长长的WHERE 子句，并使用AND逻辑操作符的SQL语句，而使用IN操作符会缩短我们写的语句。
+
+SELECT *
+FROM tblShipping
+WHERE State IN ('WA','GA')
+
+通过使用NOT逻辑操作符，我们可以检索出IN操作的反操作结果，这个语句会返回所有不住在华盛顿州的销售部成员。
+
+SELECT *
+FROM tblShipping
+WHERE State NOT IN ('WA')
+
+BETWEEN操作
+
+BETWEEN操作用于判断一个表达式的值是否介于一个特定的范围之间。如果这个表达式的值介于这个特定范围之间，包括范围开始和结束的值，这个 BETWEEN操作返回True。如果这个表达式得值不属于这个范围，则BETWEEN操作返回值为False。假设我们想找到所以金额介于50美圆到 100美圆之间的所有发票。我们最好在WHERE 子句使用BETWEEN 操作以及关键字AND设定范围。
+
+SELECT *
+FROM tblInvoices
+WHERE Amount BETWEEN 50 and 100
+
+通过使用NOT逻辑操作符，我们可以检索出BETWEEN操作的反操作结果，找到不在范围中的所有发票数量。
+
+SELECT *
+FROM tblInvoices
+WHERE Amount NOT BETWEEN 50 and 100
+
+注意这个范围可以设定为相反的顺序并依旧得到相同的结果 (BETWEEN 100 和 50)，但许多的适用于ODBC的数据库要求这个范围遵从从头到尾的顺序。如果你设计你的应用程序可以兼容或升级为适用于ODBC的数据库，你就应该总是按照从头到尾的方法使用。
+
+LIKE操作
+LIKE 操作operator is used to determine if the value of an expression compares to that of a pattern. 一个样式就是就是一个完全的字符串或是一个包含有一个或多个通配符的部分字符串。通过使用LIKE 操作，你可以在一个结果集里查找一个域并找到所有符合特殊的样式的值。
+
+SELECT *
+FROM tblCustomers
+WHERE [Last Name] LIKE 'Johnson'
+
+为了返回所有的名字以字母J开头的顾客，我们使用星号通配符。
+
+SELECT *
+FROM tblCustomers
+WHERE [Last Name] LIKE 'J*'
+
+通过使用NOT逻辑操作符，我们可以检索出LIKE操作的反操作，并在列表中过滤掉所有的 Johnsons。
+
+SELECT *
+FROM tblCustomers
+WHERE [Last Name] NOT LIKE 'Johnson'
+
+你在LIKE 操作样式里可以使用多种通配符，如下表所示：
+
+通配符
+描述
+
+*（星号）
+匹配所有字符并可以被用在结构字符串的任何位置。
+
+%（百分号）
+批评任何字符并可以被用在结构字符串的任何位置。(只适用于ADO 和 the Jet OLE DB provider)
+
+?（问号）
+匹配任何单个字符并可以被用在结构字符串的任何位置。
+
+_（下划线）
+匹配任何单个字符并可以被用在结构字符串的任何位置。(只适用于ADO 和 the Jet OLE DB provider)
+
+#（数字符号）
+匹配任何单个数字并可以被用在结构字符串的任何位置。
+
+[]（方括号）
+匹配任何被包括在方括号里面的单个字符，并可以被用在结构字符串的任何位置。
+
+!（感叹号）
+匹配任何不属于被方括号所包含的字符列表中的单个字符。Matches any single character not in the list that is enclosed within the square brackets.
+
+-（连字符）
+匹配任何一个在方括号中的字符。
+
+注意: 上表所述的“%”和“_”通配符只能通过Jet OLE DB provider 或 ADO运行。如果通过. Access SQL View 用户界面运行它们将获得一个空的结果集。
+
+如果你想得到更多的通配符的信息，在Office 助理或微软Access帮助窗体的Answer Wizard标志中输入wildcard characters，并单击Search。
+
+IS NULL 操作符
+空值就是指无值或不可知值。IS NULL操作符被用于判断一个表达式的值是否和一个空值相等。
+
+SELECT *
+FROM tblInvoices
+WHERE Amount IS NULL
+
+通过添加NOT逻辑操作符，我们可以检索IS NULL操作符的反操作。在这个例子里，SQL语句将会除掉所有包含丢失的或未知值的发票记录。
+
+SELECT *
+FROM tblInvoices
+WHERE Amount IS NOT NULL
+
+SELECT INTO 语句
+SELECT INTO 语句，也可以理解为一个表单创建查询，可以用来从一个或多个已存在工作表中创建一个新的工作表。它所创建的工作表可以基于任何有效的SELECT语句。SELECT INTO 语句可以用来存储记录、创建备份表单或在一个外部数据库里创建新的工作表。
+
+当你用SELECT INTO 语句创建一个新工作表时，所有的新工作表里的域都继承于原始工作表。然而，不包括其他的工作表属性，如主关键字或索引都是在新工作表中被创建。一旦新的工作表被创建，你当然可以使用ALTER TABLE语句添加这些属性。
+
+如果你要创建一个新的工作表，可以使用一个带有你希望在工作表种包含的列的域列表和你新工作表的名称的SELECT INTO 语句，并在FROM子句里提供数据资源。
+
+SELECT *
+INTO tblNewCustomers
+FROM tblCustomers
+
+为了为新的工作表指定确定的域，把域名列表里的原始工作表的域名用星号代替，并用AS关键字来命名新的工作表中的各列。
+
+SELECT [First Name] & ' ' & [Last Name] AS FullName
+INTO tblNewCustomerNames
+FROM tblCustomers
+
+如果要在一个已经存在的外部数据库里创建新的工作表，你可以用IN关键字。如果外部数据库不存在，SELECT INTO 语句将会返回一个错误信息。
+
+SELECT *
+INTO tblNewCustomers
+IN 'C:\Customers.mdb'
+FROM tblCustomers
+
+子查询
+子查询就是在用在另一个SELECT、SELECT INTO、INSETT INTO 、DELETE 或UPDATE语句内部的SELECT语句。它可以帮助你对基于另一个结果集的结果进行进一步的限制。这叫做嵌入，并且因为一个子查询就是一个 SELECT语句，你也可以把一个子查询嵌入到另一个子查询里面。当你在一个SQL语句中使用一个子查询的时候，它可以作为一个域列表、WHERE子句或者HAVING子句的一部分。
+
+这里由三种基本的子查询形式，并且每种都使用不同种类的谓词。
+
+IN子查询
+IN 子查询用于检索这样的一组值，即其中记录的某一列的值都为另一个工作表或查询中的一列的值包含。它从其它工作表中只能返回一列，这是一个限制条件。如果返回的多于一列就会产生一个错误。使用发票数据库例子，我们可以写出一个返回所有拥有发票的顾客的列表的ＳＱＬ语句。
+
+SELECT *
+FROM tblCustomers
+WHERE CustomerID
+IN (SELECT CustomerID FROM tblInvoices)
+
+通过使用NOT逻辑操作符，我们可以检索和ＩＮ子查询相反的记录，从而可以获得所有没有任何发票的顾客列表。
+
+SELECT *
+FROM tblCustomers
+WHERE CustomerID
+NOT IN (SELECT CustomerID FROM tblInvoices)
+
+ANY/SOME/ALL子查询
+
+ANY、 SOME和ALL子查询谓词被用于比较主查询的记录和子查询的多个输出记录。ANY 和 SOME谓词是同义词并可以被替换使用。
+
+当你需要从主查询中检索任何符合在子查询中满足比较条件的记录时可以使用ANY或 SOME谓词。谓词应该恰好放在子查询开始的括号前面。
+
+SELECT *
+FROM tblCustomers
+WHERE CustomerID = ANY
+(SELECT CustomerID FROM tblInvoices)
+
+注意由上面SQL语句所返回的结果集和IN子查询例子所返回的那个相同。而与ANY和SOME谓词的不同之处就在于它们都可以使用等于（=）以外的操作符，比如大于（>）和小于（<）。
+
+SELECT *
+FROM tblCustomers
+WHERE CustomerID > ANY
+(SELECT CustomerID FROM tblInvoices)
+
+当我们想在主查询中检索满足子查询比较条件的所有记录时使用谓词ALL。
+
+SELECT *
+FROM tblCustomers
+WHERE CustomerID > ALL
+(SELECT CustomerID FROM tblInvoices)
+
+EXISTS子查询
+
+EXISTS谓词是用于子查询来在一个结果集中检查所以存在值的记录。换句话说，就是如果子查询没有返回任何行，这个比较就False。而如果它返回了一行或多行，这个比较就为True。
+
+SELECT *
+FROM tblCustomers AS A
+WHERE EXISTS
+(SELECT * FROM tblInvoices
+WHERE A.CustomerID = tblInvoices.CustomerID)
+
+注意在前面的SQL 语句里， tblCustomers 工作表使用了一个别名。这就是为何我们可以在后来的子查询中引用它的原因。当一个子查询以这种格式与一个主查询联接时就称相关查询。
+
+通过使用NOT逻辑操作符，我们可以检索和EXISTS子查询相反的记录，从而可以得到所有没有任何发票的顾客的结果集。
+
+SELECT *
+FROM tblCustomers AS A
+WHERE NOT EXISTS
+(SELECT * FROM tblInvoices
+WHERE A.CustomerID = tblInvoices.CustomerID)
+
+如果你想得到更多的关于子查询的信息，在Office 助理或微软Access帮助窗体的Answer Wizard标志中输入SQL subqueries ，并单击Search。
+
+连接
+在一个如同Access的相关数据库系统中，你会常常需要同时从多个工作表中摘出信息记录。这可以通过使用一个SQL JOIN语句来实现。JOIN语句可以让你从已经定义了相互关系的工作表中检索记录，而不用管记录和工作表之间的关系是一对一、一对多还是多对多。
+
+内部连接
+内部连接，也被理解为对等连接，就是被使用的连接里最一般的形式。这种连接通过匹配一个各个工作表中共有的域值来从两个或更多的工作表中检索记录。你所连接的域必须具有类似的数据类型，但你就不能对MOMO和OLEOBJECT数据类型进行连接。为了建立一个INNER JOIN语句，在SELECT语句的FROM子句里使用INNER JOIN关键字。让我们使用INNER JOIN 建立所有拥有发票的顾客的结果集，并带上那些发票的时间和金额。
+
+SELECT [Last Name], InvoiceDate, Amount
+FROM tblCustomers INNER JOIN tblInvoices
+ON tblCustomers.CustomerID=tblInvoices.CustomerID
+ORDER BY InvoiceDate
+
+注意工作表名被INNER JOIN关键字所分开，并且相关的比较是在ON关键字的后面。对于相关的比较，你也可以使用<、 >、 <=、 >=或 <> 操作符，并且你也可以使用BETWEEN关键字。同时注意各个工作表只在比较关系中使用的ID域，它们都不是最后结果集的组成。
+
+如果要进一步的限制SELECT 语句我们可以在ON子句中的比较连接后面使用WHERE子句。在下面的例子中我们通过只包括1998年1月1日以后的发票来缩小结果集。
+
+SELECT [Last Name], InvoiceDate, Amount
+FROM tblCustomers INNER JOIN tblInvoices
+ON tblCustomers.CustomerID=tblInvoices.CustomerID
+WHERE tblInvoices.InvoiceDate > #01/01/1998#
+ORDER BY InvoiceDate
+
+在希望连接多个工作表的案例中，你可以嵌入INNER JOIN子句。在这个例子里，我们将在过去的一个SELECT语句的基础上产生我们的结果集，但我们也将通过为tblShipping工作表添加INNER JOIN使结果包括每个顾客的所在城市和国家。
+
+SELECT [Last Name], InvoiceDate, Amount, City, State
+FROM (tblCustomers INNER JOIN tblInvoices
+ON tblCustomers.CustomerID=tblInvoices.CustomerID)
+INNER JOIN tblShipping
+ON tblCustomers.CustomerID=tblShipping.CustomerID
+ORDER BY InvoiceDate
+
+注意第一个JOIN子句为圆括号所包含以使之从逻辑上和第二个JOIN子句分开。而在FROM子句中使用一个第二个工作表的别名把一个工作表连接到自身也是可能的。让我们假设我们想找到所有具有相同的名的顾客记录。我们可以通过为第二个工作表创建一个别名“A”并查找其姓氏不同的记录来实现。
+
+SELECT tblCustomers.[Last Name],
+tblCustomers.[First Name]
+FROM tblCustomers INNER JOIN tblCustomers AS A
+ON tblCustomers.[Last Name]=A.[Last Name]
+WHERE tblCustomers.[First Name]<>A.[First Name]
+ORDER BY tblCustomers.[Last Name]
+
+外部连接
+
+外部连接是在当记录保存在某一个工作表中时用于在多个工作表进行记录检索，即使在其它的工作表中没有匹配的记录也行。Jet 数据库引擎共支持两种类型的外部连接。考虑两个互相相近的工作表，一个在左边，另一个在右边。左外部连接将在右工作表中选择所有匹配比较关系标准的所有行和左工作表中的所有行，即使在右工作表中没有匹配记录存在。而右外部连接则是左外部连接的简单反转；即所有在右工作表中的行将被保存。
+
+作为一个例子，让我们假设我们想测定每个顾客的所有发票数量，但如果一个顾客没有发票，我们希望通过消息“NONE”来显示其信息。
+
+SELECT [Last Name] & ', ' & [First Name] AS Name,
+IIF(Sum(Amount) IS NULL,'NONE',Sum(Amount)) AS Total
+FROM tblCustomers LEFT OUTER JOIN tblInvoices
+ON tblCustomers.CustomerID=tblInvoices.CustomerID
+GROUP BY [Last Name] & ', ' & [First Name]
+
+在前面的SQL语句中仍然有几个问题。第一个是对字符串连接操作符“&”的使用，这个操作符允许你把两个或更多的域连接到一起组成一个字符串。第二个是 immediate if(IIF)语句，它会检查合并后的字符串是否为空。如果为空，这个语句将返回消息“NONE”，而如果组合不是空，将返回组合后的值。最后一点是外部连接子句。使用左外部连接保存左工作表的行从而让我们可以看到所有的顾客，包括那些没有发票在帐目中的。
+
+在一个多工作表的连接中外部连接可以被嵌套在内部连接里，但内部连接不可以被嵌套在外部连接中。
+
+笛卡儿乘积
+当我们讨论联接时常常遇到的一个术语是笛卡儿乘积。笛卡儿乘积的定义为“把所有表单的所有行完全合并”。例如，如果你想不用任何约束把两个工作表联合在一起，你就完成了一个笛卡儿乘积。
+
+SELECT *
+FROM tblCustomers, tblInvoices
+
+这不是一个好东西，特别当你要处理的工作表中包含有成百上千行数据时。所以你应该通过约束你的连接来避免笛卡儿乘积。
+
+The UNION operator
+虽然UNION 的操作也可以视为一个合并查询，但我们不可以技术性地把它看作是一个联接，它之所以被提到是因为它能把从多个来源获得的数据合成一个结果表单中，而这一点和某些类型的联接是类似的。UNION 操作一般被用来把来自表单、SELECT语句或查询的数据结合，并省略掉任何重复的行。所有的数据源必须有相同数目的域，不过这些域不一定要是相同的数据类型。让我们假设我们有一个雇员表单，其中具有和顾客工作表单相同的结构，那么我们希望合并这两个工作表得到一个姓名和电子邮件地址信息的列表。
+
+SELECT [Last Name], [First Name], Email
+FROM tblCustomers
+UNION
+SELECT [Last Name], [First Name], Email
+FROM tblEmployees
+
+如果你希望找到这些表中的所有域，我们可以使用TABLE关键字，如同下面一样：
+
+TABLE tblCustomers
+UNION
+TABLE tblEmployees
+
+UNION操作不会显示任何在两个表单中重复出现的记录，但它可以通过在UNION关键字后使用谓词ALL来覆盖重复信息，如下所示：
+
+SELECT [Last Name], [First Name], Email
+FROM tblCustomers
+UNION ALL
+SELECT [Last Name], [First Name], Email
+FROM tblEmployees
+
+转换语句
+
+虽然转换语句也可以视为一个交叉表查询，但我们不可以技术性地把它看作是一个联接，它之所以被提到是因为它能把从多个来源获得的数据合成一个结果表单中，而这一点和某些类型的联接是类似的。
+
+TRANSFORM 语句通常用于计算总数、平均值、数目以及其它对记录进行总体统计的算法。并在计算后把结果信息显示在一个格子或数据表中，其中的数据分别按照行和列排列。一个TRANSFORM 语句的一般形式如下：
+
+TRANSFORM aggregating function
+SELECT Statement
+PIVOT column heading field
+
+我们假设我们可以建立一个按照每一年为基础显示每个顾客的所有发票的数据表。这个列名应该是顾客的姓名，而行名则将是年份。让我们修改原来的SQL语句以符合转变后的语句.
+
+TRANSFORM
+IIF(Sum([Amount]) IS NULL,'NONE',Sum([Amount]))
+AS Total
+SELECT [Last Name] & ', ' & [First Name] AS Name
+FROM tblCustomers LEFT JOIN tblInvoices
+ON tblCustomers.CustomerID=tblInvoices.CustomerID
+GROUP BY [Last Name] & ', ' & [First Name]
+PIVOT Format(InvoiceDate, 'yyyy')
+IN ('1996','1997','1998','1999','2000')
+
+注意SUM函数是合计函数，组里的列的题头用在SELECT 语句的子句里，而行的名字由PIVOT关键字后所列出的域名决定。
+
+如果你想知道关于连接的更多信息，在Office 助理或微软Access帮助窗体得Answer Wizard标志中输入SQL joins，并单击Search。
+
+
+在Access中使用中级SQL
+现在我们已经讨论了中级SQL的语法，那么让我们看看在一个Access应用程序中我们可以使用它的一些途径。
+
+要了解有关谓词的更多信息，请在Office 助手中或在Microsoft Access 帮助的回答向导的标签页中输入ALL、DISTINCT等谓词，然后单击查找。
+
+SQL 表达式
+一个SQL表达式就是作为SQL语句的一部分的一个字符串，并可以得到一个值。你可以任意组合运算符、常数、文字值、函数、域名、控制和属性来建立你的SQL表达式。而" Microsoft Jet SQL for Access 2000高级版"一文就向你描述了如何在WHERE子句中使用表达式来限制SQL语句；而且在本文随后的部分，我们将学习各种能够用于表达式的SQL操作符。
+
+IN操作
+IN操作是用来判断一个表达式的值是否属于一个指定列表中的值。如果这个表达式等于列表中的一个值，IN 操作的返回值为True。而当没有找到，IN操作返回值为False。让我们假设我们想找到所有住在华盛顿州或乔治亚州的销售部成员。我们可以写一个带着长长的WHERE 子句，并使用AND逻辑操作符的SQL语句，而使用IN操作符会缩短我们写的语句。
+
+SELECT *
+FROM tblShipping
+WHERE State IN ('WA','GA')
+
+通过使用NOT逻辑操作符，我们可以检索出IN操作的反操作结果，这个语句会返回所有不住在华盛顿州的销售部成员。
+
+SELECT *
+FROM tblShipping
+WHERE State NOT IN ('WA')
+
+BETWEEN操作
+
+BETWEEN操作用于判断一个表达式的值是否介于一个特定的范围之间。如果这个表达式的值介于这个特定范围之间，包括范围开始和结束的值，这个 BETWEEN操作返回True。如果这个表达式得值不属于这个范围，则BETWEEN操作返回值为False。假设我们想找到所以金额介于 50美圆到100美圆之间的所有发票。我们最好在WHERE 子句使用BETWEEN 操作以及关键字AND设定范围。
+
+SELECT *
+FROM tblInvoices
+WHERE Amount BETWEEN 50 and 100
+
+通过使用NOT逻辑操作符，我们可以检索出BETWEEN操作的反操作结果，找到不在范围中的所有发票数量。
+
+SELECT *
+FROM tblInvoices
+WHERE Amount NOT BETWEEN 50 and 100
+
+注意这个范围可以设定为相反的顺序并依旧得到相同的结果 (BETWEEN 100 和 50)，但许多的适用于ODBC的数据库要求这个范围遵从从头到尾的顺序。如果你设计你的应用程序可以兼容或升级为适用于ODBC的数据库，你就应该总是按照从头到尾的方法使用。
+
+LIKE操作
+LIKE 操作operator is used to determine if the value of an expression compares to that of a pattern. 一个样式就是就是一个完全的字符串或是一个包含有一个或多个通配符的部分字符串。通过使用LIKE 操作，你可以在一个结果集里查找一个域并找到所有符合特殊的样式的值。
+
+SELECT *
+FROM tblCustomers
+WHERE [Last Name] LIKE 'Johnson'
+
+为了返回所有的名字以字母J开头的顾客，我们使用星号通配符。
+
+SELECT *
+FROM tblCustomers
+WHERE [Last Name] LIKE 'J*'
+
+通过使用NOT逻辑操作符，我们可以检索出LIKE操作的反操作，并在列表中过滤掉所有的 Johnsons。
+
+SELECT *
+FROM tblCustomers
+WHERE [Last Name] NOT LIKE 'Johnson'
+
+你在LIKE 操作样式里可以使用多种通配符，如下表所示：
+
+通配符
+描述
+
+*（星号）
+匹配所有字符并可以被用在结构字符串的任何位置。
+
+%（百分号）
+批评任何字符并可以被用在结构字符串的任何位置。(只适用于ADO 和 the Jet OLE DB provider)
+
+?（问号）
+匹配任何单个字符并可以被用在结构字符串的任何位置。
+
+_（下划线）
+匹配任何单个字符并可以被用在结构字符串的任何位置。(只适用于ADO 和 the Jet OLE DB provider)
+
+#（数字符号）
+匹配任何单个数字并可以被用在结构字符串的任何位置。
+
+[]（方括号）
+匹配任何被包括在方括号里面的单个字符，并可以被用在结构字符串的任何位置。
+
+!（感叹号）
+匹配任何不属于被方括号所包含的字符列表中的单个字符。Matches any single character not in the list that is enclosed within the square brackets.
+
+-（连字符）
+匹配任何一个在方括号中的字符。
+
+注意: 上表所述的“%”和“_”通配符只能通过Jet OLE DB provider 或 ADO运行。如果通过. Access SQL View 用户界面运行它们将获得一个空的结果集。
+
+如果你想得到更多的通配符的信息，在Office 助理或微软Access帮助窗体的Answer Wizard标志中输入wildcard characters，并单击Search。
+
+IS NULL 操作符
+空值就是指无值或不可知值。IS NULL操作符被用于判断一个表达式的值是否和一个空值相等。
+
+SELECT *
+FROM tblInvoices
+WHERE Amount IS NULL
+
+通过添加NOT逻辑操作符，我们可以检索IS NULL操作符的反操作。在这个例子里，SQL语句将会除掉所有包含丢失的或未知值的发票记录。
+
+SELECT *
+FROM tblInvoices
+WHERE Amount IS NOT NULL
+
+SELECT INTO 语句
+SELECT INTO 语句，也可以理解为一个表单创建查询，可以用来从一个或多个已存在工作表中创建一个新的工作表。它所创建的工作表可以基于任何有效的SELECT语句。 SELECT INTO 语句可以用来存储记录、创建备份表单或在一个外部数据库里创建新的工作表。
+
+当你用SELECT INTO 语句创建一个新工作表时，所有的新工作表里的域都继承于原始工作表。然而，不包括其他的工作表属性，如主关键字或索引都是在新工作表中被创建。一旦新的工作表被创建，你当然可以使用ALTER TABLE语句添加这些属性。
+
+如果你要创建一个新的工作表，可以使用一个带有你希望在工作表种包含的列的域列表和你新工作表的名称的SELECT INTO 语句，并在FROM子句里提供数据资源。
+
+SELECT *
+INTO tblNewCustomers
+FROM tblCustomers
+
+为了为新的工作表指定确定的域，把域名列表里的原始工作表的域名用星号代替，并用AS关键字来命名新的工作表中的各列。
+
+SELECT [First Name] & ' ' & [Last Name] AS FullName
+INTO tblNewCustomerNames
+FROM tblCustomers
+
+如果要在一个已经存在的外部数据库里创建新的工作表，你可以用IN关键字。如果外部数据库不存在，SELECT INTO 语句将会返回一个错误信息。
+
+SELECT *
+INTO tblNewCustomers
+IN 'C:\Customers.mdb'
+FROM tblCustomers
+
+子查询
+子查询就是在用在另一个SELECT、SELECT INTO、INSETT INTO 、DELETE 或UPDATE语句内部的SELECT语句。它可以帮助你对基于另一个结果集的结果进行进一步的限制。这叫做嵌入，并且因为一个子查询就是一个 SELECT语句，你也可以把一个子查询嵌入到另一个子查询里面。当你在一个SQL语句中使用一个子查询的时候，它可以作为一个域列表、WHERE子句或者HAVING子句的一部分。
+
+这里由三种基本的子查询形式，并且每种都使用不同种类的谓词。
+
+IN子查询
+IN 子查询用于检索这样的一组值，即其中记录的某一列的值都为另一个工作表或查询中的一列的值包含。它从其它工作表中只能返回一列，这是一个限制条件。如果返回的多于一列就会产生一个错误。使用发票数据库例子，我们可以写出一个返回所有拥有发票的顾客的列表的ＳＱＬ语句。
+
+SELECT *
+FROM tblCustomers
+WHERE CustomerID
+IN (SELECT CustomerID FROM tblInvoices)
+
+通过使用NOT逻辑操作符，我们可以检索和ＩＮ子查询相反的记录，从而可以获得所有没有任何发票的顾客列表。
+
+SELECT *
+FROM tblCustomers
+WHERE CustomerID
+NOT IN (SELECT CustomerID FROM tblInvoices)
+
+ANY/SOME/ALL子查询
+
+ANY、 SOME和ALL子查询谓词被用于比较主查询的记录和子查询的多个输出记录。ANY 和 SOME谓词是同义词并可以被替换使用。
+
+当你需要从主查询中检索任何符合在子查询中满足比较条件的记录时可以使用ANY或 SOME谓词。谓词应该恰好放在子查询开始的括号前面。
+
+SELECT *
+FROM tblCustomers
+WHERE CustomerID = ANY
+(SELECT CustomerID FROM tblInvoices)
+
+注意由上面SQL语句所返回的结果集和IN子查询例子所返回的那个相同。而与ANY和SOME谓词的不同之处就在于它们都可以使用等于（=）以外的操作符，比如大于（>）和小于（<）。
+
+SELECT *
+FROM tblCustomers
+WHERE CustomerID > ANY
+(SELECT CustomerID FROM tblInvoices)
+
+当我们想在主查询中检索满足子查询比较条件的所有记录时使用谓词ALL。
+
+SELECT *
+FROM tblCustomers
+WHERE CustomerID > ALL
+(SELECT CustomerID FROM tblInvoices)
+
+EXISTS子查询
+
+EXISTS谓词是用于子查询来在一个结果集中检查所以存在值的记录。换句话说，就是如果子查询没有返回任何行，这个比较就False。而如果它返回了一行或多行，这个比较就为True。
+
+SELECT *
+FROM tblCustomers AS A
+WHERE EXISTS
+(SELECT * FROM tblInvoices
+WHERE A.CustomerID = tblInvoices.CustomerID)
+
+注意在前面的SQL 语句里， tblCustomers 工作表使用了一个别名。这就是为何我们可以在后来的子查询中引用它的原因。当一个子查询以这种格式与一个主查询联接时就称相关查询。
+
+通过使用NOT逻辑操作符，我们可以检索和EXISTS子查询相反的记录，从而可以得到所有没有任何发票的顾客的结果集。
+
+SELECT *
+FROM tblCustomers AS A
+WHERE NOT EXISTS
+(SELECT * FROM tblInvoices
+WHERE A.CustomerID = tblInvoices.CustomerID)
+
+如果你想得到更多的关于子查询的信息，在Office 助理或微软Access帮助窗体的Answer Wizard标志中输入SQL subqueries ，并单击Search。
+
+连接
+在一个如同Access的相关数据库系统中，你会常常需要同时从多个工作表中摘出信息记录。这可以通过使用一个SQL JOIN语句来实现。JOIN语句可以让你从已经定义了相互关系的工作表中检索记录，而不用管记录和工作表之间的关系是一对一、一对多还是多对多。
+
+内部连接
+内部连接，也被理解为对等连接，就是被使用的连接里最一般的形式。这种连接通过匹配一个各个工作表中共有的域值来从两个或更多的工作表中检索记录。你所连接的域必须具有类似的数据类型，但你就不能对MOMO和OLEOBJECT数据类型进行连接。为了建立一个INNER JOIN语句，在SELECT语句的FROM子句里使用INNER JOIN关键字。让我们使用INNER JOIN 建立所有拥有发票的顾客的结果集，并带上那些发票的时间和金额。
+
+SELECT [Last Name], InvoiceDate, Amount
+FROM tblCustomers INNER JOIN tblInvoices
+ON tblCustomers.CustomerID=tblInvoices.CustomerID
+ORDER BY InvoiceDate
+
+注意工作表名被INNER JOIN关键字所分开，并且相关的比较是在ON关键字的后面。对于相关的比较，你也可以使用<、 >、 <=、 >=或 <> 操作符，并且你也可以使用BETWEEN关键字。同时注意各个工作表只在比较关系中使用的ID域，它们都不是最后结果集的组成。
+
+如果要进一步的限制SELECT 语句我们可以在ON子句中的比较连接后面使用WHERE子句。在下面的例子中我们通过只包括1998年1月1日以后的发票来缩小结果集。
+
+SELECT [Last Name], InvoiceDate, Amount
+FROM tblCustomers INNER JOIN tblInvoices
+ON tblCustomers.CustomerID=tblInvoices.CustomerID
+WHERE tblInvoices.InvoiceDate > #01/01/1998#
+ORDER BY InvoiceDate
+
+在希望连接多个工作表的案例中，你可以嵌入INNER JOIN子句。在这个例子里，我们将在过去的一个SELECT语句的基础上产生我们的结果集，但我们也将通过为tblShipping工作表添加INNER JOIN使结果包括每个顾客的所在城市和国家。
+
+SELECT [Last Name], InvoiceDate, Amount, City, State
+FROM (tblCustomers INNER JOIN tblInvoices
+ON tblCustomers.CustomerID=tblInvoices.CustomerID)
+INNER JOIN tblShipping
+ON tblCustomers.CustomerID=tblShipping.CustomerID
+ORDER BY InvoiceDate
+
+注意第一个JOIN子句为圆括号所包含以使之从逻辑上和第二个JOIN子句分开。而在FROM子句中使用一个第二个工作表的别名把一个工作表连接到自身也是可能的。让我们假设我们想找到所有具有相同的名的顾客记录。我们可以通过为第二个工作表创建一个别名“A”并查找其姓氏不同的记录来实现。
+
+SELECT tblCustomers.[Last Name],
+tblCustomers.[First Name]
+FROM tblCustomers INNER JOIN tblCustomers AS A
+ON tblCustomers.[Last Name]=A.[Last Name]
+WHERE tblCustomers.[First Name]<>A.[First Name]
+ORDER BY tblCustomers.[Last Name]
+
+外部连接
+
+外部连接是在当记录保存在某一个工作表中时用于在多个工作表进行记录检索，即使在其它的工作表中没有匹配的记录也行。Jet 数据库引擎共支持两种类型的外部连接。考虑两个互相相近的工作表，一个在左边，另一个在右边。左外部连接将在右工作表中选择所有匹配比较关系标准的所有行和左工作表中的所有行，即使在右工作表中没有匹配记录存在。而右外部连接则是左外部连接的简单反转；即所有在右工作表中的行将被保存。< /P>
+
+作为一个例子，让我们假设我们想测定每个顾客的所有发票数量，但如果一个顾客没有发票，我们希望通过消息“NONE”来显示其信息。
+
+SELECT [Last Name] & ', ' & [First Name] AS Name,
+IIF(Sum(Amount) IS NULL,'NONE',Sum(Amount)) AS Total
+FROM tblCustomers LEFT OUTER JOIN tblInvoices
+ON tblCustomers.CustomerID=tblInvoices.CustomerID
+GROUP BY [Last Name] & ', ' & [First Name]
+
+在前面的SQL语句中仍然有几个问题。第一个是对字符串连接操作符“&”的使用，这个操作符允许你把两个或更多的域连接到一起组成一个字符串。第二个是 immediate if(IIF)语句，它会检查合并后的字符串是否为空。如果为空，这个语句将返回消息“NONE”，而如果组合不是空，将返回组合后的值。最后一点是外部连接子句。使用左外部连接保存左工作表的行从而让我们可以看到所有的顾客，包括那些没有发票在帐目中的。
+
+在一个多工作表的连接中外部连接可以被嵌套在内部连接里，但内部连接不可以被嵌套在外部连接中。
+
+笛卡儿乘积
+当我们讨论联接时常常遇到的一个术语是笛卡儿乘积。笛卡儿乘积的定义为“把所有表单的所有行完全合并”。例如，如果你想不用任何约束把两个工作表联合在一起，你就完成了一个笛卡儿乘积。
+
+SELECT *
+FROM tblCustomers, tblInvoices
+
+这不是一个好东西，特别当你要处理的工作表中包含有成百上千行数据时。所以你应该通过约束你的连接来避免笛卡儿乘积。
+
+The UNION operator
+虽然UNION 的操作也可以视为一个合并查询，但我们不可以技术性地把它看作是一个联接，它之所以被提到是因为它能把从多个来源获得的数据合成一个结果表单中，而这一点和某些类型的联接是类似的。UNION 操作一般被用来把来自表单、SELECT语句或查询的数据结合，并省略掉任何重复的行。所有的数据源必须有相同数目的域，不过这些域不一定要是相同的数据类型。让我们假设我们有一个雇员表单，其中具有和顾客工作表单相同的结构，那么我们希望合并这两个工作表得到一个姓名和电子邮件地址信息的列表。< /P>
+
+SELECT [Last Name], [First Name], Email
+FROM tblCustomers
+UNION
+SELECT [Last Name], [First Name], Email
+FROM tblEmployees
+
+如果你希望找到这些表中的所有域，我们可以使用TABLE关键字，如同下面一样：
+
+TABLE tblCustomers
+UNION
+TABLE tblEmployees
+
+UNION操作不会显示任何在两个表单中重复出现的记录，但它可以通过在UNION关键字后使用谓词ALL来覆盖重复信息，如下所示：
+
+SELECT [Last Name], [First Name], Email
+FROM tblCustomers
+UNION ALL
+SELECT [Last Name], [First Name], Email
+FROM tblEmployees
+
+转换语句
+
+虽然转换语句也可以视为一个交叉表查询，但我们不可以技术性地把它看作是一个联接，它之所以被提到是因为它能把从多个来源获得的数据合成一个结果表单中，而这一点和某些类型的联接是类似的。
+
+TRANSFORM 语句通常用于计算总数、平均值、数目以及其它对记录进行总体统计的算法。并在计算后把结果信息显示在一个格子或数据表中，其中的数据分别按照行和列排列。一个TRANSFORM 语句的一般形式如下：
+
+TRANSFORM aggregating function
+SELECT Statement
+PIVOT column heading field
+
+我们假设我们可以建立一个按照每一年为基础显示每个顾客的所有发票的数据表。这个列名应该是顾客的姓名，而行名则将是年份。让我们修改原来的SQL语句以符合转变后的语句.
+
+TRANSFORM
+IIF(Sum([Amount]) IS NULL,'NONE',Sum([Amount]))
+AS Total
+SELECT [Last Name] & ', ' & [First Name] AS Name
+FROM tblCustomers LEFT JOIN tblInvoices
+ON tblCustomers.CustomerID=tblInvoices.CustomerID
+GROUP BY [Last Name] & ', ' & [First Name]
+PIVOT Format(InvoiceDate, 'yyyy')
+IN ('1996','1997','1998','1999','2000')
+
+注意SUM函数是合计函数，组里的列的题头用在SELECT 语句的子句里，而行的名字由PIVOT关键字后所列出的域名决定。
+
+如果你想知道关于连接的更多信息，在Office 助理或微软Access帮助窗体得Answer Wizard标志中输入SQL joins，并单击Search。
+
+
+在Access中使用中级SQL
+现在我们已经讨论了中级SQL的语法，那么让我们看看在一个Access应用程序中我们可以使用它的一些途径。

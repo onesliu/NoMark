@@ -1,0 +1,111 @@
+;近来一些朋友总是询问在新版本中为什么默认输出变成了英文的，在这里我把我的脚本文件放出来共大家参考。
+
+;下面这个部份是为了说明在文件后面加上的区分系统参数“MinVersion: 1, 0”(98系统安装该文件)，“ MinVersion: 0, 1”(2000/XP系统安装该文件)
+[Files]
+Source: "E:\Program Files\Media Player Classic\xp\mplayerc.exe"; DestDir: "{app}\mplayerc\"; CopyMode: alwaysoverwrite; MinVersion: 0, 1; Components: main
+Source: "E:\Program Files\Media Player Classic\98\mplayerc.exe"; DestDir: "{app}\mplayerc\"; CopyMode: alwaysoverwrite; MinVersion: 1, 0; Components: main
+;在文件后加“Flags: regserver”参数就可以把库文件注册到系统中，用4.05版在我的98系统下好像有点点问题(你们自己试试看吧)，XP下没问题。
+Source: "E:\Program Files\Media Player Classic\DivX_311alpha\sys\DIVX_c32.ax"; DestDir: "{sys}"; CopyMode: alwaysoverwrite; Components: 6; Flags: regserver
+
+;以下是安装文件脚本代码。
+
+[Setup]
+AppName=Inno Setup
+AppId=Inno Setup 4
+AppVerName=Inno Setup 4.0.5
+AppPublisher=Jordan Russell
+AppPublisherURL=http://www.jrsoftware.org/
+AppSupportURL=http://www.jrsoftware.org/
+AppUpdatesURL=http://www.jrsoftware.org/
+DefaultDirName={pf}\Inno Setup 4 (汉化版)
+DefaultGroupName=Inno Setup 4 (汉化版)
+LicenseFile=E:\Program Files\Inno Setup 4\license.txt
+InfoBeforeFile=E:\Program Files\Inno Setup 4\汉化说明.txt
+Compression=bzip/9
+UninstallDisplayIcon={app}\Compil32.exe
+
+[Languages]
+; 注意: 你可以只选择你自己需要的语言，不需要的可以删除相应的语句。
+Name: "en"; MessagesFile: "compiler:Default.isl"
+Name: "chs"; MessagesFile: "E:\Program Files\Inno Setup 4\Language\Simple Chinese.isl"
+Name: "cht"; MessagesFile: "E:\Program Files\Inno Setup 4\Language\Traditional Chinese.isl"
+
+[Types]
+Name: "full"; Description: "完全安装"
+Name: "compact"; Description: "典型安装"
+Name: "custom"; Description: "自定义安装"; Flags: iscustom
+
+[Components]
+Name: "main"; Description: "主要文件"; Types: full compact
+Name: "1"; Description: "语言文件"; Types: full
+Name: "2"; Description: "脚本例子"; Types: full
+Name: "3"; Description: "使用安装程序关联注册表"; Types: full compact
+Name: "4"; Description: "使用软件自身的关联注册表"; Types: full
+Name: "5"; Description: "InnoSetup Icon Replacer 0.3"; Types: full
+
+[Tasks]
+Name: "desktopicon"; Description: "在桌面上创建图标(&D)"; GroupDescription: "添加图标："
+Name: "quicklaunchicon"; Description: "在快速启动栏创建图标(&Q)"; GroupDescription: "添加图标："; Flags: unchecked
+; 如果使用了下面 [Registry] 部分我自行编写的注册表脚本可不要下面的这行语句。
+Name: fileassoc; Description: "将 Inno Setup 与 .iss 文件建立关联(&A)"; Components: 4
+
+[Files]
+Source: "E:\Program Files\Inno Setup 4\Compil32.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite; Components: main
+Source: "E:\Program Files\Inno Setup 4\*.*"; DestDir: "{app}"; CopyMode: alwaysoverwrite; Components: main
+Source: "E:\Program Files\Inno Setup 4\Language\*.*"; DestDir: "{app}\Language\"; CopyMode: alwaysoverwrite; Components: 1
+Source: "E:\Program Files\Inno Setup 4\Examples\MyDll\C\*.*"; DestDir: "{app}\Examples\MyDll\C\"; CopyMode: alwaysoverwrite; Components: 2
+Source: "E:\Program Files\Inno Setup 4\Examples\MyDll\Delphi\*.*"; DestDir: "{app}\Examples\MyDll\Delphi\"; CopyMode: alwaysoverwrite; Components: 2
+Source: "E:\Program Files\Inno Setup 4\Examples\*.*"; DestDir: "{app}\Examples\"; CopyMode: alwaysoverwrite; Components: 2
+Source: "E:\Program Files\Inno Setup 4\InnoSetup Icon Replacer 0.3\*.*"; DestDir: "{app}\Examples\"; CopyMode: alwaysoverwrite; Components: 5
+
+
+[INI]
+Filename: "{app}\Compil32.url"; Section: "InternetShortcut"; Key: "URL"; String: "http://www.jrsoftware.org/"
+
+[Icons]
+; 注意: 要实现在图标的属性中的“起始位置：”，能够显示路径的话需加（WorkingDir: "{app}"）代码。
+[Icons]
+Name: "{group}\Inno Setup 4 (汉化版)"; Filename: "{app}\Compil32.exe"; WorkingDir: "{app}"; Components: main
+Name: "{group}\InnoSetup Icon Replacer 0.3 (汉化版)"; Filename: "{app}\InnoSetup Icon Replacer 0.3\iconedit.exe"; WorkingDir: "{app}\InnoSetup Icon Replacer 0.3\"; Components: 5
+Name: "{group}\Inno Setup 主页"; Filename: "{app}\Compil32.url"; WorkingDir: "{app}"; Components: main
+Name: "{group}\卸载 Inno Setup 4 (汉化版)"; Filename: "{uninstallexe}"; WorkingDir: "{app}"; Components: main
+Name: "{group}\帮助"; Filename: "{app}\Shelpm.hlp"; WorkingDir: "{app}"; Components: main
+Name: "{group}\问与答"; Filename: "{app}\isfaq.htm"; WorkingDir: "{app}"; Components: main
+Name: "{group}\修正历史"; Filename: "{app}\whatsnew.htm"; WorkingDir: "{app}"; Components: main
+Name: "{userdesktop}\Inno Setup 4 (汉化版)"; Filename: "{app}\Compil32.exe"; WorkingDir: "{app}"; Tasks: desktopicon; MinVersion: 4,4; Components: main
+Name: "{userdesktop}\InnoSetup Icon Replacer 0.3 (汉化版)"; Filename: "{app}\InnoSetup Icon Replacer 0.3\iconedit.exe"; WorkingDir: "{app}\InnoSetup Icon Replacer 0.3\"; Tasks: desktopicon; MinVersion: 4,4; Components: 5
+
+[Registry]
+Root: HKCU; Subkey: "Software\Jordan Russell"; Flags: uninsdeletekeyifempty; Components: main
+Root: HKCU; Subkey: "Software\Jordan Russell\Inno Setup(汉化版)"; Flags: uninsdeletekey; Components: main
+; 以下内容是我自行案程序关联程序注册的健值编写的注册表关联文件的编写例子，其中我还增加了一个源软件没有的“新建 Inno Setup 脚本  .iss”健值，希望该例子能对大家有所帮助！
+Root: HKCR; Subkey: ".ISS"; ValueType: string; ValueName: ""; ValueData: "InnoSetupScriptFile"; Flags: uninsdeletekeyifempty; Components: 3
+Root: HKCR; Subkey: ".ISS\ShellNew"; ValueType: string; ValueName: "NullFile"; ValueData: ""; Flags: uninsdeletekey; Components: 3
+Root: HKCR; Subkey: "InnoSetupScriptFile"; ValueType: string; ValueName: ""; ValueData: "Inno Setup 脚本"; Flags: uninsdeletekey; Components: 3
+Root: HKCR; Subkey: "InnoSetupScriptFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\Compil32.exe,1"; Flags: uninsdeletekey; Components: 3
+Root: HKCR; Subkey: "InnoSetupScriptFile\shell"; ValueType: string; ValueName: ""; ValueData: ""; Flags: uninsdeletekey; Components: 3
+Root: HKCR; Subkey: "InnoSetupScriptFile\shell\Compile"; ValueType: string; ValueName: ""; ValueData: "编译(&L)"; Flags: uninsdeletekey; Components: 3
+Root: HKCR; Subkey: "InnoSetupScriptFile\shell\Compile\command"; ValueType: string; ValueName: ""; ValueData: """{app}\Compil32.exe"" /cc ""%1"""; Flags: uninsdeletekey; Components: 3
+Root: HKCR; Subkey: "InnoSetupScriptFile\shell\open"; ValueType: string; ValueName: ""; ValueData: ""; Flags: uninsdeletekey; Components: 3
+Root: HKCR; Subkey: "InnoSetupScriptFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\Compil32.exe"" /cc ""%1"""; Flags: uninsdeletekey; Components: 3
+Root: HKCR; Subkey: "InnoSetupScriptFile\shell\OpenWithInnoSetup"; ValueType: string; ValueName: ""; ValueData: "使用 &Inno Setup 打开"; Flags: uninsdeletekey; Components: 3
+Root: HKCR; Subkey: "InnoSetupScriptFile\shell\OpenWithInnoSetup\command"; ValueType: string; ValueName: ""; ValueData: """{app}\Compil32.exe"" /cc ""%1"""; Flags: uninsdeletekey; Components: 3
+
+[Run]
+Filename: "{app}\汉化说明.txt"; Description: "汉化说明"; Flags: postinstall shellexec skipifsilent
+; 如果使用了上面 [Registry] 部分我自行编写的注册表脚本可不要下面的这行语句。
+Filename: "{app}\Compil32.exe"; Parameters: "/ASSOC"; StatusMsg: "将 Inno Setup 与 .iss 文件建立关联..."; Tasks: fileassoc; Components: 4
+
+[UninstallDelete]
+; 按下面的写法可以卸载时可删除目录下所有文件及目录！
+Type: filesandordirs; Name: "{app}\*.*"
+Type: files; Name: "{app}\*.*"
+
+
+[UninstallDelete]
+Type: files; Name: "{app}\Compil32.url"
+
+; 如果使用了上面 [Registry] 部分我自行编写的注册表脚本可不要下面的 [UninstallRun] 部分。
+[UninstallRun]
+Filename: "{app}\Compil32.exe"; Parameters: "/UNASSOC"; RunOnceId: "RemoveISSAssoc"; Components: 4
+

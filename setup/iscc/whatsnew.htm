@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>Inno Setup 4.0 Revision History</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<style type="text/css">
+	body		{ font: small verdana, arial, sans-serif; color: black; background-color: white }
+	a:link		{ color: #264b99; background-color: white }
+	a:visited	{ color: #5e85d7; background-color: white }
+	a:active	{ color: #7799dd; background-color: white }
+	tt		{ font: small "courier new", monospace }
+	li		{ margin-top: 0.15em; margin-bottom: 0.15em }
+	div.bluehead	{ text-align: center; color: white; background-color: #264b99; padding: 5px; font-weight: bold }
+	.head1		{ font-size: xx-large }
+	.head2		{ font-size: large }
+	.ver		{ font-size: large; font-weight: bold }
+	.date		{ font-size: x-small; font-weight: bold }
+</style>
+</head>
+<body>
+
+<!-- $jrsoftware: issrc/whatsnew.htm,v 1.131 2003/10/22 19:09:55 jr Exp $ -->
+
+<div class="bluehead"><span class="head1">Inno Setup 4.0</span><br /><span class="head2">Revision History</span></div>
+
+<p>Copyright &copy; 1997-2003 <a href="http://www.jrsoftware.org/">Jordan Russell</a>. All rights reserved.<br />
+Portions Copyright &copy; 2000-2003 Martijn Laan. All rights reserved.<br />
+For conditions of distribution and use, see <a href="http://www.jrsoftware.org/files/is/license.txt">LICENSE.TXT</a>.
+</p>
+
+<p><a name="4.0.9"></a><span class="ver">4.0.9 </span><span class="date">(2003-10-22)</span></p>
+<ul>
+<li>Specifying .bat and .cmd files directly in the <tt>Filename</tt> parameter of [Run]/[UninstallRun] section entries is now supported and encouraged. Special care is taken to ensure that quoted parameters are passed to the command interpreter properly.</li>
+<li>New [Setup] directive: <tt>AllowCancelDuringInstall</tt>.</li>
+<li>New [Run]/[UninstallRun] section flag: <tt>runhidden</tt>.</li>
+<li>The <tt>BrowseForFolder</tt> support function now uses the current value of the <i>Directory</i> parameter as the initially selected directory.</li>
+<li>Constants may now be used in the [Setup] section directive <tt>UninstallDisplayName</tt>.</li>
+<li>Compiler IDE improvements:
+  <ul>
+    <li>Editor: New option: <i>Allow cursor to move beyond end of lines</i>.</li>
+    <li>Editor: Now uses any selected text as the initial Find text on the Find and Replace dialogs.</li>
+    <li>Script Wizard: When you click the <i>Add directory</i> button it now asks if you want to include files in subdirectories also.</li>
+    <li>Now keeps the MRU list consistent between multiple running instances.</li>
+  </ul>
+</li>
+<li><i>Fix:</i> Child [Tasks] items that had the <tt>exclusive</tt> flag were being initially checked regardless of whether the <tt>unchecked</tt> flag was used.</li>
+<li>The uninstall program's version is now 51.9.0.0.</li>
+<li>Minor tweaks.</li>
+</ul>
+
+<p><a name="4.0.8"></a><span class="ver">4.0.8 </span><span class="date">(2003-09-22)</span></p>
+<ul>
+<li>The uninstaller now returns a non-zero exit code if the user cancels or a fatal error is encountered. See the new <i>Uninstaller Exit Codes</i> topic in the help file for more details.</li>
+<li>The uninstall program's version is now 51.8.0.0. (This change should've actually been made in 4.0.7.)</li>
+<li>Based on latest Innerfuse Pascal Script 3 CVS code (from 2003-09-21 00:00 GMT).</li>
+</ul>
+
+<p><a name="4.0.7"></a><span class="ver">4.0.7 </span><span class="date">(2003-09-18)</span></p>
+<ul>
+<li>Based on latest Innerfuse Pascal Script 3 CVS code (from 2003-09-17 21:20 GMT), which should fix the errors some were having with "const" in 4.0.6.</li>
+<li>Files/directories with the System attribute set are now included when a wildcard and/or the <tt>recursesubdirs</tt> flag is used on a [Files] section entry.</li>
+<li>To make it possible to call Inno Setup &lt;= 3 uninstallers from Inno Setup 4 uninstallers using [UninstallRun], changed the name of the Inno Setup uninstaller's internal window. This is needed to avoid the single-instance check in the uninstaller from Inno Setup 3 and earlier.</li>
+</ul>
+
+<p><a name="4.0.6"></a><span class="ver">4.0.6 </span><span class="date">(2003-09-15)</span></p>
+<ul>
+<li>Added <tt>IsPowerUserLoggedOn</tt> support function. (ML)</li>
+<li>Added <tt>RegisterServer</tt>, <tt>UnregisterServer</tt>, <tt>UnregisterTypeLibrary</tt>, <tt>DecrementSharedCount</tt> and <tt>UnregisterFont</tt> support functions. (ML)</li>
+<li><i>Fix:</i> The [Registry] section's <tt>preservestringtype</tt> flag only had an effect when the <tt>{olddata}</tt> constant was used in the <tt>ValueData</tt> parameter.</li>
+<li><i>Fix:</i> When processing an #include directive, it now looks for the included file in the directory of the file that has the #include directive. (Really, this time.)</li>
+<li><i>Fix:</i> Fixed control positioning issues with wizard pages displayed by Pascal Scripting functions.</li>
+<li>Based on Innerfuse Pascal Script 3 version 1.21 (actually, the CVS code from 2003-08-29 00:00 GMT).</li>
+<li>Added missing documentation for the <tt>TPaintBox</tt> support class. (ML)</li>
+<li>Minor tweaks.</li>
+</ul>
+
+<p><a name="4.0.5"></a><span class="ver">4.0.5-beta </span><span class="date">(2003-07-17)</span></p>
+<ul>
+<li>New [Files] section flag: <tt>uninsremovereadonly</tt>, which causes the uninstaller to remove any read-only attribute from the file before trying to delete it.</li>
+<li>The pre-install check for pending rename/delete operations is now performed on silent installations too. (See the <i>Wizard Pages</i> topic in the help file for more details.)</li>
+<li>Now shows filenames of shortcuts as they're created.</li>
+<li>AutoPlay is now suppressed while the <i>Setup Needs the Next Disk</i> dialog is up.</li>
+<li>For safety, calling <tt>ExpandConstant('{app}')</tt> before a directory has been selected by the user now raises an exception instead of returning an empty string.</li>
+<li><i>Fix:</i> <tt>Languages</tt> wasn't set on Run entries generated by the <tt>isreadme</tt> [Files] section flag.</li>
+<li><b>Changed message:</b> StatusCreateIcons now says "shortcuts" instead of "program icons".</li>
+<li>Based on Innerfuse Pascal Script 3 CVS checked out on 2003-07-16.</li>
+<li>The uninstall program's version is now 51.7.0.0.</li>
+<li>Minor tweaks.</li>
+</ul>
+
+<p><a name="4.0.4"></a><span class="ver">4.0.4-beta </span><span class="date">(2003-06-13)</span></p>
+<ul>
+<li>Values greater than 2 GB may now be used in <tt>ExtraDiskSpaceRequired</tt>.</li>
+<li><i>Fix:</i> Event functions that returned strings (such as <tt>Check</tt> functions) quit working in 4.0.3-beta.</li>
+<li><i>Fix:</i> Reintroduced the TWinControl properties that were lost in the 4.0.3-beta's IFPS update.</li>
+</ul>
+
+<p><a name="4.0.3"></a><span class="ver">4.0.3-beta </span><span class="date">(2003-06-12)</span></p>
+<ul>
+<li>Updated to the newest version of the <a href="http://www.carlo-kok.com/ifps3.php">Innerfuse Pascal Script</a> scripting engine used for the [Code] section. Among other things this means you can now use the <tt>with</tt> keyword and sets. (ML)</li>
+<li>Decreased size of installations by 25+ KB compared to previous versions of Inno Setup 4.</li>
+<li>Constants may now be used in the <tt>Description</tt> and <tt>StatusMsg</tt> parameters of the [Run] section.</li>
+<li>Added <tt>GetOpenFileName</tt> support function. (ML)</li>
+<li>Added <tt>InputFile</tt> and <tt>InputFileArray</tt> support functions to show custom wizard pages for selecting files. (ML)</li>
+<li>For better MSAA compatibility, Setup now uses static text controls instead of TLabels.</li>
+<li>Before replacing an existing font file Setup now calls RemoveFontResource().</li>
+<li>Commas may now be entered on Select Start Menu Folder wizard page.</li>
+<li>Increased height of the tasks list on the Select Additional Tasks wizard page so that more items can fit without a scroll bar being displayed.</li>
+<li><i>Fix:</i> Custom wizard pages opened by <tt>OutputProgress</tt> or by <tt>OutputMsg</tt> with <tt>WaitUntilClick</tt> set to <tt>False</tt> weren't correctly painted entirely after opening them. (ML)</li>
+<li><i>Fix:</i> The descriptions of types generated by the compiler if a script has a [Components] section but no [Types] section now correctly support multilingual installations. (ML)</li>
+<li>Minor tweaks.</li>
+</ul>
+
+<p><a name="4.0.2"></a><span class="ver">4.0.2-beta </span><span class="date">(2003-05-16)</span></p>
+<ul>
+<li><i>Fix:</i> In version 4.0.1-beta, using <tt>Compression=bzip</tt> and <tt>SolidCompression=no</tt> could result in an "Out of memory" error. The problem actually wasn't that it was running out of memory; due to subtle changes in the way 4.0.1 allocates/frees buffers, the process's address space was becoming fragmented (courtesy of a deficiency in Delphi's memory manager) and eventually, after a certain number of files were extracted, it would run out of address space. A workaround has been implemented that should permanently eliminate this issue.</li>
+<li><i>Fix:</i> <tt>Languages</tt> parameter now works with [Types]. (ML)</li>
+<li>Minor tweaks.</li>
+</ul>
+
+<p><a name="4.0.1"></a><span class="ver">4.0.1-beta </span><span class="date">(2003-05-12)</span></p>
+<ul>
+<li>Added support for solid compression, controlled via the new [Setup] section directive <tt>SolidCompression</tt>. This causes all files to be compressed at once instead of separately. This can result a much greater overall compression ratio if your installation contains many files with common content, such as text files.<br />
+Please read the full description in the help file before using this feature; don't just blindly enable it or you may be in for some surprises.</li>
+<li>Multilingual support improvements:
+<ul>
+  <li>A new common parameter called <tt>Languages</tt> is now supported which limits the processing of an entry to the specified language(s). (ML)</li>
+  <li>The [Languages] section now supports <tt>LicenseFile</tt>, <tt>InfoBeforeFile</tt>, and <tt>InfoAfterFile</tt> parameters. These are language-specific versions of their [Setup] section counterparts. (ML)</li>
+  <li>Added <tt>ActiveLanguage</tt> support function. (ML)</li>
+  <li>Added new [Setup] section directive <tt>DetectLanguageUsingLocale</tt>.</li>
+</ul>
+</li>
+<li>Setup now hides accelerator keys and focus rectangles on its dialogs by default if the "Hide keyboard indicators" option is enabled in Control Panel's Display Properties.</li>
+<li>Optimization: Separate bottlenecks in the compiler and Setup program that resulted in needlessly slow performance on scripts/installations with thousands of files have been virtually eliminated through use of a hash table.</li>
+<li>ISCC now always shows the filename in error messages, not just for errors in included files.</li>
+</ul>
+
+<p><a name="4.0.0"></a><span class="ver">4.0.0-pre1 </span><span class="date">(2003-04-18)</span></p>
+<ul>
+<li>New features:
+<ul>
+  <li>All features from Martijn Laan's <a href="http://isx.wintax.nl/">My Inno Setup Extensions</a> have been merged:
+    <ul>
+    <li>The installer now supports 'Pascal scripting' to further customize it in many ways. For more information, see the <i>Pascal Scripting</i> section in the help file.</li>
+    <li>Subcomponents, subtasks and exclusive components are now supported. For more information, see the <i>[Components]</i> section, the <i>[Tasks]</i> section and the [Setup] section directive ShowTasksTreeLines in the help file.</li>
+    <li>The installer and uninstaller now use a modern looking icon.</li>
+    <li>The components, tasks and postinstall [Run] entries lists now automatically word wrap entries if needed, are drawn themed on Windows XP and correctly show or hide focus rectangles and keyboard accelerators when needed.</li>
+    <li>If not all available tasks fit on the <i>Select Additional Tasks</i> wizard page, a scroll bar appears automatically.</li>
+    <li>If there's only one setup type defined in the [Types] section and that type is a custom type, the types list on the <i>Select Components</i> wizard page is no longer shown.</li>
+    <li>When the Script Wizard places an English phrase in a generated script, it now also adds a note about this to the script.</li>
+    </ul>
+  </li>
+  <li>Multilingual installations are now supported via the new [Languages] section.</li>
+  <li>Disk spanning now supports CD/DVD-ROMs.<br />
+(This was never officially supported previously because in some cases users were getting messages from the system about the wrong volume being in the drive after switching disks. A workaround has been introduced to avoid this.)</li>
+  <li>New constants:
+    <ul>
+    <li>{language}</li>
+    <li>{drive:...}, which extracts the drive letter and colon (e.g. "C:") from the specified path. In the case of a UNC path, it returns the server and share name (e.g. "\\SERVER\SHARE").</li>
+    </ul>
+  </li>
+  <li>New [Setup] section directives:
+    <ul>
+    <li>ShowLanguageDialog</li>
+    <li>DiskSliceSize</li>
+    <li>SlicesPerDisk</li>
+    </ul>
+  </li>
+</ul>
+</li>
+<li>Changes/Improvements:
+<ul>
+  <li>The 2 GB limitation is gone; the total size of an installation's files can now be up to 2^63 bytes (that's over 8,000,000,000 gigabytes) or thereabouts. Individual files can also be this large, but note that FAT and FAT32 partitions have file size limitations of 2 GB and 4 GB respectively.<br />
+The maximum size of a compiled setup.exe file remains 2,100,000,000 bytes, so if you are creating an installation with a compressed size larger than that, it is necessary to enable the disk spanning feature (by setting <tt>DiskSpanning</tt> to <tt>yes</tt> and <tt>DiskSliceSize</tt> to a large number) to split the installation into smaller chunks, even if you don't actually have multiple physical disks. For more information, see the updated description of the <tt>DiskSpanning</tt> directive in the help file.</li>
+  <li>The [Setup] section directive <tt>DisableStartupPrompt</tt> now defaults to <tt>yes</tt>.</li>
+  <li>It's now possible to run more than one Inno Setup uninstaller simultaneously, provided they're not the same uninstaller. This makes it possible for one uninstaller to call another Inno Setup uninstaller during the uninstall process.</li>
+  <li>The backslash removal mentioned in the <i>Constants</i> topic of the help file now applies to all constants, instead of just some as before.</li>
+  <li>The script parser now treats leading and trailing control characters (e.g. tabs) in unquoted parameter values the same way as spaces -- it trims them off.</li>
+  <li>Dropped the (attempted) support for Windows 95 "server-based setups", which has been in Inno Setup since version 1.0. What this did was alter the {sys} constant to be equal to {win} when the Windows System directory was neither a subdirectory of the Windows directory nor writable. Now, {sys} will always point to the Windows System directory.</li>
+  <li>Compiler IDE:
+    <ul>
+    <li>Added a "Stop Compile" button. It's also now possible to move and minimize the window during compilation.</li>
+    <li>It no longer requires the script to be saved before compiling. <tt>SourceDir</tt> will default to the directory the IDE was started from.</li>
+    </ul>
+  </li>
+  <li><b>New messages:</b> SelectLanguageTitle, SelectLanguageLabel, UninstallOpenError.</li>
+  <li>Miscellaneous minor tweaks not worthy of mention here.</li>
+</ul>
+</li>
+<li>This version is derived from Inno Setup 3.0.7, and therefore includes all of the features and fixes from that version.</li>
+</ul>
+
+<p><a href="http://www.jrsoftware.org/files/is3-whatsnew.htm">Inno Setup 3.0 Revision History</a></p>
+
+</body>
+</html>

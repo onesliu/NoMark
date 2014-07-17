@@ -1,0 +1,37 @@
+procedure   TForm1.Button2Click(Sender:   TObject);  
+  var   AccessDB:OleVariant;  
+  begin  
+      try  
+      AccessDB:=CreateOleObject('ADOX.Catalog');  
+      AccessDB.Create('Provider=Microsoft.Jet.OLEDB.4.0;Data   Source=c:\mydb.mdb');  
+      finally  
+      AccessDB:=VarNull;  
+      end;  
+  end;  
+  建表直接用ADOQuery1.sql.add('create   table   okok(a   int,b   char(20))');  
+  明白了吧!
+
+Const  
+      SConnectionString               =   'Provider=Microsoft.Jet.OLEDB.4.0;Data   Source=%s;'  
+                                                                  +'Jet   OLEDB:Database   Password=%s;';  
+  function   CreateAccessFile(FileName:String;PassWord:string=''):boolean;  
+  //建立Access文件，如果文件存在则失败  
+  var  
+      STempFileName:string;  
+      vCatalog:OleVariant;  
+  begin  
+      STempFileName:='d:\temp\123.mdb';  
+      try  
+          vCatalog:=CreateOleObject('ADOX.Catalog');  
+          vCatalog.Create(format(SConnectionString,[STempFileName,PassWord]));  
+          result:=CopyFile(PChar(STempFileName),PChar(FileName),True);  
+          DeleteFile(STempFileName);  
+      except  
+          result:=false;  
+      end;  
+  end;  
+  Create   Table   Tab1   (  
+                  ID   Counter,  
+                  Name   string,  
+                  Age   integer,  
+                  er     logical);
