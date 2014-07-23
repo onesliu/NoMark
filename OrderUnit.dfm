@@ -25,7 +25,7 @@ object OrderForm: TOrderForm
     Top = 0
     Width = 689
     Height = 492
-    ActivePage = SellSheet
+    ActivePage = ChangeSheet
     Align = alClient
     Font.Charset = GB2312_CHARSET
     Font.Color = clWindowText
@@ -35,7 +35,7 @@ object OrderForm: TOrderForm
     Images = ImageList1
     ParentFont = False
     Style = tsFlatButtons
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object SellSheet: TTabSheet
       Caption = #21806#36135#20132#26131#21333'(F9)'
@@ -602,7 +602,7 @@ object OrderForm: TOrderForm
         object TestMark1: TLabel
           Left = 32
           Top = 12
-          Width = 68
+          Width = 70
           Height = 33
           Caption = #32451#20064
           Font.Charset = GB2312_CHARSET
@@ -653,7 +653,7 @@ object OrderForm: TOrderForm
         object TestMark2: TLabel
           Left = 32
           Top = 12
-          Width = 68
+          Width = 70
           Height = 33
           Caption = #32451#20064
           Font.Charset = GB2312_CHARSET
@@ -1036,7 +1036,7 @@ object OrderForm: TOrderForm
         object TestMark3: TLabel
           Left = 32
           Top = 12
-          Width = 68
+          Width = 70
           Height = 33
           Caption = #32451#20064
           Font.Charset = GB2312_CHARSET

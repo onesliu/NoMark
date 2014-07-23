@@ -18,6 +18,7 @@
 #include "SelectUnit.h"
 #include "PrinterUnit.h"
 #include "CustomerLedUnit.h"
+#include "scale.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -1220,7 +1221,6 @@ void __fastcall TOrderForm::ToolButton7Click(TObject *Sender)
 
 void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
 {
-/*
     int num;
     q->Close();
     q->SQL->Text = "select count(*) as cnt from t_order_goods where orderlistidx = " + IntToStr(orderlist);
@@ -1235,7 +1235,7 @@ void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
     PrinterForm->SetPageLength(num);
     PrinterForm->ReceiptRep->Preview();
     q->Close();
-*/
+
 
     IPrinter * printer = new GiChengPrinter();
     if (printer->OpenPrinterA() == false) {
@@ -1248,6 +1248,10 @@ void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
         printer->ClosePrinter();
     }
     delete printer;
+
+    TScale scale;
+    scale.ParseFile();
+    scale.SendScale();
 }
 //---------------------------------------------------------------------------
 

@@ -43,15 +43,14 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Store.cpp"/>
-    <INCLUDEPATH value="D:\Borland\CBuilder6\Projects;utility;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;I:\development\Bussiness;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="D:\Borland\CBuilder6\Projects;utility;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;I:\development\Bussiness;$(BCB)\Bin;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="D:\Borland\CBuilder6\Projects;utility;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="utility;$(BCB)\Bin;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-ID:\Borland\CBuilder6\Projects -Iutility 
-      -I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; -II:\development\Bussiness 
-      -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-ID:\Borland\CBuilder6\Projects -Iutility -I$(BCB)\include 
+      -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
       -tW -tWM"/>
     <PFLAGS value="-N2.\debug\storetemp -N0.\debug\storetemp -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -118,20 +117,23 @@ ProductVersion=1.0.0.0
 Comments=
 
 [Excluded Packages]
-c:\program files\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
-c:\program files\borland\cbuilder6\Bin\dclite60.bpl=Borland Integrated Translation Environment
+d:\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
+d:\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
+d:\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
 
 [HistoryLists\hlIncludePath]
-Count=3
-Item0=D:\Borland\CBuilder6\Projects;utility;C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\include;$(BCB)\include\vcl
-Item1=utility;C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\include;$(BCB)\include\vcl
-Item2=C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\include;$(BCB)\include\vcl
+Count=4
+Item0=D:\Borland\CBuilder6\Projects;utility;$(BCB)\include;$(BCB)\include\vcl
+Item1=D:\Borland\CBuilder6\Projects;utility;C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\include;$(BCB)\include\vcl
+Item2=utility;C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\include;$(BCB)\include\vcl
+Item3=C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=3
-Item0=D:\Borland\CBuilder6\Projects;utility;C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\Bin;$(BCB)\lib\obj;$(BCB)\lib
-Item1=utility;C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\Bin;$(BCB)\lib\obj;$(BCB)\lib
-Item2=C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\Bin;$(BCB)\lib\obj;$(BCB)\lib
+Count=4
+Item0=utility;$(BCB)\Bin;$(BCB)\lib\obj;$(BCB)\lib
+Item1=D:\Borland\CBuilder6\Projects;utility;C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\Bin;$(BCB)\lib\obj;$(BCB)\lib
+Item2=utility;C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\Bin;$(BCB)\lib\obj;$(BCB)\lib
+Item3=C:\Program Files\Borland\CBuilder6\Projects;I:\development\Bussiness;$(BCB)\Bin;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
@@ -176,5 +178,10 @@ LinkCGLIB=0
 AddServerUnit=1
 AddClientUnit=1
 PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
   </IDEOPTIONS>
 </PROJECT>
