@@ -4,34 +4,34 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value=".\debug\Sell.exe"/>
-    <OBJFILES value="debug\selltemp\Sell.obj debug\selltemp\DbUnit.obj
-      debug\selltemp\OrderUnit.obj debug\selltemp\MessageBoxes.obj
-      debug\selltemp\CommonUnit.obj debug\selltemp\GPrinterUnit.obj
-      debug\selltemp\base_64.obj debug\selltemp\SetChangeUnit.obj
-      debug\selltemp\UserLoginUnit.obj debug\selltemp\CashSetUnit.obj
-      debug\selltemp\DetailUnit.obj debug\selltemp\ShowChangeUnit.obj
-      debug\selltemp\SelectUnit.obj debug\selltemp\PrinterUnit.obj
-      debug\selltemp\Scale.obj debug\selltemp\cJSON.obj"/>
+    <OBJFILES value="debug\selltemp\Sell.obj debug\selltemp\DbUnit.obj 
+      debug\selltemp\OrderUnit.obj debug\selltemp\MessageBoxes.obj 
+      debug\selltemp\CommonUnit.obj debug\selltemp\GPrinterUnit.obj 
+      debug\selltemp\base_64.obj debug\selltemp\SetChangeUnit.obj 
+      debug\selltemp\UserLoginUnit.obj debug\selltemp\CashSetUnit.obj 
+      debug\selltemp\DetailUnit.obj debug\selltemp\ShowChangeUnit.obj 
+      debug\selltemp\SelectUnit.obj debug\selltemp\PrinterUnit.obj 
+      debug\selltemp\Scale.obj debug\selltemp\cJSON.obj 
       debug\selltemp\CustomerLedUnit.obj"/>
     <RESFILES value="Sell.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) DbUnit.dfm OrderUnit.dfm SetChangeUnit.dfm UserLoginUnit.dfm
-      CashSetUnit.dfm DetailUnit.dfm ShowChangeUnit.dfm SelectUnit.dfm
+    <RESDEPEN value="$(RESFILES) DbUnit.dfm OrderUnit.dfm SetChangeUnit.dfm UserLoginUnit.dfm 
+      CashSetUnit.dfm DetailUnit.dfm ShowChangeUnit.dfm SelectUnit.dfm 
       PrinterUnit.dfm"/>
     <LIBFILES value="lib\DhScalePluNet.lib"/>
-    <LIBRARIES value="bdertl.lib vclx.lib qrpt.lib indy.lib vcldb.lib dbexpress.lib dsnap.lib
+    <LIBRARIES value="bdertl.lib vclx.lib qrpt.lib indy.lib vcldb.lib dbexpress.lib dsnap.lib 
       cds.lib ibxpress.lib dbrtl.lib rtl.lib vcl.lib"/>
-    <SPARELIBS value="vcl.lib rtl.lib dbrtl.lib ibxpress.lib cds.lib dsnap.lib dbexpress.lib
+    <SPARELIBS value="vcl.lib rtl.lib dbrtl.lib ibxpress.lib cds.lib dsnap.lib dbexpress.lib 
       vcldb.lib indy.lib qrpt.lib vclx.lib bdertl.lib"/>
-    <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi
-      vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi
-      visualclx.bpi visualdbclx.bpi dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi
-      vclie.bpi xmlrtl.bpi inet.bpi inetdbbde.bpi inetdbxpress.bpi inetdb.bpi
-      nmfast.bpi webdsnap.bpi bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi
-      dbexpress.bpi dbxcds.bpi indy.bpi bcb2kaxserver.bpi Tee7C6.bpi
-      TeeGL7C6.bpi TeeUI7C6.bpi TeeDB7C6.bpi TeeLanguage7C6.bpi TeePro7C6.bpi
+    <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
+      vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi 
+      visualclx.bpi visualdbclx.bpi dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi 
+      vclie.bpi xmlrtl.bpi inet.bpi inetdbbde.bpi inetdbxpress.bpi inetdb.bpi 
+      nmfast.bpi webdsnap.bpi bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi 
+      dbexpress.bpi dbxcds.bpi indy.bpi bcb2kaxserver.bpi Tee7C6.bpi 
+      TeeGL7C6.bpi TeeUI7C6.bpi TeeDB7C6.bpi TeeLanguage7C6.bpi TeePro7C6.bpi 
       TeeQR7C6.bpi BSFCB6.bpi"/>
     <PATHCPP value=".;utility"/>
     <PATHPAS value=".;"/>
@@ -43,16 +43,15 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Sell.cpp"/>
-    <INCLUDEPATH value="D:\Borland\CBuilder6\Projects;&quot;..\IconAbout\XP Set&quot;;utility;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;comm"/>
-    <LIBPATH value="D:\Borland\CBuilder6\Projects;&quot;..\IconAbout\XP Set&quot;;utility;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="utility;$(BCB)\include;$(BCB)\include\vcl;comm"/>
+    <LIBPATH value="utility;$(BCB)\lib\obj;$(BCB)\lib;lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-ID:\Borland\CBuilder6\Projects -I&quot;..\IconAbout\XP Set&quot; -Iutility
-      -I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include
-      -I$(BCB)\include\vcl -Icomm -src_suffix cpp -D_DEBUG -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c
+    <IDLCFLAGS value="-Iutility -I$(BCB)\include -I$(BCB)\include\vcl -Icomm -src_suffix cpp 
+      -D_DEBUG -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
       -tW -tWM"/>
     <PFLAGS value="-N2.\debug\selltemp -N0.\debug\selltemp -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
@@ -124,17 +123,21 @@ d:\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
 d:\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
 
 [HistoryLists\hlIncludePath]
-Count=4
-Item0=D:\Borland\CBuilder6\Projects;..\IconAbout\XP Set;utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;comm
-Item1=D:\Borland\CBuilder6\Projects;..\IconAbout\XP Set;utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item2=..\IconAbout\XP Set;utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
-Item3=utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Count=6
+Item0=utility;$(BCB)\include;$(BCB)\include\vcl;comm
+Item1=D:\Borland\CBuilder6\Projects;utility;$(BCB)\include;$(BCB)\include\vcl;comm
+Item2=D:\Borland\CBuilder6\Projects;..\IconAbout\XP Set;utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;comm
+Item3=D:\Borland\CBuilder6\Projects;..\IconAbout\XP Set;utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item4=..\IconAbout\XP Set;utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
+Item5=utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=3
-Item0=D:\Borland\CBuilder6\Projects;..\IconAbout\XP Set;utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib
-Item1=..\IconAbout\XP Set;utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib
-Item2=utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib
+Count=5
+Item0=utility;$(BCB)\lib\obj;$(BCB)\lib;lib
+Item1=utility;$(BCB)\lib\obj;$(BCB)\lib
+Item2=D:\Borland\CBuilder6\Projects;..\IconAbout\XP Set;utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib
+Item3=..\IconAbout\XP Set;utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib
+Item4=utility;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1

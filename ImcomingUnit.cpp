@@ -28,10 +28,10 @@ AnsiString TIncomingForm::GenerateBarCode()
     q2->Open();
     q2->First();
     if ( !q2->Eof )
-        maxbar = q2->FieldByName("maxbar")->AsString.SubString(3, 6).ToInt();
+        maxbar = q2->FieldByName("maxbar")->AsString.SubString(3, 5).ToInt();
     q2->Close();
 
-    return AnsiString().sprintf( "20%06d0000", maxbar+BuyList->Items->Count );
+    return AnsiString().sprintf( "20%05d00000", maxbar+BuyList->Items->Count );
 }
 //---------------------------------------------------------------------------
 

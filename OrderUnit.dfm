@@ -65,10 +65,10 @@ object OrderForm: TOrderForm
           Top = 0
           Width = 275
           Height = 387
-          ActivePage = TabSheet2
+          ActivePage = TabSheet1
           Align = alRight
           Style = tsFlatButtons
-          TabIndex = 1
+          TabIndex = 0
           TabOrder = 0
           object TabSheet1: TTabSheet
             Caption = #21806#36135#36807#31243
@@ -1143,7 +1143,7 @@ object OrderForm: TOrderForm
             Width = 145
             Height = 20
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 12
             TabOrder = 0
             OnChange = GoodTypeChange
           end
