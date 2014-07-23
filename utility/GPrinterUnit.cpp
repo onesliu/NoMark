@@ -6,15 +6,14 @@
 
 #include "GPrinterUnit.h"
 #include "DbUnit.h"
-#include "UserLoginUnit.h"
+#include "MessageBoxes.h"
 //---------------------------------------------------------------------------
 
 #pragma package(smart_init)
 
-static int gp = -1;
 const int linewidth = 32;
 
-bool OpenPrinter()
+bool IPrinter::OpenPrinter()
 {
     if ( gp >= 0 ) return true;
     gp = FileOpen( "LPT1", fmOpenWrite );
@@ -23,85 +22,105 @@ bool OpenPrinter()
     return false;
 }
 
-void ClosePrinter()
+void IPrinter::ClosePrinter()
 {
     if ( gp >= 0 ) FileClose( gp );
     gp = -1;
 }
 
-void PrintBin( char c )
+void IPrinter::PrintBin( char c )
 {
     FileWrite( gp, (void*)&c, 1 );
 }
 
-void ResetPrinter()
-{
-    if ( gp < 0 ) return;
-    PrintBin( 0x1b );
-    PrintBin( 0x40 );
-}
-
-void PrintReturn()
-{
-    PrintBin( 0x0a );
-}
-
-void PrintLine( AnsiString str )
+void IPrinter::PrintLine( AnsiString str )
 {
     if ( gp < 0 ) return;
     FileWrite( gp, str.c_str(), str.Length() );
     PrintReturn();
 }
 
-void PrintStr( AnsiString str )
+void IPrinter::PrintTab()
+{
+    PrintBin( 0x09 );
+}
+
+void IPrinter::PrintReturn()
+{
+    PrintBin( 0x0a );
+}
+
+void IPrinter::FeedPaper(int line) {
+    PrintBin( 0x1b );
+    PrintBin( 0x64 );
+    PrintBin( line );
+}
+
+void IPrinter::ResetPrinter()
+{
+    if ( gp < 0 ) return;
+    //初始化打印机
+    PrintBin( 0x1b );
+    PrintBin( 0x40 );
+    //设置标准行模式
+    PrintBin( 0x1b );
+    PrintBin( 0x53 );
+}
+
+void IPrinter::PrintStr( AnsiString str )
 {
     if ( gp < 0 ) return;
     FileWrite( gp, str.c_str(), str.Length() );
 }
 
-void SetBigWord()
+void IPrinter::PrintStr( AnsiString str, int width, int align )
 {
-    PrintBin( 0x1b );
-    PrintBin( 0x21 );
-    PrintBin( 48 );
+    AnsiString ss, fmt;
+    if (align == ALIGN_RIGHT)
+        fmt.sprintf("%%%ds", width);
+    else
+        fmt.sprintf("%%-%ds", width);
+
+    wchar_t buf[11];
+    memset(buf, 0, sizeof(buf));
+    str.SubString(1, width).WideChar(buf, sizeof(buf)-2);
+    ss.sprintf(fmt.c_str(), WideCharToString(buf));
+    PrintStr(ss);
 }
 
-void ClrBigWord()
-{
-    PrintBin( 0x1b );
-    PrintBin( 0x21 );
-    PrintBin( 0 );
-}
-
-void PrintCharLine( char c )
+void IPrinter::PrintCharLine( char c )
 {
     for ( int i = 0; i < linewidth; i++ )
         PrintBin( c );
 }
 
-void PrintLogo()
+void IPrinter::SetAlign(int align)
 {
-    PrintLine( sPrintLogo );
+    PrintBin(0x1b);
+    PrintBin(0x61);
 
-    PrintCharLine( '=' );
-    PrintReturn();
+    switch(align) {
+    case ALIGN_LEFT: PrintBin(0); break;
+    case ALIGN_CENTER: PrintBin(1); break;
+    case ALIGN_RIGHT: PrintBin(2); break;
+    }
 }
 
-void PrintTail()
+void IPrinter::SetColumn(int col[], int num)
 {
-    PrintCharLine( '-' );
-    PrintLine( sPrintTail );
-    PrintCharLine( '=' );
+    PrintBin(0x1b);
+    PrintBin(0x44);
 
-    PrintLine( "时间: " + Now().FormatString("yyyy-mm-dd hh:nn:ss") );
-    PrintLine( "收银员: " + UserLoginForm->Serial->Text );
+    int c = 0;
+    for(int i = 0; i < num; i++) {
+        c += col[i];
+        PrintBin(c);
+    }
 
-    PrintBin( 0x1b );
-    PrintBin( 0x64 );
-    PrintBin( 6 );
+    PrintBin(0);
 }
 
-void PrintItem( AnsiString name, AnsiString value )
+void IPrinter::PrintItem( AnsiString name, AnsiString value )
 {
     int blen = linewidth - name.Length() - value.Length();
     AnsiString black;
@@ -111,3 +130,52 @@ void PrintItem( AnsiString name, AnsiString value )
 
     PrintLine( name + black + value );
 }
+
+void IPrinter::PrintLogo()
+{
+    PrintLine( sPrintLogo );
+
+    PrintCharLine( '-' );
+    PrintReturn();
+}
+
+void IPrinter::PrintTail()
+{
+    PrintCharLine( '-' );
+    PrintLine( sPrintTail );
+    PrintCharLine( '-' );
+
+    PrintLine( "时间: " + Now().FormatString("yyyy-mm-dd hh:nn:ss") );
+
+    FeedPaper(6);
+}
+
+void IPrinter::KickOut() {
+
+    PrintBin( 0x1b );
+    PrintBin( 0x70 );
+    PrintBin( 0x00 );
+    PrintBin( 128 );
+    PrintBin( 128 );
+}
+
+
+//---------------------------------------------------------------------------
+
+void GPrinter::SetBigWord()
+{
+    PrintBin( 0x1b );
+    PrintBin( 0x21 );
+    PrintBin( 48 );
+}
+
+void GPrinter::ClrBigWord()
+{
+    PrintBin( 0x1b );
+    PrintBin( 0x21 );
+    PrintBin( 0 );
+}
+
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------

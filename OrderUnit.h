@@ -193,9 +193,11 @@ private:	// User declarations
     void __fastcall FreshSellSheet( TDateTime date );
     void __fastcall PosGoodItem( int goodidx );
 
-    void __fastcall PrintSellList(AnsiString selltime);
+    void __fastcall PrintSellList1(AnsiString selltime);
+    void __fastcall PrintSellList2(AnsiString selltime);
     void __fastcall FreshGoodsList( AnsiString sql );
     void __fastcall FreshTotal( int orderlistid = 0 );
+	void __fastcall ShowCustomerLed(int status, AnsiString price);
 public:		// User declarations
     __fastcall TOrderForm(TComponent* Owner);
 };

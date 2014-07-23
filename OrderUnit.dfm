@@ -1,11 +1,12 @@
 object OrderForm: TOrderForm
   Left = 384
   Top = 169
+  Width = 705
+  Height = 530
+  Align = alClient
+  AutoSize = True
   BorderIcons = [biSystemMenu, biMinimize]
-  BorderStyle = bsSingle
   Caption = #38144#21806#23458#25143#31471
-  ClientHeight = 492
-  ClientWidth = 689
   Color = clBtnFace
   Font.Charset = GB2312_CHARSET
   Font.Color = clWindowText
@@ -14,6 +15,7 @@ object OrderForm: TOrderForm
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  WindowState = wsMaximized
   OnClose = FormClose
   OnShow = FormShow
   PixelsPerInch = 96
@@ -63,10 +65,10 @@ object OrderForm: TOrderForm
           Top = 0
           Width = 275
           Height = 387
-          ActivePage = TabSheet1
+          ActivePage = TabSheet2
           Align = alRight
           Style = tsFlatButtons
-          TabIndex = 0
+          TabIndex = 1
           TabOrder = 0
           object TabSheet1: TTabSheet
             Caption = #21806#36135#36807#31243
@@ -565,7 +567,7 @@ object OrderForm: TOrderForm
                 Caption = #25968#37327
               end
               item
-                Caption = #21512#35745
+                Caption = #23567#35745
                 Width = 70
               end>
             Ctl3D = False
