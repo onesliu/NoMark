@@ -200,6 +200,15 @@ private:	// User declarations
 	void __fastcall ShowCustomerLed(int status, AnsiString price);
 public:		// User declarations
     __fastcall TOrderForm(TComponent* Owner);
+
+protected:
+    void __fastcall CMRecieveNewPrice(TMessage &Message);
+
+#define WM_SEND  (WM_USER + 101)
+#define WM_RECV  (WM_USER + 102)
+BEGIN_MESSAGE_MAP
+  MESSAGE_HANDLER(WM_SEND, TMessage, CMRecieveNewPrice)
+END_MESSAGE_MAP(TComponent)
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TOrderForm *OrderForm;

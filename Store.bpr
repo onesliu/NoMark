@@ -11,7 +11,8 @@
       debug\storetemp\SysSetUnit.obj debug\storetemp\base_64.obj 
       debug\storetemp\LoginUnit.obj debug\storetemp\GoodAttribUnit.obj 
       debug\storetemp\StoreStatUnit.obj debug\storetemp\NameIMEUnit.obj 
-      debug\storetemp\SelectUnit.obj debug\storetemp\ChangePriceUnit.obj"/>
+      debug\storetemp\SelectUnit.obj debug\storetemp\ChangePriceUnit.obj 
+      debug\storetemp\BarcodeUnit.obj"/>
     <RESFILES value="Store.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -83,6 +84,7 @@
       <FILE FILENAME="NameIMEUnit.cpp" FORMNAME="NameIME" UNITNAME="NameIMEUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SelectUnit.cpp" FORMNAME="SelectForm" UNITNAME="SelectUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ChangePriceUnit.cpp" FORMNAME="ChangePriceForm" UNITNAME="ChangePriceUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="BarcodeUnit.cpp" FORMNAME="" UNITNAME="BarcodeUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

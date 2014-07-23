@@ -1251,3 +1251,7 @@ void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TOrderForm::CMRecieveNewPrice(TMessage &Message) {
+}
+//---------------------------------------------------------------------------
+
