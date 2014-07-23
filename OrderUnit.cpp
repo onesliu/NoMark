@@ -1151,9 +1151,11 @@ void __fastcall TOrderForm::ToolButton7Click(TObject *Sender)
     PrinterForm->ReceiptRep->PrinterSetup();
 }
 //---------------------------------------------------------------------------
+#include "scale.h"
 
 void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
 {
+#if 0
     int num;
     q->Close();
     q->SQL->Text = "select count(*) as cnt from t_order_goods where orderlistidx = " + IntToStr(orderlist);
@@ -1168,6 +1170,10 @@ void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
     PrinterForm->SetPageLength(num);
     PrinterForm->ReceiptRep->Preview();
     q->Close();
+#endif
+    TScale scale;
+    scale.ParseFile();
+    scale.SendScale();
 }
 //---------------------------------------------------------------------------
 
