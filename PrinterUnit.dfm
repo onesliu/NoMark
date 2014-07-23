@@ -15,9 +15,9 @@ object PrinterForm: TPrinterForm
   PixelsPerInch = 96
   TextHeight = 12
   object ReceiptRep: TQuickRep
-    Left = 48
+    Left = 32
     Top = 16
-    Width = 181
+    Width = 219
     Height = 209
     Frame.Color = clBlack
     Frame.DrawTop = False
@@ -27,8 +27,8 @@ object PrinterForm: TPrinterForm
     DataSet = d.q
     Font.Charset = GB2312_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = #23435#20307
+    Font.Height = -13
+    Font.Name = #24494#36719#38597#40657
     Font.Style = []
     Functions.Strings = (
       'PAGENUMBER'
@@ -46,11 +46,11 @@ object PrinterForm: TPrinterForm
     Page.PaperSize = Custom
     Page.Values = (
       10
-      552.979166666667
+      553
       10
-      478.895833333333
-      0
-      0
+      579
+      40
+      40
       0)
     PrinterSettings.Copies = 1
     PrinterSettings.Duplex = False
@@ -62,10 +62,61 @@ object PrinterForm: TPrinterForm
     Units = MM
     Zoom = 100
     object Title: TQRBand
-      Left = 0
+      Left = 15
       Top = 4
-      Width = 181
-      Height = 16
+      Width = 189
+      Height = 34
+      Frame.Color = clBlack
+      Frame.DrawTop = False
+      Frame.DrawBottom = True
+      Frame.DrawLeft = False
+      Frame.DrawRight = False
+      Frame.Width = 2
+      AlignToBottom = False
+      Color = clWhite
+      ForceNewColumn = False
+      ForceNewPage = False
+      Size.Values = (
+        89.9583333333333
+        500.0625)
+      BandType = rbTitle
+      object QRLabel4: TQRLabel
+        Left = 47
+        Top = 2
+        Width = 95
+        Height = 27
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          71.4375
+          124.354166666667
+          5.29166666666667
+          251.354166666667)
+        Alignment = taCenter
+        AlignToBand = True
+        AutoSize = True
+        AutoStretch = False
+        Caption = #38144' '#36135' '#28165' '#21333
+        Color = clWhite
+        Font.Charset = GB2312_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = #24494#36719#38597#40657
+        Font.Style = [fsBold]
+        ParentFont = False
+        Transparent = True
+        WordWrap = True
+        FontSize = 14
+      end
+    end
+    object Column: TQRBand
+      Left = 15
+      Top = 38
+      Width = 189
+      Height = 23
       Frame.Color = clBlack
       Frame.DrawTop = False
       Frame.DrawBottom = False
@@ -76,73 +127,23 @@ object PrinterForm: TPrinterForm
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        42.3333333333333
-        478.895833333333)
-      BandType = rbTitle
-      object QRLabel4: TQRLabel
-        Left = 0
-        Top = 0
-        Width = 181
-        Height = 13
-        Frame.Color = clBlack
-        Frame.DrawTop = False
-        Frame.DrawBottom = False
-        Frame.DrawLeft = False
-        Frame.DrawRight = False
-        Size.Values = (
-          34.3958333333333
-          0
-          0
-          478.895833333333)
-        Alignment = taCenter
-        AlignToBand = True
-        AutoSize = False
-        AutoStretch = False
-        Caption = #38144' '#36135' '#28165' '#21333
-        Color = clWhite
-        Font.Charset = GB2312_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #23435#20307
-        Font.Style = [fsBold]
-        ParentFont = False
-        Transparent = True
-        WordWrap = True
-        FontSize = 9
-      end
-    end
-    object Column: TQRBand
-      Left = 0
-      Top = 20
-      Width = 181
-      Height = 16
-      Frame.Color = clBlack
-      Frame.DrawTop = False
-      Frame.DrawBottom = True
-      Frame.DrawLeft = False
-      Frame.DrawRight = False
-      AlignToBottom = False
-      Color = clWhite
-      ForceNewColumn = False
-      ForceNewPage = False
-      Size.Values = (
-        42.3333333333333
-        478.895833333333)
+        60.8541666666667
+        500.0625)
       BandType = rbColumnHeader
       object QRLabel1: TQRLabel
         Left = 0
-        Top = 0
+        Top = 4
         Width = 97
-        Height = 13
+        Height = 20
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.3958333333333
+          52.9166666666667
           0
-          0
+          10.5833333333333
           256.645833333333)
         Alignment = taLeftJustify
         AlignToBand = True
@@ -152,23 +153,23 @@ object PrinterForm: TPrinterForm
         Color = clWhite
         Transparent = True
         WordWrap = True
-        FontSize = 9
+        FontSize = 10
       end
       object QRLabel2: TQRLabel
         Left = 152
-        Top = 0
-        Width = 25
-        Height = 13
+        Top = 4
+        Width = 28
+        Height = 20
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.3958333333333
+          52.9166666666667
           402.166666666667
-          0
-          66.1458333333333)
+          10.5833333333333
+          74.0833333333333)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -177,22 +178,22 @@ object PrinterForm: TPrinterForm
         Color = clWhite
         Transparent = True
         WordWrap = True
-        FontSize = 9
+        FontSize = 10
       end
       object QRLabel3: TQRLabel
         Left = 99
-        Top = 0
+        Top = 4
         Width = 51
-        Height = 13
+        Height = 20
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.3958333333333
+          52.9166666666667
           261.9375
-          0
+          10.5833333333333
           134.9375)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -202,14 +203,14 @@ object PrinterForm: TPrinterForm
         Color = clWhite
         Transparent = True
         WordWrap = True
-        FontSize = 9
+        FontSize = 10
       end
     end
     object Detail: TQRBand
-      Left = 0
-      Top = 36
-      Width = 181
-      Height = 15
+      Left = 15
+      Top = 61
+      Width = 189
+      Height = 22
       Frame.Color = clBlack
       Frame.DrawTop = False
       Frame.DrawBottom = False
@@ -220,23 +221,23 @@ object PrinterForm: TPrinterForm
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        39.6875
-        478.895833333333)
+        58.2083333333333
+        500.0625)
       BandType = rbDetail
       object GoodName: TQRDBText
         Left = 0
-        Top = 0
+        Top = 3
         Width = 97
-        Height = 13
+        Height = 20
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.3958333333333
+          52.9166666666667
           0
-          0
+          9
           256.645833333333)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -247,23 +248,23 @@ object PrinterForm: TPrinterForm
         DataField = 'name'
         Transparent = True
         WordWrap = True
-        FontSize = 9
+        FontSize = 10
       end
       object QRDBText2: TQRDBText
         Left = 152
-        Top = 0
-        Width = 25
-        Height = 13
+        Top = 3
+        Width = 28
+        Height = 20
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.3958333333333
+          52.9166666666667
           402.166666666667
-          0
-          66.1458333333333)
+          9
+          74.0833333333333)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -273,22 +274,22 @@ object PrinterForm: TPrinterForm
         DataField = 'counts'
         Transparent = True
         WordWrap = True
-        FontSize = 9
+        FontSize = 10
       end
       object QRDBText3: TQRDBText
         Left = 99
-        Top = 0
+        Top = 3
         Width = 51
-        Height = 13
+        Height = 20
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.3958333333333
+          52.9166666666667
           261.9375
-          0
+          9
           134.9375)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -300,42 +301,43 @@ object PrinterForm: TPrinterForm
         Mask = '#.00'
         Transparent = True
         WordWrap = True
-        FontSize = 9
+        FontSize = 10
       end
     end
     object Tail: TQRBand
-      Left = 0
-      Top = 51
-      Width = 181
-      Height = 30
+      Left = 15
+      Top = 83
+      Width = 189
+      Height = 94
       Frame.Color = clBlack
       Frame.DrawTop = True
       Frame.DrawBottom = False
       Frame.DrawLeft = False
       Frame.DrawRight = False
+      Frame.Width = 2
       AlignToBottom = False
       Color = clWhite
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        79.375
-        478.895833333333)
+        248.708333333333
+        500.0625)
       BandType = rbSummary
       object QRLabel6: TQRLabel
         Left = 0
-        Top = 2
-        Width = 31
-        Height = 14
+        Top = 8
+        Width = 30
+        Height = 20
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          37.0416666666667
+          52.9166666666667
           0
-          5.29166666666667
-          82.0208333333333)
+          21.1666666666667
+          79.375)
         Alignment = taLeftJustify
         AlignToBand = True
         AutoSize = True
@@ -344,22 +346,22 @@ object PrinterForm: TPrinterForm
         Color = clWhite
         Transparent = True
         WordWrap = True
-        FontSize = 9
+        FontSize = 10
       end
       object QRExpr1: TQRExpr
         Left = 33
-        Top = 2
+        Top = 8
         Width = 144
-        Height = 14
+        Height = 20
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          37.0416666666667
+          52.9166666666667
           87.3125
-          5.29166666666667
+          21.1666666666667
           381)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -371,23 +373,23 @@ object PrinterForm: TPrinterForm
         WordWrap = True
         Expression = 'SUM(price * counts)'
         Mask = '#.00'
-        FontSize = 9
+        FontSize = 10
       end
       object QRLabel5: TQRLabel
         Left = 0
-        Top = 15
-        Width = 31
-        Height = 14
+        Top = 26
+        Width = 30
+        Height = 20
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          37.0416666666667
+          52.9166666666667
           0
-          39.6875
-          82.0208333333333)
+          68.7916666666667
+          79.375)
         Alignment = taLeftJustify
         AlignToBand = True
         AutoSize = True
@@ -396,22 +398,22 @@ object PrinterForm: TPrinterForm
         Color = clWhite
         Transparent = True
         WordWrap = True
-        FontSize = 9
+        FontSize = 10
       end
       object QRSysData1: TQRSysData
         Left = 33
-        Top = 15
+        Top = 26
         Width = 144
-        Height = 14
+        Height = 20
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          37.0416666666667
+          52.9166666666667
           87.3125
-          39.6875
+          70
           381)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -419,7 +421,7 @@ object PrinterForm: TPrinterForm
         Color = clWhite
         Data = qrsDateTime
         Transparent = True
-        FontSize = 9
+        FontSize = 10
       end
     end
   end

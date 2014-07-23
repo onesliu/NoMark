@@ -17,7 +17,8 @@
 #include "ShowChangeUnit.h"
 #include "SelectUnit.h"
 #include "PrinterUnit.h"
-
+#include "CustomerLedUnit.h"
+#include "scale.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -266,6 +267,7 @@ void __fastcall TOrderForm::NewOrderList()
     TabSheet2->TabVisible = false;
     OrderGuide->ActivePageIndex = 0;
     NewGoodItem();
+	ShowCustomerLed(0,"");
 }
 //---------------------------------------------------------------------------
 
@@ -323,7 +325,7 @@ bool __fastcall TOrderForm::CommitOrderList()
         return false;
     }
 
-    PrintSellList(sSellTime);
+    PrintSellList1(sSellTime);
     return ret;
 }
 //---------------------------------------------------------------------------
@@ -480,6 +482,27 @@ void __fastcall TOrderForm::AddUpTo()
     GetMoney->Text = "";
 
     TotalReduce = 10;
+
+	ShowCustomerLed(CustomerLed::TOTAL, Total->Text);
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderForm::ShowCustomerLed(int status, AnsiString price) {
+    CustomerLed * led = new CustomerLed();
+    if (led->Open() == true) {
+        led->Reset();
+        led->OpenStatusLight(status);
+		if (status > 0)
+	        led->WritePrice(price);
+		else
+			led->WritePrice("0.00");
+        led->Close();
+    }
+    else {
+        //ShowError("无法打开客户显示器");
+    }
+    delete led;
 }
 //---------------------------------------------------------------------------
 
@@ -492,6 +515,7 @@ void __fastcall TOrderForm::CheckOutKeyPress(TObject *Sender, char &Key)
     if ( Key == '-' ) {
         OrderGuide->ActivePageIndex = 0;
         NewGoodItem();
+        ShowCustomerLed(0,"");
     }
     if ( Key == 0x0D || Key == '+' )
     {
@@ -514,6 +538,7 @@ void __fastcall TOrderForm::GetMoneyKeyPress(TObject *Sender, char &Key)
     if ( Key == '-' ) {
         OrderGuide->ActivePageIndex = 0;
         NewGoodItem();
+        ShowCustomerLed(0,"");
     }
     if ( Key == '+' || Key == 0x0D )
     {
@@ -550,6 +575,14 @@ void __fastcall TOrderForm::SellSheetShow(TObject *Sender)
 void __fastcall TOrderForm::NumberEnter(TObject *Sender)
 {
     pControl = (TWinControl*)Sender;
+    char key = 0x0D;
+    if (pControl->Name == "Price") {
+        PriceKeyPress(pControl, key);
+    }
+
+    if (pControl->Name == "SellCount") {
+        SellCountKeyPress(pControl, key);
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -801,42 +834,66 @@ void __fastcall TOrderForm::CheckOutKeyDown(TObject *Sender, WORD &Key,
     }
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TOrderForm::PrintSellList(AnsiString selltime)
+void __fastcall TOrderForm::PrintSellList1(AnsiString selltime)
 {
-/*
     if ( TestMode != 0 && TestMode != 1 ) return;
-    map<AnsiString, int> mSells;
-    map<AnsiString, int>::iterator itr_m;
 
-    OpenPrinter();
-    ResetPrinter();
+    IPrinter * printer = new GiChengPrinter();
+
+    if (printer->OpenPrinter() == false) {
+		return;
+    }
+	
+    printer->ResetPrinter();
 
     if ( TestMode == 1 )
     {
         for ( int i = 0; i < 10; i++ )
-            PrintReturn();
+            printer->PrintReturn();
         goto end;
     }
 
+    printer->PrintLogo();
+    int col[4];
+    col[0] = 11;
+    col[1] = 6;
+    col[2] = 6;
+    col[3] = 6;
+
+    printer->PrintStr("商品品名", col[0]);
+    printer->PrintBin(' ');
+    printer->PrintStr("数量", col[1], IPrinter::ALIGN_RIGHT);
+    printer->PrintBin(' ');
+    printer->PrintStr("单价", col[2], IPrinter::ALIGN_RIGHT);
+    printer->PrintBin(' ');
+    printer->PrintStr("小计", col[3], IPrinter::ALIGN_RIGHT);
+    printer->PrintReturn();
+
     for ( int i = 0; i < OrderList->Items->Count; i++ )
     {
-        mSells[OrderList->Items->Item[i]->Caption] += 1;
+        printer->PrintStr(OrderList->Items->Item[i]->Caption, col[0]);
+        printer->PrintBin(' ');
+        printer->PrintStr(OrderList->Items->Item[i]->SubItems->Strings[1], col[1], IPrinter::ALIGN_RIGHT);
+        printer->PrintBin(' ');
+        printer->PrintStr(OrderList->Items->Item[i]->SubItems->Strings[0], col[2], IPrinter::ALIGN_RIGHT);
+        printer->PrintBin(' ');
+        printer->PrintStr(OrderList->Items->Item[i]->SubItems->Strings[2], col[3], IPrinter::ALIGN_RIGHT);
+        printer->PrintReturn();
     }
+    printer->PrintReturn();
+    printer->PrintItem( "合计金额", MoneyStr(CheckOut->Text.ToDouble()) );
+    printer->PrintItem( "收取现金", MoneyStr(GetMoney->Text.ToDouble()) );
+    printer->PrintItem( "找    零", MoneyStr(GiveChange->Caption.ToDouble()) );
+    printer->PrintTail();
 
-    PrintLogo();
-    for ( itr_m = mSells.begin(); itr_m != mSells.end(); ++itr_m )
-    {
-        PrintItem( itr_m->first.SubString(1, 12), "数量 x" + IntToStr(itr_m->second) );
-    }
-    PrintReturn();
-    PrintItem( "合计金额", "\x9d" + MoneyStr(CheckOut->Text.ToDouble()) );
-    PrintItem( "收取现金", "\x9d" + MoneyStr(GetMoney->Text.ToDouble()) );
-    PrintItem( "找    零", "\x9d" + MoneyStr(GiveChange->Caption.ToDouble()) );
-    PrintTail();
+    printer->KickOut();
 end:
-    ClosePrinter();
-*/
+    printer->ClosePrinter();
+    delete printer;
+}
+
+void __fastcall TOrderForm::PrintSellList2(AnsiString selltime)
+{
     int num;
     q->Close();
     q->SQL->Text = "select count(*) as cnt from t_order_goods where orderlistidx = " + IntToStr(orderlist) +
@@ -853,6 +910,12 @@ end:
     PrinterForm->SetPageLength(num);
     PrinterForm->ReceiptRep->Print();
     q->Close();
+
+    IPrinter * printer = new GiChengPrinter();
+    printer->OpenPrinterA();
+    printer->KickOut();
+    printer->ClosePrinter();
+    delete printer;
 }
 //---------------------------------------------------------------------------
 
@@ -1140,6 +1203,10 @@ void __fastcall TOrderForm::SellCountKeyPress(TObject *Sender, char &Key)
 
         OrderList->Selected->SubItems->Strings[1] = SellCount->Text.ToInt();
         OrderList->Selected->SubItems->Strings[2] = MoneyStr( SellCount->Text.ToInt() * OrderList->Selected->SubItems->Strings[0].ToDouble() );
+
+        // 写客显
+        ShowCustomerLed(CustomerLed::PRICE, OrderList->Selected->SubItems->Strings[2]);
+
         LeaveBox( SellCount, SellCountLabel );
         NewGoodItem();
     }
@@ -1151,11 +1218,9 @@ void __fastcall TOrderForm::ToolButton7Click(TObject *Sender)
     PrinterForm->ReceiptRep->PrinterSetup();
 }
 //---------------------------------------------------------------------------
-#include "scale.h"
 
 void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
 {
-#if 0
     int num;
     q->Close();
     q->SQL->Text = "select count(*) as cnt from t_order_goods where orderlistidx = " + IntToStr(orderlist);
@@ -1170,7 +1235,20 @@ void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
     PrinterForm->SetPageLength(num);
     PrinterForm->ReceiptRep->Preview();
     q->Close();
-#endif
+
+
+    IPrinter * printer = new GiChengPrinter();
+    if (printer->OpenPrinterA() == false) {
+        ShowError("打印机未打开");
+    }
+    else {
+        //printer->ResetPrinter();
+        //printer->PrintLogo();
+        printer->KickOut();
+        printer->ClosePrinter();
+    }
+    delete printer;
+
     TScale scale;
     scale.ParseFile();
     scale.SendScale();
