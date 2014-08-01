@@ -51,24 +51,25 @@ object StorageForm: TStorageForm
       Images = ImageList1
       MultiLine = True
       Style = tsFlatButtons
-      TabIndex = 4
+      TabIndex = 3
       TabOrder = 0
       object GoodsSheet: TTabSheet
-        Caption = #21830#21697#20998#32452
+        Caption = #21830#21697#20449#24687#31649#29702
         ImageIndex = 20
+        OnShow = GoodsSheetShow
         object Splitter1: TSplitter
           Left = 185
-          Top = 0
+          Top = 65
           Width = 3
-          Height = 402
+          Height = 337
           Cursor = crHSplit
           AutoSnap = False
         end
         inline GoodsFrame1: TGoodsFrame
           Left = 188
-          Top = 0
+          Top = 65
           Width = 543
-          Height = 402
+          Height = 337
           Align = alClient
           Ctl3D = False
           ParentCtl3D = False
@@ -91,7 +92,7 @@ object StorageForm: TStorageForm
           end
           inherited GoodsGrid: TDBGrid
             Width = 543
-            Height = 355
+            Height = 290
             TitleFont.Charset = GB2312_CHARSET
             TitleFont.Height = -12
             TitleFont.Name = #23435#20307
@@ -108,9 +109,9 @@ object StorageForm: TStorageForm
         end
         object Panel1: TPanel
           Left = 0
-          Top = 0
+          Top = 65
           Width = 185
-          Height = 402
+          Height = 337
           Align = alLeft
           BevelOuter = bvNone
           TabOrder = 1
@@ -136,7 +137,7 @@ object StorageForm: TStorageForm
             Left = 0
             Top = 21
             Width = 185
-            Height = 381
+            Height = 316
             Align = alClient
             Ctl3D = True
             DragMode = dmAutomatic
@@ -155,51 +156,46 @@ object StorageForm: TStorageForm
             OnDragOver = GoodTypeTreeDragOver
           end
         end
-      end
-      object SearchSheet: TTabSheet
-        Caption = #21830#21697#26597#25214
-        ImageIndex = 28
-        OnShow = SearchSheetShow
         object GroupBox2: TGroupBox
           Left = 0
           Top = 0
           Width = 731
-          Height = 73
+          Height = 65
           Align = alTop
           Caption = #26597#35810#26465#20214
           Ctl3D = False
           ParentCtl3D = False
-          TabOrder = 0
+          TabOrder = 2
           object Label2: TLabel
-            Left = 336
+            Left = 512
             Top = 19
             Width = 24
             Height = 12
             Caption = #36135#21495
           end
           object Label4: TLabel
-            Left = 480
+            Left = 656
             Top = 19
             Width = 36
             Height = 12
             Caption = #24211#23384#37327
           end
           object Label5: TLabel
-            Left = 16
+            Left = 192
             Top = 19
             Width = 24
             Height = 12
             Caption = #26465#30721
           end
           object Label7: TLabel
-            Left = 152
+            Left = 328
             Top = 19
             Width = 24
             Height = 12
             Caption = #21697#21517
           end
           object sGoodName: TEdit
-            Left = 152
+            Left = 328
             Top = 35
             Width = 169
             Height = 18
@@ -209,7 +205,7 @@ object StorageForm: TStorageForm
             OnKeyPress = sGoodNameKeyPress
           end
           object sGoodCode: TEdit
-            Left = 336
+            Left = 512
             Top = 35
             Width = 129
             Height = 18
@@ -219,7 +215,7 @@ object StorageForm: TStorageForm
             OnKeyPress = sGoodNameKeyPress
           end
           object sNumber: TEdit
-            Left = 480
+            Left = 656
             Top = 35
             Width = 81
             Height = 18
@@ -229,7 +225,7 @@ object StorageForm: TStorageForm
             OnKeyPress = sNumberKeyPress
           end
           object sBarCode: TEdit
-            Left = 16
+            Left = 192
             Top = 35
             Width = 121
             Height = 18
@@ -237,110 +233,6 @@ object StorageForm: TStorageForm
             TabOrder = 3
             Text = 'sBarCode'
             OnKeyPress = sNumberKeyPress
-          end
-        end
-        inline GoodsFrame2: TGoodsFrame
-          Left = 0
-          Top = 73
-          Width = 731
-          Height = 329
-          Align = alClient
-          Ctl3D = False
-          ParentCtl3D = False
-          TabOrder = 1
-          inherited CoolBar1: TCoolBar
-            Width = 731
-            Bands = <
-              item
-                Control = GoodsFrame2.ToolBar5
-                ImageIndex = -1
-                MinHeight = 22
-                Width = 727
-              end>
-            inherited ToolBar5: TToolBar
-              Width = 714
-            end
-          end
-          inherited Info1: TPanel
-            Width = 731
-          end
-          inherited GoodsGrid: TDBGrid
-            Width = 731
-            Height = 282
-            TitleFont.Charset = GB2312_CHARSET
-            TitleFont.Height = -12
-            TitleFont.Name = #23435#20307
-            Columns = <
-              item
-                Expanded = False
-                FieldName = 'BARCODE'
-                Title.Caption = #21830#21697#26465#30721
-                Width = 100
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'NAME'
-                Title.Caption = #21697#21517
-                Width = 150
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'GOODTYPE'
-                Title.Caption = #21830#21697#31867#22411
-                Width = 100
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'STORAGENUMBER'
-                Title.Caption = #24211#23384#37327
-                Width = 71
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'GOODNUMBER'
-                Title.Caption = #36827#36135#37327
-                Width = 71
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'COST'
-                Title.Caption = #25104#26412
-                Width = 60
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'LABELPRICE'
-                Title.Caption = #38646#21806#20215
-                Width = 60
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'LOWESTPRICE'
-                Title.Caption = #26368#20302#20215
-                Width = 60
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'GOODCODE'
-                Title.Caption = #36135#21495
-                Width = 80
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'LABELPRINTED'
-                Title.Caption = #26631#31614#37327
-                Width = 45
-                Visible = True
-              end>
           end
         end
       end
@@ -447,14 +339,14 @@ object StorageForm: TStorageForm
               Expanded = False
               FieldName = 'TOTALCOST'
               Title.Caption = #24635#20215
-              Width = 69
+              Width = 100
               Visible = True
             end
             item
               Expanded = False
               FieldName = 'TOTALNUMBER'
               Title.Caption = #24635#37327
-              Width = 83
+              Width = 100
               Visible = True
             end
             item
@@ -511,8 +403,15 @@ object StorageForm: TStorageForm
             end
             item
               Expanded = False
+              FieldName = 'ORIGINCOST'
+              Title.Caption = #36827#36135#25104#26412
+              Width = 80
+              Visible = True
+            end
+            item
+              Expanded = False
               FieldName = 'COST'
-              Title.Caption = #25104#26412#20215
+              Title.Caption = #24179#22343#25104#26412
               Width = 80
               Visible = True
             end
@@ -549,12 +448,6 @@ object StorageForm: TStorageForm
               FieldName = 'GOODCODE'
               Title.Caption = #36135#21495
               Width = 100
-              Visible = True
-            end
-            item
-              Expanded = False
-              FieldName = 'LABELPRINTED'
-              Title.Caption = #26631#31614#25171#21360
               Visible = True
             end>
         end

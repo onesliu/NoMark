@@ -22,5 +22,6 @@ int WriteBufferToFile( const char *filename, const char *buf, unsigned int bufle
 char * GetNetCardMacAddr();
 template <typename T> void del( T* p ) { if ( p ) {delete p; p = 0; } }
 AnsiString MoneyStr( double m );
+AnsiString WeightStr( double m );
 int RoundToInt( double d );
 #endif

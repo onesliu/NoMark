@@ -24,7 +24,7 @@ AnsiString TSelectForm::SelectGood( AnsiString code, TListView *pExclude, GoodDa
 
     bar = "";
 
-    sql.sprintf( "select * from t_goods where barcode like '%%%s%%' or name like '%%%s%%' order by storagenumber desc", code, code );
+    sql.sprintf( "select * from t_goods where barcode like '%%%s%%' or name like '%%%s%%' order by goodnumber desc", code, code );
     q->Close();
     q->SQL->Text = sql;
     q->Open();
@@ -38,7 +38,7 @@ AnsiString TSelectForm::SelectGood( AnsiString code, TListView *pExclude, GoodDa
             pItem->Caption = q->FieldByName("barcode")->AsString;
             pItem->Data = (void*)q->FieldByName("idx")->AsInteger;
             pItem->SubItems->Add( q->FieldByName("name")->AsString );
-            pItem->SubItems->Add( q->FieldByName("storagenumber")->AsString );
+            pItem->SubItems->Add( q->FieldByName("goodnumber")->AsString );
             pItem->SubItems->Add( MoneyStr(q->FieldByName("labelprice")->AsFloat) );
             pItem->SubItems->Add( q->FieldByName("goodcode")->AsString );
 

@@ -20,28 +20,10 @@ void __fastcall TGoodAttribForm::OkClick(TObject *Sender)
 {
     try {
 
-    int iGoodNumber, iStorageNumber;
-
-    iGoodNumber = GoodNumber->Text.ToInt();
-    iStorageNumber = StorageNumber->Text.ToInt();
-    if ( StorageNumberEdit == false && OldGoodNumber != iGoodNumber )
-    {
-        if ( ShowYesNo("商品进货量被更改,是否把库存量自动增减?") == true )
-        {
-            iStorageNumber += (iGoodNumber - OldGoodNumber);
-        }
-    }
-
     pDS->Edit();
 
     pDS->FieldByName("name")->Value = GoodName->Text;
     pDS->FieldByName("goodcode")->Value = GoodCode->Text;
-    pDS->FieldByName("cost")->Value = Cost->Text;
-    pDS->FieldByName("labelprice")->Value = SellPrice->Text;
-    pDS->FieldByName("barcode")->Value = BarCode->Text;
-    pDS->FieldByName("lowestprice")->Value = LowestPrice->Text;
-    pDS->FieldByName("goodnumber")->Value = iGoodNumber;
-    pDS->FieldByName("storagenumber")->Value = iStorageNumber;
 
     pDS->Post();
 
@@ -67,12 +49,6 @@ bool __fastcall TGoodAttribForm::SetGoodItem( TDataSet *pds )
     Cost->Text = pDS->FieldByName("cost")->Value;
     SellPrice->Text = pDS->FieldByName("labelprice")->Value;
     BarCode->Text = pDS->FieldByName("barcode")->Value;
-    LowestPrice->Text = pDS->FieldByName("lowestprice")->Value;
-    GoodNumber->Text = pDS->FieldByName("goodnumber")->Value;
-    StorageNumber->Text = pDS->FieldByName("storagenumber")->Value;
-
-    OldGoodNumber = GoodNumber->Text.ToInt();
-    StorageNumberEdit = false;
 
     } catch(...)
     {
@@ -84,9 +60,4 @@ bool __fastcall TGoodAttribForm::SetGoodItem( TDataSet *pds )
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TGoodAttribForm::StorageNumberChange(TObject *Sender)
-{
-    StorageNumberEdit = true;    
-}
-//---------------------------------------------------------------------------
 

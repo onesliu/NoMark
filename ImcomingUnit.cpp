@@ -24,10 +24,9 @@ __fastcall TIncomingForm::TIncomingForm(TComponent* Owner)
 AnsiString TIncomingForm::GenerateBarCode()
 {
     int maxbar = 0;
-    q2->SQL->Text = "select max(barcode) as maxbar from t_goods where barcode like '2%' or barcode like '0%'";
+    q2->SQL->Text = "select max(barcode) as maxbar from t_goods where barcode like '2%'";
     q2->Open();
-    q2->First();
-    if ( !q2->Eof )
+    if ( !q2->FieldByName("maxbar")->IsNull )
         maxbar = q2->FieldByName("maxbar")->AsString.SubString(3, 5).ToInt();
     q2->Close();
 
@@ -236,18 +235,19 @@ bool __fastcall TIncomingForm::NewIncoming( int idx, int goodtype )
         GoodType->Caption = "计件商品";
         Label4->Caption = "数量";
         Label21->Caption = "个";
+        ListDesp->Text = "已包装商品进货";
     }
     else {
         GoodType->Caption = "计重商品";
         Label4->Caption = "重量";
         Label21->Caption = "公斤";
+        ListDesp->Text = "生鲜散装商品进货";
     }
 
     if ( IncomingIdx <= 0 )
     {
         ListDate->Caption = today.FormatString( "yyyy-mm-dd" );
-        ListName->Text = ListDate->Caption + " 进货记录";
-        ListDesp->Text = ListName->Text;
+        ListName->Text = ListDate->Caption + " 进货单";
 
         CalcType->ItemIndex = 0;
         CalcPercent->Text = 40;
@@ -522,20 +522,20 @@ bool __fastcall TIncomingForm::UpdateToDb()
 
 			if (goodidx == max_g) {
 	            sql.sprintf( "insert into t_goods( barcode, name, goodcode, cost, goodnumber, \
-	            storagenumber, labelprice, labelprinted, goodtype ) values('%s', '%s', '%s', \
-	            %.2f, %.2f, %.2f, %.2f, %d, %.2f)", GoodBar, Goodname, GoodCode, GoodCost, GoodNumber,
-	            GoodNumber, GoodPrice, (int)GoodNumber, dGoodType );
+	            labelprice, labelprinted, goodtype ) values('%s', '%s', '%s', \
+	            %.2f, %.2f, %.2f, %d, %d)", GoodBar, Goodname, GoodCode, GoodCost, GoodNumber,
+	            GoodPrice, (int)GoodNumber, dGoodType );
 
 				max_g++;
 			}
 			else {
-	            sql.sprintf( "update t_goods set goodnumber=goodnumber+%.2f, storagenumber=storagenumber+%.2f where barcode='%s'",
-					GoodNumber, GoodNumber, GoodBar);
+	            sql.sprintf( "update t_goods set goodnumber=goodnumber+%.2f, cost=(goodnumber*cost+%.2f*%.2f)/(goodnumber+%.2f) where barcode='%s'",
+					GoodNumber, GoodCost, GoodNumber, GoodNumber, GoodBar); //成本加权平均计算
 			}
 			ExecSQL( sql );
 
-            sql.sprintf( "insert into t_incoming_goods(goodidx, goodnumber, listidx, incomingtime) \
-            values( %d, %.2f, %d, '%s' )", goodidx, GoodNumber, max_in, pItem->SubItems->Strings[6] );
+            sql.sprintf( "insert into t_incoming_goods(goodidx, listidx, goodnumber, cost) \
+            values( %d, %d, %.2f, %.2f )", goodidx, max_in, GoodNumber, GoodCost );
             ExecSQL( sql );
         }
     }

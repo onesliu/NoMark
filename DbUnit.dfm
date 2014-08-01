@@ -9,8 +9,8 @@ object d: Td
   object db: TIBDatabase
     DatabaseName = 'debug/GOODS.GDB'
     Params.Strings = (
-      'user_name=ones'
-      'password=nb33l2l3'
+      'user_name=SYSDBA'
+      'password=masterkey'
       'lc_ctype=GB_2312')
     LoginPrompt = False
     DefaultTransaction = trans
@@ -86,18 +86,6 @@ object d: Td
       Precision = 18
       Size = 3
     end
-    object AuditGoodSetSTORAGENUMBER1: TIBBCDField
-      FieldName = 'STORAGENUMBER1'
-      Origin = '"T_AUDIT_GOODS"."STORAGENUMBER1"'
-      Precision = 18
-      Size = 3
-    end
-    object AuditGoodSetSTORAGENUMBER2: TIBBCDField
-      FieldName = 'STORAGENUMBER2'
-      Origin = '"T_AUDIT_GOODS"."STORAGENUMBER2"'
-      Precision = 18
-      Size = 3
-    end
   end
   object AuditGoodSource: TDataSource
     DataSet = AuditGoodSet
@@ -118,11 +106,11 @@ object d: Td
     CachedUpdates = True
     SQL.Strings = (
       
-        'select g.idx,g.barcode,g.storagenumber,g.storagenumber as stockn' +
-        'umber,cg.number,g.name,(cg.number-g.storagenumber)*g.cost as tot' +
-        'alcost,g.cost from t_goods g'
+        'select g.idx,g.barcode,g.goodnumber,g.goodnumber as stocknumber,' +
+        'cg.number,g.name,(cg.number-g.goodnumber)*g.cost as totalcost,g.' +
+        'cost from t_goods g'
       'left join tmp_check_goods cg on cg.goodidx=g.idx'
-      'where cg.number <> g.storagenumber')
+      'where cg.number <> g.goodnumber')
     UpdateObject = CheckDiffUpdate
     Left = 264
     Top = 80
@@ -131,12 +119,6 @@ object d: Td
       Origin = '"T_GOODS"."BARCODE"'
       Required = True
       Size = 26
-    end
-    object CheckDiffSetSTORAGENUMBER: TIBBCDField
-      FieldName = 'STORAGENUMBER'
-      Origin = '"T_GOODS"."STORAGENUMBER"'
-      Precision = 18
-      Size = 3
     end
     object CheckDiffSetNUMBER: TIBBCDField
       FieldName = 'NUMBER'
@@ -155,12 +137,6 @@ object d: Td
       Origin = '"T_GOODS"."IDX"'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
-    end
-    object CheckDiffSetSTOCKNUMBER: TIBBCDField
-      FieldName = 'STOCKNUMBER'
-      Origin = '"T_GOODS"."STORAGENUMBER"'
-      Precision = 18
-      Size = 3
     end
     object CheckDiffSetTOTALCOST: TFMTBCDField
       FieldName = 'TOTALCOST'
@@ -185,10 +161,10 @@ object d: Td
     Transaction = trans
     SQL.Strings = (
       
-        'select g.idx,g.barcode,g.storagenumber,cg.number,g.name from t_g' +
-        'oods g'
+        'select g.idx,g.barcode,g.goodnumber,cg.number,g.name from t_good' +
+        's g'
       'left join tmp_check_goods cg on cg.goodidx=g.idx'
-      'where cg.number > 0 or g.storagenumber > 0')
+      'where cg.number > 0 or g.goodnumber > 0')
     Left = 360
     Top = 80
     object CheckNoneSetBARCODE: TIBStringField
@@ -196,12 +172,6 @@ object d: Td
       Origin = '"T_GOODS"."BARCODE"'
       Required = True
       Size = 26
-    end
-    object CheckNoneSetSTORAGENUMBER: TIBBCDField
-      FieldName = 'STORAGENUMBER'
-      Origin = '"T_GOODS"."STORAGENUMBER"'
-      Precision = 18
-      Size = 3
     end
     object CheckNoneSetNUMBER: TIBBCDField
       FieldName = 'NUMBER'
@@ -461,8 +431,8 @@ object d: Td
     ModifySQL.Strings = (
       'update t_goods set name=:NAME, goodcode=:GOODCODE,'
       'barcode=:BARCODE, cost=:COST, labelprice=:LABELPRICE,'
-      'lowestprice=:LOWESTPRICE, goodnumber=:GOODNUMBER,'
-      'storagenumber=:STORAGENUMBER where idx=:IDX')
+      'lowestprice=:LOWESTPRICE, goodnumber=:GOODNUMBER'
+      'where idx=:IDX')
     Left = 464
     Top = 80
   end
@@ -523,7 +493,7 @@ object d: Td
         'rice, g.labelprinted, g.barcode, g.goodtype as attribute,'
       
         ' ig.incomingtime, g.lowestprice, ig.goodnumber as storagenumber,' +
-        ' t.name as goodtype'
+        ' t.name as goodtype, ig.cost as origincost'
       
         ' from t_incoming_list i left outer join t_incoming_goods ig on i' +
         '.idx = ig.listidx'
@@ -557,6 +527,7 @@ object d: Td
     object IncomingGoodSetCOST: TIBBCDField
       FieldName = 'COST'
       Origin = '"T_GOODS"."COST"'
+      currency = True
       Precision = 18
       Size = 2
     end
@@ -569,6 +540,7 @@ object d: Td
     object IncomingGoodSetLABELPRICE: TIBBCDField
       FieldName = 'LABELPRICE'
       Origin = '"T_GOODS"."LABELPRICE"'
+      currency = True
       Precision = 18
       Size = 2
     end
@@ -588,14 +560,9 @@ object d: Td
     object IncomingGoodSetLOWESTPRICE: TIBBCDField
       FieldName = 'LOWESTPRICE'
       Origin = '"T_GOODS"."LOWESTPRICE"'
+      currency = True
       Precision = 18
       Size = 2
-    end
-    object IncomingGoodSetSTORAGENUMBER: TIBBCDField
-      FieldName = 'STORAGENUMBER'
-      Origin = '"T_GOODS"."STORAGENUMBER"'
-      Precision = 18
-      Size = 3
     end
     object IncomingGoodSetGOODTYPE: TIBStringField
       FieldName = 'GOODTYPE'
@@ -610,6 +577,19 @@ object d: Td
     object IncomingGoodSetATTRIBUTE: TSmallintField
       FieldName = 'ATTRIBUTE'
       Origin = '"T_GOODS"."GOODTYPE"'
+    end
+    object IncomingGoodSetSTORAGENUMBER: TIBBCDField
+      FieldName = 'STORAGENUMBER'
+      Origin = '"T_INCOMING_GOODS"."GOODNUMBER"'
+      Precision = 18
+      Size = 3
+    end
+    object IncomingGoodSetORIGINCOST: TIBBCDField
+      FieldName = 'ORIGINCOST'
+      Origin = '"T_INCOMING_GOODS"."COST"'
+      currency = True
+      Precision = 18
+      Size = 2
     end
   end
   object IncomingGoodSource: TDataSource
@@ -628,8 +608,8 @@ object d: Td
     ModifySQL.Strings = (
       'update t_goods set name=:NAME, goodcode=:GOODCODE,'
       'barcode=:BARCODE, cost=:COST, labelprice=:LABELPRICE,'
-      'lowestprice=:LOWESTPRICE, goodnumber=:GOODNUMBER,'
-      'storagenumber=:STORAGENUMBER where idx=:IDX')
+      'lowestprice=:LOWESTPRICE, goodnumber=:GOODNUMBER'
+      'where idx=:IDX')
     Left = 560
     Top = 80
   end
@@ -747,8 +727,8 @@ object d: Td
     DataSource = SellSource
     SQL.Strings = (
       
-        'select g.name, g.labelprice, g.storagenumber, g.goodcode, g.barc' +
-        'ode, '
+        'select g.name, g.labelprice, g.goodnumber, g.goodcode, g.barcode' +
+        ', '
       
         '        og.idx as ordergoodidx, og.price, og.counts, og.cost, og' +
         '.profit, og.selltime, og.canceldate, '
@@ -779,7 +759,7 @@ object d: Td
       Size = 2
     end
     object SellGoodSetSTORAGENUMBER: TIBBCDField
-      FieldName = 'STORAGENUMBER'
+      FieldName = 'GOODNUMBER'
       Origin = '"T_GOODS"."STORAGENUMBER"'
       Precision = 18
       Size = 3

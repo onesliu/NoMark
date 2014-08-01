@@ -122,7 +122,7 @@ void __fastcall TGoodsFrame::SetLabel2Execute(TObject *Sender)
     for (int i=0; i < GoodsGrid->SelectedRows->Count; i++)
     {
         pDS->GotoBookmark((void *)GoodsGrid->SelectedRows->Items[i].c_str());
-        ExecSQL( AnsiString().sprintf("update t_goods set labelprinted=storagenumber where idx=%d",
+        ExecSQL( AnsiString().sprintf("update t_goods set labelprinted=goodnumber where idx=%d",
             pDS->FieldByName("idx")->AsInteger ) );
     }
 
@@ -158,10 +158,8 @@ void __fastcall TGoodsFrame::GoodsGridDrawColumnCell(TObject *Sender,
     TDBGrid *Grid = (TDBGrid *)Sender;
     if ( !State.Contains( gdSelected ) )
     {
-        if ( pDS->FieldByName("storagenumber")->AsInteger == 0 )
+        if ( pDS->FieldByName("goodnumber")->AsInteger == 0 )
             Grid->Canvas->Font->Color = clBlue;
-        if ( pDS->FieldByName("storagenumber")->AsInteger == pDS->FieldByName("goodnumber")->AsInteger )
-            Grid->Canvas->Font->Color = clOlive;
     }
     Grid->DefaultDrawColumnCell(Rect, DataCol, Column, State);
 }

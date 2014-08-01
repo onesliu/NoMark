@@ -12,7 +12,7 @@
       debug\selltemp\DetailUnit.obj debug\selltemp\ShowChangeUnit.obj 
       debug\selltemp\SelectUnit.obj debug\selltemp\PrinterUnit.obj 
       debug\selltemp\Scale.obj debug\selltemp\cJSON.obj 
-      debug\selltemp\CustomerLedUnit.obj"/>
+      debug\selltemp\CustomerLedUnit.obj debug\selltemp\BarcodeUnit.obj"/>
     <RESFILES value="Sell.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -85,6 +85,7 @@
       <FILE FILENAME="utility\cJSON.c" FORMNAME="" UNITNAME="cJSON" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\DhScalePluNet.lib" FORMNAME="" UNITNAME="DhScalePluNet.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="CustomerLedUnit.cpp" FORMNAME="" UNITNAME="CustomerLedUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="BarcodeUnit.cpp" FORMNAME="" UNITNAME="BarcodeUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

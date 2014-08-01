@@ -5,7 +5,7 @@ object GoodAttribForm: TGoodAttribForm
   BorderWidth = 5
   Caption = #21830#21697#23646#24615#35774#32622
   ClientHeight = 222
-  ClientWidth = 468
+  ClientWidth = 359
   Color = clBtnFace
   Font.Charset = GB2312_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object GoodAttribForm: TGoodAttribForm
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 468
+    Width = 359
     Height = 187
     ActivePage = GoodAttrib
     Align = alClient
@@ -41,13 +41,6 @@ object GoodAttribForm: TGoodAttribForm
         Height = 12
         Caption = #25104#26412#20215
       end
-      object Label11: TLabel
-        Left = 352
-        Top = 59
-        Width = 48
-        Height = 12
-        Caption = #36827#36135#25968#37327
-      end
       object Label12: TLabel
         Left = 240
         Top = 59
@@ -62,13 +55,6 @@ object GoodAttribForm: TGoodAttribForm
         Height = 12
         Caption = #26631#20215
       end
-      object Label14: TLabel
-        Left = 240
-        Top = 108
-        Width = 36
-        Height = 12
-        Caption = #26368#20302#20215
-      end
       object Label15: TLabel
         Left = 16
         Top = 11
@@ -76,17 +62,10 @@ object GoodAttribForm: TGoodAttribForm
         Height = 12
         Caption = #21697#21517
       end
-      object Label16: TLabel
-        Left = 352
-        Top = 107
-        Width = 48
-        Height = 12
-        Caption = #24211#23384#25968#37327
-      end
       object GoodName: TEdit
         Left = 16
         Top = 27
-        Width = 425
+        Width = 313
         Height = 20
         MaxLength = 255
         TabOrder = 0
@@ -106,23 +85,17 @@ object GoodAttribForm: TGoodAttribForm
         Top = 123
         Width = 89
         Height = 20
-        TabOrder = 4
-        Text = 'Cost'
-      end
-      object GoodNumber: TEdit
-        Left = 352
-        Top = 75
-        Width = 89
-        Height = 20
-        MaxLength = 5
+        Color = clSilver
+        ReadOnly = True
         TabOrder = 3
-        Text = 'GoodNumber'
+        Text = 'Cost'
       end
       object BarCode: TEdit
         Left = 240
         Top = 75
         Width = 89
         Height = 20
+        Color = clSilver
         MaxLength = 13
         ReadOnly = True
         TabOrder = 2
@@ -133,39 +106,23 @@ object GoodAttribForm: TGoodAttribForm
         Top = 123
         Width = 89
         Height = 20
-        TabOrder = 5
+        Color = clSilver
+        ReadOnly = True
+        TabOrder = 4
         Text = 'SellPrice'
-      end
-      object LowestPrice: TEdit
-        Left = 240
-        Top = 123
-        Width = 89
-        Height = 20
-        TabOrder = 6
-        Text = 'LowestPrice'
-      end
-      object StorageNumber: TEdit
-        Left = 352
-        Top = 123
-        Width = 89
-        Height = 20
-        MaxLength = 5
-        TabOrder = 7
-        Text = 'StorageNumber'
-        OnChange = StorageNumberChange
       end
     end
   end
   object Panel1: TPanel
     Left = 0
     Top = 187
-    Width = 468
+    Width = 359
     Height = 35
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
     object Ok: TButton
-      Left = 153
+      Left = 105
       Top = 7
       Width = 75
       Height = 22
@@ -175,7 +132,7 @@ object GoodAttribForm: TGoodAttribForm
       OnClick = OkClick
     end
     object Cancel: TButton
-      Left = 241
+      Left = 193
       Top = 7
       Width = 75
       Height = 22

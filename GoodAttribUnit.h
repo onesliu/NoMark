@@ -22,28 +22,19 @@ __published:	// IDE-managed Components
     TTabSheet *GoodAttrib;
     TLabel *Label8;
     TLabel *Label10;
-    TLabel *Label11;
     TLabel *Label12;
     TLabel *Label13;
-    TLabel *Label14;
     TLabel *Label15;
-    TLabel *Label16;
     TEdit *GoodName;
     TEdit *GoodCode;
     TEdit *Cost;
-    TEdit *GoodNumber;
     TEdit *BarCode;
     TEdit *SellPrice;
-    TEdit *LowestPrice;
-    TEdit *StorageNumber;
     TPanel *Panel1;
     TButton *Ok;
     TButton *Cancel;
     void __fastcall OkClick(TObject *Sender);
-    void __fastcall StorageNumberChange(TObject *Sender);
 private:	// User declarations
-    int OldGoodNumber;
-    bool StorageNumberEdit;
     TListItem *Item;
     TDataSet *pDS;
 public:		// User declarations

@@ -162,16 +162,8 @@ void __fastcall TStorageForm::edittypeExecute(TObject *Sender)
 void __fastcall TStorageForm::GoodTypeTreeChange(TObject *Sender,
       TTreeNode *Node)
 {
-    if ( Node == pIncomingRoot ) ListPage->ActivePageIndex = 1;
-    else if ( Node == pSellRoot ) ListPage->ActivePageIndex = 2;
-    else if ( Node == pCheckRoot ) ListPage->ActivePageIndex = 3;
-    else if ( Node == pSearchRoot ) ListPage->ActivePageIndex = 4;
-    else if ( Node == pPrintLabelRoot ) ListPage->ActivePageIndex = 5;
-    else if ( Node == pAuditGoodRoot ) ListPage->ActivePageIndex = 6;
-    else {
-        FreshGoodsList( (int)Node->Data );
-        ListPage->ActivePageIndex = 0;
-    }
+	FreshGoodsList( (int)Node->Data );
+	ListPage->ActivePageIndex = 0;
 }
 //---------------------------------------------------------------------------
 
@@ -258,7 +250,6 @@ void __fastcall TStorageForm::FreshPrintSheet()
         pItem->SubItems->Add( MoneyStr(q->FieldByName("labelprice")->AsFloat) );
         pItem->SubItems->Add( q->FieldByName("barcode")->AsString );
         pItem->SubItems->Add( q->FieldByName("goodnumber")->AsString );
-        pItem->SubItems->Add( q->FieldByName("storagenumber")->AsString );
         pItem->SubItems->Add( q->FieldByName("labelprinted")->AsString );
         pItem->Data = (void*)q->FieldByName("idx")->AsInteger;
         pItem->ImageIndex = 0;
@@ -343,9 +334,8 @@ void __fastcall TStorageForm::SetPrintLabel( int goodid, int storage )
 
 void __fastcall TStorageForm::FreshGoodsList( int GoodTypeId )
 {
-    AnsiString sql = "select g.idx, g.name, g.goodcode, g.cost, g.goodnumber, g.labelprice, g.storagenumber, \
-        g.barcode, ig.incomingtime, g.lowestprice, g.labelprinted, t.name as goodtype from t_goods g \
-        left outer join t_incoming_goods ig on g.idx = ig.goodidx \
+    AnsiString sql = "select g.idx, g.name, g.goodcode, g.cost, g.goodnumber, g.labelprice, \
+        g.barcode, g.lowestprice, g.labelprinted, t.name as goodtype from t_goods g \
         left outer join t_goodtype t on g.typeidx = t.idx";
     if ( GoodTypeId >= 0 )
         sql += " where g.typeidx=" + IntToStr(GoodTypeId);
@@ -582,32 +572,19 @@ void __fastcall TStorageForm::sGoodNameKeyPress(TObject *Sender, char &Key)
 
 void __fastcall TStorageForm::SearchGoods()
 {
-    //AnsiString sBar = BarCode_UPC_E( sBarCode->Text );
-    if ( sBarCode->Text == "" && sGoodName->Text == "" && sGoodCode->Text == "" && sNumber->Text == "" )
-        return;
-
-    AnsiString sql = "select g.idx, g.name, g.goodcode, g.cost, g.goodnumber, g.labelprice, g.storagenumber, \
-        g.barcode, ig.incomingtime, g.lowestprice, g.labelprinted, t.name as goodtype from t_goods g \
-        left outer join t_incoming_goods ig on g.idx = ig.goodidx \
-        left outer join t_goodtype t on g.typeidx = t.idx where ";
-    if ( sBarCode->Text != "" ) sql += "g.barcode like '%" + sBarCode->Text + "%' or ";
-    if ( sGoodName->Text != "" ) sql += "g.name like '%" + sGoodName->Text + "%' or ";
-    if ( sGoodCode->Text != "" ) sql += "g.goodcode like '%" + sGoodCode->Text + "%' or ";
-    if ( sNumber->Text != "" ) sql += "g.storagenumber=" + sNumber->Text + " or ";
-    sql = sql.SubString(1, sql.Length()-3);
+    AnsiString sql = "select g.idx, g.name, g.goodcode, g.cost, g.goodnumber, g.labelprice, \
+        g.barcode, g.lowestprice, g.labelprinted, t.name as goodtype from t_goods g \
+        left outer join t_goodtype t on g.typeidx = t.idx";
+    if ( sBarCode->Text != "" || sGoodName->Text != "" || sGoodCode->Text != "" || sNumber->Text != "" ) {
+		sql += " where ";
+	    if ( sBarCode->Text != "" ) sql += "g.barcode like '%" + sBarCode->Text + "%' or ";
+	    if ( sGoodName->Text != "" ) sql += "g.name like '%" + sGoodName->Text + "%' or ";
+	    if ( sGoodCode->Text != "" ) sql += "g.goodcode like '%" + sGoodCode->Text + "%' or ";
+	    if ( sNumber->Text != "" ) sql += "g.goodnumber=" + sNumber->Text + " or ";
+	    sql = sql.SubString(1, sql.Length()-3);
+    }
 
     d->FreshGoodList( sql );
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TStorageForm::SearchSheetShow(TObject *Sender)
-{
-    if ( SearchSheet->Visible == false ) return;
-
-    sBarCode->Text = "";
-    sGoodName->Text = "";
-    sGoodCode->Text = "";
-    sNumber->Text = "";
 }
 //---------------------------------------------------------------------------
 
@@ -683,6 +660,19 @@ void __fastcall TStorageForm::NewChangePriceExecute(TObject *Sender)
 {
     if (ChangePriceForm->NewChangePrice() == true)
         FreshChangePriceSheet();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TStorageForm::GoodsSheetShow(TObject *Sender)
+{
+    if ( GoodsSheet->Visible == false ) return;
+
+    sBarCode->Text = "";
+    sGoodName->Text = "";
+    sGoodCode->Text = "";
+    sNumber->Text = "";
+
+	FreshGoodsList( (int)GoodTypeTree->Selected->Data );
 }
 //---------------------------------------------------------------------------
 

@@ -379,6 +379,12 @@ AnsiString MoneyStr( double m )
     return AnsiString().sprintf("%.2f", m);
 }
 
+AnsiString WeightStr( double m )
+{
+    return AnsiString().sprintf("%.3f", m);
+}
+
+
 int RoundToInt( double d )
 {
     double t = d - int(d);
