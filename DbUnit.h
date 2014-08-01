@@ -77,16 +77,11 @@ __published:	// IDE-managed Components
     TDataSource *IncomingSource;
     TIBBCDField *AuditGoodSetGOODNUMBER1;
     TIBBCDField *AuditGoodSetGOODNUMBER2;
-    TIBBCDField *AuditGoodSetSTORAGENUMBER1;
-    TIBBCDField *AuditGoodSetSTORAGENUMBER2;
-    TIBBCDField *CheckDiffSetSTOCKNUMBER;
-    TIBBCDField *CheckDiffSetSTORAGENUMBER;
     TIBBCDField *CheckDiffSetNUMBER;
     TFMTBCDField *CheckDiffSetTOTALCOST;
     TIBBCDField *CheckDiffSetCOST;
     TIntegerField *CheckNoneSetIDX;
     TIBStringField *CheckNoneSetBARCODE;
-    TIBBCDField *CheckNoneSetSTORAGENUMBER;
     TIBBCDField *CheckNoneSetNUMBER;
     TIBStringField *CheckNoneSetNAME;
     TIBBCDField *CheckGoodSetSTOCKNUMBER;
@@ -104,7 +99,6 @@ __published:	// IDE-managed Components
     TIBStringField *IncomingGoodSetBARCODE;
     TDateTimeField *IncomingGoodSetINCOMINGTIME;
     TIBBCDField *IncomingGoodSetLOWESTPRICE;
-    TIBBCDField *IncomingGoodSetSTORAGENUMBER;
     TIBStringField *IncomingGoodSetGOODTYPE;
     TDateField *IncomingSetINCOMINGDATE;
     TIBStringField *IncomingSetNAME;
@@ -181,6 +175,8 @@ __published:	// IDE-managed Components
     TIBBCDField *ChangeGoodSetLABELPRICE;
     TIBStringField *ChangeGoodSetBARCODE;
     TIBQuery *ChangePriceSet;
+    TIBBCDField *IncomingGoodSetSTORAGENUMBER;
+    TIBBCDField *IncomingGoodSetORIGINCOST;
     void __fastcall DataModuleCreate(TObject *Sender);
     void __fastcall DataModuleDestroy(TObject *Sender);
     void __fastcall CheckGoodSetCalcFields(TDataSet *DataSet);
@@ -207,7 +203,7 @@ extern AnsiString sPrintTail;
 extern int TestMode;
 
 extern bool CalcDayTotal( int orderlist );
-extern bool StorageUpdate( int goodidx, int count );
+extern bool StorageUpdate( int goodidx, double count );
 extern AnsiString MakePassword( const AnsiString & pwd );
 extern AnsiString GetPassword( const AnsiString & pwd );
 extern AnsiString BarCode_UPC_E( const AnsiString &code );

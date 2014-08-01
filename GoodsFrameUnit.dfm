@@ -122,16 +122,9 @@ object GoodsFrame: TGoodsFrame
       end
       item
         Expanded = False
-        FieldName = 'STORAGENUMBER'
-        Title.Caption = #24211#23384#37327
-        Width = 45
-        Visible = True
-      end
-      item
-        Expanded = False
         FieldName = 'GOODNUMBER'
-        Title.Caption = #36827#36135#37327
-        Width = 45
+        Title.Caption = #24211#23384#37327
+        Width = 60
         Visible = True
       end
       item
@@ -173,7 +166,7 @@ object GoodsFrame: TGoodsFrame
   object ActionList1: TActionList
     Images = ImageList1
     Left = 424
-    Top = 32
+    Top = 112
     object ClearLabel: TAction
       Caption = #28165#38500#26631#31614#25171#21360
       ImageIndex = 1
@@ -211,7 +204,7 @@ object GoodsFrame: TGoodsFrame
   end
   object ImageList1: TImageList
     Left = 464
-    Top = 32
+    Top = 112
     Bitmap = {
       494C010108000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
@@ -619,7 +612,7 @@ object GoodsFrame: TGoodsFrame
   object PopupMenu1: TPopupMenu
     Images = ImageList1
     Left = 376
-    Top = 32
+    Top = 112
     object N5: TMenuItem
       Action = EditGood
     end

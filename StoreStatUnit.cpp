@@ -17,7 +17,7 @@ __fastcall TStoreStatForm::TStoreStatForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TStoreStatForm::FormShow(TObject *Sender)
 {
-    q->SQL->Text = "select SUM(StorageNumber) as num, SUM(StorageNumber*Cost) as cost from t_goods";
+    q->SQL->Text = "select SUM(goodNumber) as num, SUM(goodNumber*Cost) as cost from t_goods";
     q->Open();
     TotalNumber->Caption = q->FieldByName("num")->AsString;
     TotalCost->Caption = q->FieldByName("cost")->AsString;

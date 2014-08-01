@@ -176,7 +176,7 @@ private:	// User declarations
     TWinControl * pControl;
     int ColumnToSort;
     bool DescSort;
-    int sCount;
+    double sCount;
 
     void __fastcall NewOrderList();
     bool __fastcall CommitOrderList();
@@ -201,14 +201,14 @@ private:	// User declarations
 public:		// User declarations
     __fastcall TOrderForm(TComponent* Owner);
 
-protected:
+private:
     void __fastcall CMRecieveNewPrice(TMessage &Message);
 
 #define WM_SEND  (WM_USER + 101)
 #define WM_RECV  (WM_USER + 102)
 BEGIN_MESSAGE_MAP
-  MESSAGE_HANDLER(WM_SEND, TMessage, CMRecieveNewPrice)
-END_MESSAGE_MAP(TComponent)
+  MESSAGE_HANDLER(WM_RECV, TMessage, CMRecieveNewPrice)
+END_MESSAGE_MAP(TForm)
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TOrderForm *OrderForm;

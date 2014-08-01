@@ -108,7 +108,7 @@ void __fastcall TCheckForm::BarCodeKeyPress(TObject *Sender, char &Key)
     if ( Key == 0x0D && BarCode->Text != "" )
     {
         d->CheckSelectSet->Close();
-        d->CheckSelectSet->SQL->Text = AnsiString().sprintf( "select g.idx,g.name,g.barcode,g.storagenumber,cg.number \
+        d->CheckSelectSet->SQL->Text = AnsiString().sprintf( "select g.idx,g.name,g.barcode,g.goodnumber,cg.number \
             from t_goods g left join tmp_check_goods cg on g.idx=cg.goodidx where \
             barcode like '%%%s%%' or name like '%%%s%%'", BarCode->Text, BarCode->Text );
         d->CheckSelectSet->Open();
@@ -189,7 +189,7 @@ void __fastcall TCheckForm::AdjustClick(TObject *Sender)
     for ( d->CheckDiffSet->First(); !d->CheckDiffSet->Eof; d->CheckDiffSet->Next() )
     {
         d->CheckDiffSet->Edit();
-        d->CheckDiffSet->FieldByName("storagenumber")->Value =
+        d->CheckDiffSet->FieldByName("goodnumber")->Value =
             d->CheckDiffSet->FieldByName("number")->Value;
         d->CheckDiffSet->Post();
     }
@@ -202,7 +202,7 @@ void __fastcall TCheckForm::AddZeroClick(TObject *Sender)
     if ( ShowYesNo("将把所有未盘点的商品加入损溢列表，确定吗？") == false ) return;
     q->SQL->Text = "insert into tmp_check_goods(goodidx,number) \
         select g.idx,0 from t_goods g \
-        where g.storagenumber > 0 and g.idx not in \
+        where g.goodnumber > 0 and g.idx not in \
         (select goodidx from tmp_check_goods)";
     q->ExecSQL();
     FreshCheckList();

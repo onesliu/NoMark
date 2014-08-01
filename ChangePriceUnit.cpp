@@ -39,7 +39,7 @@ bool __fastcall TChangePriceForm::NewChangePrice()
 {
     TDateTime today = Now();
     ListDate->Caption = today.FormatString( "yyyy-mm-dd" );
-    ListName->Text = ListDate->Caption + " 调价记录";
+    ListName->Text = ListDate->Caption + " 调价单";
     ListDesp->Text = ListName->Text;
 
     q->Close();
@@ -54,7 +54,7 @@ bool __fastcall TChangePriceForm::NewChangePrice()
     listId = q->FieldByName("mid")->AsInteger;
     q->Close();
 
-    q->SQL->Text = "insert into tmp_changeprice_goods(barcode,name,goodidx,listidx,oldprice) select barcode,name,idx,:listidx,labelprice from t_goods;";
+    q->SQL->Text = "insert into tmp_changeprice_goods(idx,barcode,name,goodidx,listidx,oldprice) select idx,barcode,name,idx,:listidx,labelprice from t_goods;";
     q->ParamByName("listidx")->AsInteger = listId;
     q->ExecSQL();
 

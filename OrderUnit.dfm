@@ -602,7 +602,7 @@ object OrderForm: TOrderForm
         object TestMark1: TLabel
           Left = 32
           Top = 12
-          Width = 70
+          Width = 68
           Height = 33
           Caption = #32451#20064
           Font.Charset = GB2312_CHARSET
@@ -653,7 +653,7 @@ object OrderForm: TOrderForm
         object TestMark2: TLabel
           Left = 32
           Top = 12
-          Width = 70
+          Width = 68
           Height = 33
           Caption = #32451#20064
           Font.Charset = GB2312_CHARSET
@@ -868,16 +868,12 @@ object OrderForm: TOrderForm
             Width = 150
           end
           item
-            Caption = #21806#20215
+            Caption = #37329#39069
             Width = 80
           end
           item
-            Caption = #25240#25187
-            Width = 60
-          end
-          item
             Caption = #25968#37327
-            Width = 40
+            Width = 80
           end
           item
             Caption = #38144#21806#26102#38388
@@ -1036,7 +1032,7 @@ object OrderForm: TOrderForm
         object TestMark3: TLabel
           Left = 32
           Top = 12
-          Width = 70
+          Width = 68
           Height = 33
           Caption = #32451#20064
           Font.Charset = GB2312_CHARSET

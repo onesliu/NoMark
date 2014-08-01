@@ -181,10 +181,10 @@ bool CalcDayTotal( int orderlist )
 }
 //---------------------------------------------------------------------------
 
-bool StorageUpdate( int goodidx, int count )
+bool StorageUpdate( int goodidx, double count )
 {
     try {
-        q2->SQL->Text = AnsiString().sprintf("update t_goods set storagenumber=storagenumber+(%d) \
+        q2->SQL->Text = AnsiString().sprintf("update t_goods set goodnumber=goodnumber+(%d) \
         where idx=%d", count, goodidx );
         q2->Prepare();
         q2->ExecSQL();
@@ -416,7 +416,7 @@ void __fastcall Td::FreshGoodList(AnsiString sql)
 {
     if ( sql == "" ) return;
 
-    sql += " order by storagenumber desc,name";
+    sql += " order by goodnumber desc,name";
 
     ds_goods->DisableControls();
     ds_goods->Close();

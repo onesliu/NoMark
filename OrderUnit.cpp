@@ -19,6 +19,7 @@
 #include "PrinterUnit.h"
 #include "CustomerLedUnit.h"
 #include "scale.h"
+#include "BarcodeUnit.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -108,36 +109,28 @@ void __fastcall TOrderForm::NumberKeyPress(TObject *Sender, char &Key)
     }
     //if ( (Key < '0' || Key > '9') && Key != 8 && Key != 0x0D ) Abort();
 
-    AnsiString sql;
+    AnsiString sql, barcode;
+	IBarcode oBar;
 
     if ( Key == 0x0D )
     {
-        AnsiString BarCode = BarCode_UPC_E( Number->Text );
-        if ( BarCode == "" )
+        if ( oBar.parseCode( Number->Text ) == false )
         {
-            BarCode = SelectForm->SelectGood( Number->Text, OrderList );
-            if ( BarCode == "" ) Abort();
+            barcode = SelectForm->SelectGood( Number->Text, OrderList );
+            if ( barcode == "" ) Abort();
+            Number->Text = barcode;
+			oBar.parseCode( barcode );
         }
-        Number->Text = BarCode;
 
         title->Caption = "售货交易单(使用中)";
 
-        sql.sprintf( "select idx,name,labelprice,lowestprice,cost,storagenumber from t_goods where barcode like '%%%s%%'", BarCode );
+        sql.sprintf( "select idx,name,labelprice,lowestprice,cost,goodnumber,goodtype from t_goods where barcode like '%%%s%%'", oBar.code );
         q->SQL->Text = sql;
         q->Prepare();
         q->Open();
         if ( q->RecordCount == 1 )
         {
-            sCount = q->FieldByName("storagenumber")->AsInteger;
-            for ( int i = 0; i < OrderList->Items->Count; i++ )
-            {
-                if ( q->FieldByName("idx")->AsInteger == (int)OrderList->Items->Item[i]->Data )
-                {
-                    sCount--;
-                }
-            }
-
-            if ( sCount <= 0 )
+            if ( q->FieldByName("goodnumber")->AsFloat <= 0 )
             {
                 ShowError( "该物品已售完" );
                 q->Close();
@@ -145,16 +138,31 @@ void __fastcall TOrderForm::NumberKeyPress(TObject *Sender, char &Key)
                 return;
             }
 
+            sCount = q->FieldByName("goodnumber")->AsFloat;
+
             OrderList->Selected->Caption = q->FieldByName("name")->AsString;
             Price->Text = MoneyStr(q->FieldByName("labelprice")->AsFloat);
-            OrderList->Selected->SubItems->Strings[1] = "1";
+			
+            if ( q->FieldByName("goodtype")->AsInteger == 0 ) // 计件商品
+                OrderList->Selected->SubItems->Strings[1] = "1";
+            else {
+				if (oBar.type != IBarcode::WEIGHT) {
+					ShowError( "不是条码称打印的条码" );
+					q->Close();
+					Number->SelectAll();
+					return;
+				}
+                OrderList->Selected->SubItems->Strings[1] = oBar.value.ToDouble() / 1000;
+                SellCount->Text = oBar.value.ToDouble() / 1000;
+            }
+			
             OrderList->Selected->Data = (void*)q->FieldByName("idx")->AsInteger;
             CurLabelPrice = q->FieldByName("labelprice")->AsFloat;
             CurLowestPrice = q->FieldByName("lowestprice")->AsFloat;
             reduce = 10;
             cost = q->FieldByName("cost")->AsFloat;
 
-            OrderList->Selected->SubItems->Strings[3] = q->FieldByName("cost")->AsString;
+            OrderList->Selected->SubItems->Strings[3] = cost * oBar.value.ToDouble() / 1000;
             if ( CurLowestPrice <= 0 )
                 OrderList->Selected->SubItems->Strings[4] = cost / MinProfitPercent;
             else
@@ -198,7 +206,8 @@ void __fastcall TOrderForm::PriceKeyPress(TObject *Sender, char &Key)
         OrderList->Selected->SubItems->Strings[0] = MoneyStr( Price->Text.ToDouble() );
         Price->Text = MoneyStr( Price->Text.ToDouble() );
 
-        SellCount->Text = 1;
+        if (SellCount->Text.ToDouble() <= 0)
+            SellCount->Text = 1;
 
         LeaveBox( Price, PriceLabel );
         EnterBox( SellCount, SellCountLabel );
@@ -303,7 +312,7 @@ bool __fastcall TOrderForm::CommitOrderList()
         }
 
         sql1 = "insert into t_order_goods(orderlistidx, goodidx, price, cost, profit, counts, selltime) \
-        values(%d, %d, %.2f, %.2f, %.2f, %d, '%s');";
+        values(%d, %d, %.2f, %.2f, %.2f, %s, '%s');";
 
         sSellTime = Now().FormatString("yyyy-mm-dd hh:nn:ss");
 
@@ -311,12 +320,12 @@ bool __fastcall TOrderForm::CommitOrderList()
         {
             pItem = OrderList->Items->Item[i];
             sql.sprintf( sql1.c_str(), orderlist, (int)pItem->Data, pl[i], cl[i], pl[i]-cl[i],
-                pItem->SubItems->Strings[1].ToInt(), sSellTime );
+                pItem->SubItems->Strings[1], sSellTime );
             q->SQL->Text = sql;
             q->Prepare();
             q->ExecSQL();
 
-            StorageUpdate( (int)pItem->Data, -pItem->SubItems->Strings[1].ToInt() );
+            StorageUpdate( (int)pItem->Data, -pItem->SubItems->Strings[1].ToDouble() );
         }
 
         ret = CalcDayTotal( orderlist );
@@ -619,17 +628,7 @@ void __fastcall TOrderForm::FreshSellSheet( TDateTime date )
             pItem = SellGoodsList->Items->Add();
             pItem->Caption = q->FieldByName("name")->AsString;
             pItem->SubItems->Add( MoneyStr(q->FieldByName("price")->AsFloat) );
-            if ( q->FieldByName("labelprice")->AsFloat != 0 )
-            {
-                pItem->SubItems->Add( AnsiString().sprintf("%.1f折",
-                    q->FieldByName("price")->AsFloat/q->FieldByName("counts")->AsInteger
-                    /q->FieldByName("labelprice")->AsFloat*10) );
-            }
-            else
-            {
-                pItem->SubItems->Add( "" );
-            }
-            pItem->SubItems->Add( q->FieldByName("counts")->AsString );
+            pItem->SubItems->Add( WeightStr(q->FieldByName("counts")->AsFloat) );
             pItem->SubItems->Add( q->FieldByName("selltime")->AsDateTime.FormatString("hh:nn:ss") );
             pItem->SubItems->Add( q->FieldByName("barcode")->AsString );
             if ( q->FieldByName("canceldate")->AsString != "" )
@@ -673,7 +672,7 @@ void __fastcall TOrderForm::FreshSellSheet( TDateTime date )
             {
                 pItem->SubItems->Add( "" );
             }
-            pItem->SubItems->Add( q->FieldByName("counts")->AsString );
+            pItem->SubItems->Add( WeightStr(q->FieldByName("counts")->AsFloat) );
             pItem->SubItems->Add( q->FieldByName("selltime")->AsDateTime.FormatString("yyyy-mm-dd hh:nn:ss") );
             pItem->SubItems->Add( q->FieldByName("canceldate")->AsDateTime.FormatString("yyyy-mm-dd") );
             pItem->SubItems->Add( q->FieldByName("barcode")->AsString );
@@ -947,7 +946,7 @@ void __fastcall TOrderForm::SearchExecute(TObject *Sender)
     if ( sBarCode == "" && GoodName->Text == "" && GoodCode->Text == "" )
         return;
 
-    AnsiString sql = "select g.name,g.goodcode,g.barcode,g.storagenumber,g.labelprice,g.lowestprice,\
+    AnsiString sql = "select g.name,g.goodcode,g.barcode,g.labelprice,g.lowestprice,\
     t.name as goodtype from t_goods g \
     left outer join t_goodtype t on g.typeidx = t.idx where ";
     if ( sBarCode != "" ) sql += "g.barcode like '%%" + sBarCode + "%%' or ";
@@ -962,7 +961,7 @@ void __fastcall TOrderForm::SearchExecute(TObject *Sender)
 
 void __fastcall TOrderForm::SearchAllExecute(TObject *Sender)
 {
-    AnsiString sql = "select g.name,g.goodcode,g.barcode,g.storagenumber,g.labelprice,g.lowestprice,\
+    AnsiString sql = "select g.name,g.goodcode,g.barcode,g.labelprice,g.lowestprice,\
     t.name as goodtype from t_goods g \
     left outer join t_goodtype t on g.typeidx = t.idx";
     FreshGoodsList( sql );
@@ -992,7 +991,7 @@ void __fastcall TOrderForm::FreshGoodsList( AnsiString sql )
         pItem->SubItems->Add( q->FieldByName("name")->AsString );
         pItem->SubItems->Add( q->FieldByName("barcode")->AsString );
         pItem->SubItems->Add( q->FieldByName("goodcode")->AsString );
-        pItem->SubItems->Add( q->FieldByName("storagenumber")->AsString );
+        pItem->SubItems->Add( q->FieldByName("goodnumber")->AsString );
         pItem->SubItems->Add( MoneyStr(q->FieldByName("labelprice")->AsFloat) );
         pItem->SubItems->Add( MoneyStr(q->FieldByName("lowestprice")->AsFloat) );
         pItem->ImageIndex = 6;
@@ -1003,7 +1002,7 @@ void __fastcall TOrderForm::FreshGoodsList( AnsiString sql )
 
 void __fastcall TOrderForm::GoodTypeChange(TObject *Sender)
 {
-    AnsiString sql = "select g.name,g.goodcode,g.barcode,g.storagenumber,g.labelprice,g.lowestprice,\
+    AnsiString sql = "select g.name,g.goodcode,g.barcode,g.goodnumber,g.labelprice,g.lowestprice,\
     t.name as goodtype from t_goods g \
     left outer join t_goodtype t on g.typeidx = t.idx where g.typeidx=" +
     IntToStr((int)GoodType->Items->Objects[GoodType->ItemIndex]);
@@ -1193,16 +1192,16 @@ void __fastcall TOrderForm::SellCountKeyPress(TObject *Sender, char &Key)
 
     if ( Key == 0x0D )
     {
-        if ( SellCount->Text == "" || SellCount->Text.ToInt() <= 0 ) Abort();
-        if ( SellCount->Text.ToInt() > sCount ) {
+        if ( SellCount->Text == "" || SellCount->Text.ToDouble() <= 0 ) Abort();
+        if ( SellCount->Text.ToDouble() > sCount ) {
             ShowError("该物品库存量为%d个", sCount);
             SellCount->Text = sCount;
             SellCount->SetFocus();
             return;
         }
 
-        OrderList->Selected->SubItems->Strings[1] = SellCount->Text.ToInt();
-        OrderList->Selected->SubItems->Strings[2] = MoneyStr( SellCount->Text.ToInt() * OrderList->Selected->SubItems->Strings[0].ToDouble() );
+        OrderList->Selected->SubItems->Strings[1] = SellCount->Text.ToDouble();
+        OrderList->Selected->SubItems->Strings[2] = MoneyStr( SellCount->Text.ToDouble() * OrderList->Selected->SubItems->Strings[0].ToDouble() );
 
         // 写客显
         ShowCustomerLed(CustomerLed::PRICE, OrderList->Selected->SubItems->Strings[2]);

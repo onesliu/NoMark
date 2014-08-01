@@ -42,7 +42,6 @@ __published:	// IDE-managed Components
     TTabSheet *BuySheet;
     TTabSheet *SellSheet;
     TTabSheet *CheckSheet;
-    TTabSheet *SearchSheet;
     TSplitter *Splitter2;
     TSplitter *Splitter3;
     TToolBar *ToolBar2;
@@ -82,7 +81,6 @@ __published:	// IDE-managed Components
     TToolButton *ToolButton10;
     TAction *EditPrint;
     TGoodsFrame *GoodsFrame1;
-    TGoodsFrame *GoodsFrame2;
     TSplitter *Splitter5;
     TToolButton *ClearAllLabel;
     TAction *EditIncoming;
@@ -159,7 +157,6 @@ __published:	// IDE-managed Components
     void __fastcall DayCalcExecute(TObject *Sender);
     void __fastcall sNumberKeyPress(TObject *Sender, char &Key);
     void __fastcall sGoodNameKeyPress(TObject *Sender, char &Key);
-    void __fastcall SearchSheetShow(TObject *Sender);
     void __fastcall NewCheckExecute(TObject *Sender);
     void __fastcall AuditGoodSheetShow(TObject *Sender);
     void __fastcall N5Click(TObject *Sender);
@@ -169,6 +166,7 @@ __published:	// IDE-managed Components
     void __fastcall NewIncoming2Execute(TObject *Sender);
     void __fastcall ChangePriceSheetShow(TObject *Sender);
     void __fastcall NewChangePriceExecute(TObject *Sender);
+    void __fastcall GoodsSheetShow(TObject *Sender);
 private:	// User declarations
     TTreeNode * pGoodsRoot, *pIncomingRoot, *pSellRoot, *pCheckRoot,
     *pSearchRoot, *pPrintLabelRoot, *pAuditGoodRoot;
