@@ -7,8 +7,7 @@ enum
     TYPES_UPDATE_PRICE  = 2,    //调价
     TYPES_INVENTORY     = 3,    //盘点
     TYPES_LOSS          = 4,    //报损
-     
-
+    TYPES_PRODUCTINFO   = 5     //商品信息更新
 };
 
 #endif __TYPES_H__

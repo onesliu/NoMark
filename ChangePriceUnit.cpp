@@ -7,6 +7,7 @@
 #include "DbUnit.h"
 #include "CommonUnit.h"
 #include "MessageBoxes.h"
+#include "GenerateListNo.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -37,23 +38,31 @@ void __fastcall TChangePriceForm::CancelClick(TObject *Sender)
 
 bool __fastcall TChangePriceForm::NewChangePrice()
 {
+    AnsiString sTmp1, sTmp2;
+    GenerateListNo gln;
+    
     TDateTime today = Now();
     ListDate->Caption = today.FormatString( "yyyy-mm-dd" );
     ListName->Text = ListDate->Caption + " 调价单";
     ListDesp->Text = ListName->Text;
 
+    //删除tmp_changeprice_goods表中的所有记录
     q->Close();
     q->SQL->Text = "delete from tmp_changeprice_goods";
     q->ExecSQL();
 
-    q->SQL->Text = "insert into t_changeprice_list(name) values('"+ ListName->Text +"')";
+    //插入新的调价单
+    listId = gln.GetMaxListNo(CHANGEPRICE_LIST) + 1;
+    sTmp1.sprintf("insert into t_changeprice_list(idx, name) values(%d, '%s')", listId, ListName->Text);
+    q->SQL->Text = sTmp1;
     q->ExecSQL();
 
+#if 0
     q->SQL->Text = "select max(idx) as mid from t_changeprice_list";
     q->Open();
     listId = q->FieldByName("mid")->AsInteger;
     q->Close();
-
+#endif
     q->SQL->Text = "insert into tmp_changeprice_goods(idx,barcode,name,goodidx,listidx,oldprice) select idx,barcode,name,idx,:listidx,labelprice from t_goods;";
     q->ParamByName("listidx")->AsInteger = listId;
     q->ExecSQL();
@@ -67,15 +76,19 @@ bool __fastcall TChangePriceForm::NewChangePrice()
 void __fastcall TChangePriceForm::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
-    if (ModalResult != mrOk) {
+    if ( ModalResult != mrOk ) // 不保存新的调价单
+    {
+        // 删除新的调价单
         q->SQL->Text = "delete from t_changeprice_list where idx=:listidx";
         q->ParamByName("listidx")->AsInteger = listId;
         q->ExecSQL();
+
         q->SQL->Text = "delete from t_changeprice_goods where listidx=:listidx";
         q->ParamByName("listidx")->AsInteger = listId;
         q->ExecSQL();
     }
-    else {
+    else
+    {
         q->SQL->Text = "insert into t_changeprice_goods(goodidx,listidx,oldprice,newprice) \
             select goodidx,listidx,oldprice,newprice from tmp_changeprice_goods \
             where newprice is not null";
