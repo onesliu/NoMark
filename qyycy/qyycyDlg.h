@@ -33,7 +33,8 @@ void doit(char *text);
     BOOL CreateSession  (const CString url);
     BOOL Login          (const CString url);
 	BOOL LoginPrepare   (const CString url);
-    BOOL UploadData     (const CString url);
+    BOOL UploadData     (const CString url, const CString strFilePath);
+    BOOL UseHttpSendReqEx(LPCTSTR szLocalFile);
 
     void ReleaseMem(void);
     void GetCookie();

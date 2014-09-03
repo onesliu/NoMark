@@ -1,7 +1,7 @@
 #ifndef __TYPES_H__
 #define __TYPES_H__
 
-enum
+enum OP_TYPES
 {
     TYPES_RESTOCK       = 1,    //进货
     TYPES_UPDATE_PRICE  = 2,    //调价
