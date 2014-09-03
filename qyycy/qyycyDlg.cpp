@@ -6,8 +6,9 @@
 #include "qyycyDlg.h"
 #include <atlconv.h>
 #include <stdlib.h>
-#include "cJSON.h"
+//#include "cJSON.h"
 #include "types.h"
+#include "HttpFileClient.h"
 
 //#pragma  comment(lib, "json/json_vc71_libmtd.lib")
 //#include "json/json.h"
@@ -21,13 +22,13 @@ static char THIS_FILE[] = __FILE__;
 #define TEST_LOGIN                  1
 #define TEST_DOWNLOAD_CHANGEPRICE   0
 
-#define BUF_SIZE                    1024
-
 #define QYYCY_URL_LOGIN     (_T("http://qy.gz.1251102575.clb.myqcloud.com/admin/index.php?route=common/login"))
 #define QYYCY_USERNAME      (_T("username=admin"))
 #define QYYCY_PASSWORD      (_T("password=!@#qwe"))
 #define QYYCY_URL_LOGIN_OK  (_T("http://qy.gz.1251102575.clb.myqcloud.com/admin/index.php?route=qingyou/login_ok"))
 #define QYYCY_URL_UPLOAD    (_T("http://qy.gz.1251102575.clb.myqcloud.com/admin/index.php?route=qingyou/cq_exchange_data/upload"))
+#define QYYCY_URL_DOWNLOAD  (_T("http://qy.gz.1251102575.clb.myqcloud.com/admin/index.php?route=qingyou/cq_exchange_data/download"))
+
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
 
@@ -83,8 +84,6 @@ CQyycyDlg::CQyycyDlg(CWnd* pParent /*=NULL*/)
     //}}AFX_DATA_INIT
     // Note that LoadIcon does not require a subsequent DestroyIcon in Win32
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-    m_pHttpConn = NULL;
-    m_pHttpFile = NULL;
 }
 
 void CQyycyDlg::DoDataExchange(CDataExchange* pDX)
@@ -190,46 +189,20 @@ HCURSOR CQyycyDlg::OnQueryDragIcon()
     return (HCURSOR) m_hIcon;
 }
 
-void CQyycyDlg::doit(char *text)
-{
-    cJSON *json;
-
-    json = cJSON_Parse(text);
-    if ( !json )
-    {
-        printf("Error before: [%s]\n",cJSON_GetErrorPtr());
-    }
-    else
-    {
-        cJSON *json1 = cJSON_GetObjectItem(json, "name");
-
-        if (json1)
-        {
-            USES_CONVERSION;
-            CString str = A2T(json1->valuestring);
-
-            GetDlgItem(IDC_STATIC)->SetWindowText(str);
-
-        }
-        cJSON_Delete(json);
-    }
-}
-
 void CQyycyDlg::OnTimer(UINT nIDEvent)
 {
 #if TEST_LOGIN > 0
-    LoginPrepare(QYYCY_URL_LOGIN);
-    GetCookie();
-    ReleaseMem();
-
-    Login(QYYCY_URL_LOGIN);
-    GetToken();
-//    doit( (LPSTR)(LPCTSTR)m_strToken);
-    ReleaseMem();
-    
-    m_strTemp.Format(_T("%s&type=%d&token=%s"), QYYCY_URL_UPLOAD, TYPES_UPDATE_PRICE, m_strToken);
-    UploadData(m_strTemp, _T("UpdatePrice.txt"));
-    ReleaseMem();
+//     LoginPrepare(QYYCY_URL_LOGIN);
+//     GetCookie();
+//     ReleaseMem();
+//
+//     Login(QYYCY_URL_LOGIN);
+//     GetToken();
+//     ReleaseMem();
+//
+//     m_strTemp.Format(_T("%s&type=%d&token=%s"), QYYCY_URL_UPLOAD, TYPES_UPDATE_PRICE, m_strToken);
+//     UploadData(m_strTemp, _T("UpdatePrice.txt"));
+//     ReleaseMem();
 #endif
 
     CDialog::OnTimer(nIDEvent);
@@ -250,345 +223,17 @@ void CQyycyDlg::OnButton1()
 #endif
 
 #if TEST_LOGIN > 0
-    LoginPrepare(QYYCY_URL_LOGIN);
-    GetCookie();
-    ReleaseMem();
 
-    Login(QYYCY_URL_LOGIN);
-    GetToken();
-//    doit( (LPSTR)(LPCTSTR)m_strToken);
-    ReleaseMem();
+    CHttpFileClient hfc;
+    CString strTemp;
 
-    m_strTemp.Format(_T("%s&type=%d&token=%s"), QYYCY_URL_UPLOAD, TYPES_UPDATE_PRICE, m_strToken);
-    UploadData(m_strTemp, _T("UpdatePrice.txt"));
-    ReleaseMem();
+    hfc.CanWebsiteVisit(QYYCY_URL_LOGIN);
+    hfc.Login(QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
+
+    strTemp.Format(_T("%s&type=%d&token=%s"), QYYCY_URL_UPLOAD, TYPES_UPDATE_PRICE, hfc.GetToken());
+    hfc.UploadFile(strTemp, _T("UpdatePrice.txt"));
+
 #endif
-}
-
-void CQyycyDlg::ReleaseMem(void)
-{
-    if ( m_pHttpFile != NULL )
-    {
-        m_pHttpFile->Close();
-        delete m_pHttpFile;
-        m_pHttpFile = NULL;
-    }
-
-    if ( m_pHttpConn != NULL )
-    {
-        m_pHttpConn->Close();
-        delete m_pHttpConn;
-        m_pHttpConn = NULL;
-    }
-#if 0
-    if ( m_session )
-    {
-        m_session.Close();
-    }
-#endif
-}
-
-inline TCHAR toHex(const BYTE &x)
-{
-    return x > 9 ? _T('A') + x-10: _T('0') + x;
-}
-
-CString CQyycyDlg::URLEncode(CString sIn)
-{
-    CString sOut;
-
-    const int nLen = sIn.GetLength() + 1;
-
-    register LPTSTR pOutTmp = NULL;
-    LPTSTR pOutBuf = NULL;
-    register LPTSTR pInTmp = NULL;
-    LPTSTR pInBuf =(LPTSTR)sIn.GetBuffer(nLen);
-    //BYTE b = 0;
-
-    //alloc out buffer
-    pOutBuf = (LPTSTR)sOut.GetBuffer(nLen   * 3 - 2);//new BYTE [nLen   * 3];
-
-    if(pOutBuf)
-    {
-        pInTmp  = pInBuf;
-        pOutTmp = pOutBuf;
-
-        // do encoding
-        while (*pInTmp)
-        {
-            if(isalnum(*pInTmp))
-                *pOutTmp++ = *pInTmp;
-            else if(isspace(*pInTmp) && ((*pInTmp!='\n') && (*pInTmp!='\r')))
-                *pOutTmp++ = '+';
-            else
-            {
-                *pOutTmp++ = '%';
-                *pOutTmp++ = toHex(*pInTmp>>4);
-                *pOutTmp++ = toHex(*pInTmp%16);
-            }
-            pInTmp++;
-        }
-
-        *pOutTmp = '\0';
-        //sOut=pOutBuf;
-        //delete [] pOutBuf;
-        sOut.ReleaseBuffer();
-    }
-
-    sIn.ReleaseBuffer();
-
-    return sOut;
-}
-
-BOOL CQyycyDlg::CreateSession(const CString url)
-{
-    INTERNET_PORT   wPort = 0;
-    DWORD           dwType = 0;
-    DWORD           dwRet = 0;
-
-    if ( AfxParseURL(url, dwType, m_strServer, m_strObject, wPort) == FALSE )
-        return FALSE;
-
-    m_pHttpConn = m_session.GetHttpConnection(m_strServer, (INTERNET_PORT)wPort);
-    if ( m_pHttpConn == NULL )
-    {
-        AfxMessageBox(_T("Error! pHttpConn is NULL!"));
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-BOOL CQyycyDlg::LoginPrepare(const CString url)
-{
-    if ( CreateSession(url) == FALSE )
-        return FALSE;
-
-    m_pHttpFile = m_pHttpConn->OpenRequest(CHttpConnection::HTTP_VERB_GET, m_strObject);
-    if ( m_pHttpFile == NULL )
-    {
-        AfxMessageBox(_T("Error! pHttpFile is NULL!"));
-        return FALSE;
-    }
-
-    if ( !m_pHttpFile->SendRequest() )
-    {
-        AfxMessageBox(_T("Http Get failed!"));
-        return FALSE;
-    }
- 
-    return TRUE;
-}
-
-BOOL CQyycyDlg::Login(const CString url)
-{
-    CString strUserinfo;
-    char    *p = NULL;
-
-    if ( CreateSession(url) == FALSE )
-        return FALSE;
-
-    m_pHttpFile = m_pHttpConn->OpenRequest(CHttpConnection::HTTP_VERB_POST, m_strObject, NULL, 0, NULL, NULL, INTERNET_FLAG_NO_CACHE_WRITE);
-    if ( m_pHttpFile == NULL )
-    {
-        AfxMessageBox(_T("Error! pHttpFile is NULL!"));
-        return FALSE;
-    }
-
-    try
-    {
-        m_pHttpFile->AddRequestHeaders(_T("Host: qy.gz.1251102575.clb.myqcloud.com\r\n"));
-        m_pHttpFile->AddRequestHeaders(_T("Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n"));
-        m_pHttpFile->AddRequestHeaders(_T("Accept-Language: zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3\r\n"));
-        m_pHttpFile->AddRequestHeaders(_T("Accept-Encoding: gzip, deflate\r\n"));
-        m_pHttpFile->AddRequestHeaders(_T("Content-Type: application/x-www-form-urlencoded\r\n"));
-        m_pHttpFile->AddRequestHeaders(_T("Connection: Keep-Alive\r\n"));
-        m_pHttpFile->AddRequestHeaders(m_strCookie);
-        strUserinfo.Format(_T("%s&%s&redirect=%s"), QYYCY_USERNAME, QYYCY_PASSWORD, URLEncode(QYYCY_URL_LOGIN_OK));
-        p = UnicodeToUTF8(strUserinfo);
-
-        if ( !m_pHttpFile->SendRequest(NULL, 0, (LPVOID)(LPCTSTR)p, strlen(p)) )
-        {
-            return FALSE;
-        }
-        free(p);
-        p = NULL;
-    }
-    catch(CInternetException * pEx)
-    {
-        TCHAR sz[256] = _T("");
-        pEx->GetErrorMessage(sz, 25);
-        CString str;
-        str.Format(_T("InternetException occur!\r\n%s"), sz);
-        MessageBox(str);
-
-        pEx->Delete();
-
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-BOOL CQyycyDlg::UploadData(const CString url, const CString strFilePath)
-{
-    BOOL bResult = FALSE;
-
-    try
-    {
-        if ( CreateSession(url) == FALSE )
-            return FALSE;
-
-        m_pHttpFile = m_pHttpConn->OpenRequest(CHttpConnection::HTTP_VERB_PUT, m_strObject);
-
-        if ( m_pHttpFile == NULL )
-        {
-            AfxMessageBox(_T("Error! pHttpFile is NULL!"));
-            return FALSE;
-        }
-
-        if ( UseHttpSendReqEx(strFilePath) )
-        {
-            DWORD dwStateCode = 0;
-            m_pHttpFile->QueryInfoStatusCode(dwStateCode);
-
-            if(dwStateCode == HTTP_STATUS_CREATED || dwStateCode == HTTP_STATUS_OK)
-                bResult = TRUE;
-        }
-    }
-    catch (CFileException* pEx)
-    {
-        pEx->Delete();
-        AfxMessageBox(_T("CFileException"));
-    }
-    catch (CInternetException* pEx)
-    {
-        pEx->Delete();
-
-        CString sError;
-        sError.Format(_T("Inernet connection error : %d"), pEx->m_dwError);
-        AfxMessageBox(sError);
-    }
-
-    return TRUE;
-}
-
-BOOL CQyycyDlg::UseHttpSendReqEx(LPCTSTR szLocalFile)
-{
-    INTERNET_BUFFERS BufferIn;
-    DWORD dwTotalWritten = 0;
-    BYTE  pFileBuffer[BUF_SIZE];
-    DWORD dwPostSize = 0;
-    CFile file;
-    BOOL  bRet = FALSE;
-    CString sError;
-
-    bRet = file.Open(szLocalFile, CFile::shareDenyNone|CFile::modeRead);
-    if (!bRet)
-        return FALSE;
-
-    dwPostSize = (DWORD)file.GetLength();
-    if (dwPostSize >= 0x80000000)
-        return FALSE;
-
-    memset(&BufferIn, 0, sizeof(BufferIn));
-    BufferIn.dwStructSize    = sizeof( INTERNET_BUFFERS ); // Must be set or error will occur
-    BufferIn.Next            = NULL;
-    BufferIn.lpcszHeader     = NULL;
-    BufferIn.dwHeadersLength = 0;
-    BufferIn.dwHeadersTotal  = 0;
-    BufferIn.lpvBuffer       = NULL;
-    BufferIn.dwBufferLength  = 0;
-    BufferIn.dwBufferTotal   = dwPostSize; // This is the only member used other than dwStructSize
-    BufferIn.dwOffsetLow     = 0;
-    BufferIn.dwOffsetHigh    = 0;
-
-    if ( !m_pHttpFile->SendRequestEx(&BufferIn, NULL, HSR_INITIATE, 1) )
-    {
-        TRACE1( "Error on HttpSendRequestEx %d\n",GetLastError() );
-        return FALSE;
-    }
-
-    file.SeekToBegin();
-    do
-    {
-        int nActual = file.Read(pFileBuffer, BUF_SIZE);
-        if (nActual <= 0) break;
-        m_pHttpFile->Write(pFileBuffer, nActual);
-        dwTotalWritten += nActual;
-    } while (TRUE);
-
-    if (dwTotalWritten != dwPostSize)
-    {
-        file.Close();
-        TRACE1("\nError on InternetWriteFile %lu \n", GetLastError());
-        return FALSE;
-    }
-
-    if ( !m_pHttpFile->EndRequest(0, NULL, 1) )
-    {
-        file.Close();
-        TRACE1("\nError on HttpEndRequest %lu \n", GetLastError());
-        return FALSE;
-    }
-
-    file.Close();
-
-    return TRUE;
-}
-
-void CQyycyDlg::GetCookie()
-{
-    CString str;
-
-    DWORD dwRet = m_pHttpFile->QueryInfo(HTTP_QUERY_SET_COOKIE, str);
-    if (dwRet)
-    {
-        m_strCookie.Format(_T("Cookie: %s\r\n"), str);
-    }
-}
-
-void CQyycyDlg::GetToken()
-{
-    CString strLine;
-
-    if ( m_pHttpFile != NULL )
-    {
-        while(m_pHttpFile->ReadString(strLine) != NULL)
-        {
-            m_strTemp += strLine;
-        }
-    }
-
-    cJSON *json, *json1;
-
-    json = cJSON_Parse((LPSTR)(LPCTSTR)m_strTemp);
-    if ( !json )
-    {
-        printf("Error before: [%s]\n",cJSON_GetErrorPtr());
-    }
-    else
-    {
-        json1 = cJSON_GetObjectItem(json, "token");
-
-        if ( json1 )
-        {
-            USES_CONVERSION;
-            m_strToken = A2T(json1->valuestring);
-//            AfxMessageBox(m_strToken);
-        }
-        cJSON_Delete(json);
-    }
-}
-
-char* CQyycyDlg::UnicodeToUTF8(const CString strSrc)
-{
-    int len = WideCharToMultiByte(CP_UTF8, 0, strSrc, -1, NULL, 0, NULL, NULL); // the return value include "\0"
-    char* utf8Str = (char*)malloc(len);
-    memset(utf8Str, 0, sizeof(utf8Str));
-    WideCharToMultiByte(CP_UTF8, 0, strSrc, -1, utf8Str, len, NULL, NULL);
-
-    return utf8Str;
 }
 
 LRESULT CQyycyDlg::OnRecvStore(WPARAM wParam, LPARAM lParam)

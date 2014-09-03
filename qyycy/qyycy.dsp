@@ -104,6 +104,10 @@ SOURCE=.\cJSON.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\HttpFileClient.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\qyycy.cpp
 # End Source File
 # Begin Source File
@@ -126,6 +130,10 @@ SOURCE=.\StdAfx.cpp
 # Begin Source File
 
 SOURCE=.\cJSON.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\HttpFileClient.h
 # End Source File
 # Begin Source File
 
