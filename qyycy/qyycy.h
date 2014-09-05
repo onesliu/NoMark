@@ -1,8 +1,8 @@
 // qyycy.h : main header file for the QYYCY application
 //
 
-#if !defined(AFX_QYYCY_H__470D5112_4822_4B90_9697_E955FE43A90E__INCLUDED_)
-#define AFX_QYYCY_H__470D5112_4822_4B90_9697_E955FE43A90E__INCLUDED_
+#if !defined(AFX_QYYCY_H__712527F2_EEF5_4AD2_A758_2AFED258BEEF__INCLUDED_)
+#define AFX_QYYCY_H__712527F2_EEF5_4AD2_A758_2AFED258BEEF__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -46,4 +46,4 @@ public:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_QYYCY_H__470D5112_4822_4B90_9697_E955FE43A90E__INCLUDED_)
+#endif // !defined(AFX_QYYCY_H__712527F2_EEF5_4AD2_A758_2AFED258BEEF__INCLUDED_)

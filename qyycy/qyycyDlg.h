@@ -1,11 +1,8 @@
 // qyycyDlg.h : header file
 //
-//{{AFX_INCLUDES()
 
-//}}AFX_INCLUDES
-
-#if !defined(AFX_QYYCYDLG_H__CEA5C212_8873_45B8_A4A6_76ECBDD4ACCE__INCLUDED_)
-#define AFX_QYYCYDLG_H__CEA5C212_8873_45B8_A4A6_76ECBDD4ACCE__INCLUDED_
+#if !defined(AFX_QYYCYDLG_H__51C6A481_0BD4_446D_8003_FFC9A81D3EAE__INCLUDED_)
+#define AFX_QYYCYDLG_H__51C6A481_0BD4_446D_8003_FFC9A81D3EAE__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -18,37 +15,42 @@ class CQyycyDlg : public CDialog
 {
 // Construction
 public:
-    CQyycyDlg(CWnd* pParent = NULL);    // standard constructor
+	CQyycyDlg(CWnd* pParent = NULL);	// standard constructor
 
 // Dialog Data
-    //{{AFX_DATA(CQyycyDlg)
-    enum { IDD = IDD_QYYCY_DIALOG };
-    //}}AFX_DATA
+	//{{AFX_DATA(CQyycyDlg)
+	enum { IDD = IDD_QYYCY_DIALOG };
+		// NOTE: the ClassWizard will add data members here
+	//}}AFX_DATA
 
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CQyycyDlg)
-    protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    //}}AFX_VIRTUAL
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CQyycyDlg)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
-    HICON m_hIcon;
+	HICON m_hIcon;
 
-    // Generated message map functions
-    //{{AFX_MSG(CQyycyDlg)
-    virtual BOOL OnInitDialog();
-    afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-    afx_msg void OnPaint();
-    afx_msg HCURSOR OnQueryDragIcon();//WM_RECV_STORE
-    afx_msg void OnButton1();
+	// Generated message map functions
+	//{{AFX_MSG(CQyycyDlg)
+	virtual BOOL OnInitDialog();
+	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+	afx_msg void OnPaint();
+	afx_msg HCURSOR OnQueryDragIcon();
+	afx_msg void OnTimer(UINT nIDEvent);
     afx_msg LRESULT OnRecvStore(WPARAM wParam, LPARAM lParam);
-    afx_msg void OnTimer(UINT nIDEvent);
-    //}}AFX_MSG
-    DECLARE_MESSAGE_MAP()
+	afx_msg void OnBtnUploadData();
+	afx_msg void OnBtnDownloadData();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
+private:
+    int m_nShopNo;
 };
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_QYYCYDLG_H__CEA5C212_8873_45B8_A4A6_76ECBDD4ACCE__INCLUDED_)
+#endif // !defined(AFX_QYYCYDLG_H__51C6A481_0BD4_446D_8003_FFC9A81D3EAE__INCLUDED_)

@@ -405,7 +405,7 @@ BOOL CHttpFileClient::DownLoadFile(LPCTSTR szRemoteURI, LPCTSTR szLocalPath)
         pHttpFile->QueryInfoStatusCode(dwStateCode);
         if ( dwStateCode != HTTP_STATUS_OK )
             goto _err_handler;
-        
+
         hFile = CreateFile(szLocalPath, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL); 
         if ( hFile == INVALID_HANDLE_VALUE )
             goto _err_handler;
@@ -442,7 +442,7 @@ BOOL CHttpFileClient::DownLoadFile(LPCTSTR szRemoteURI, LPCTSTR szLocalPath)
     catch (CInternetException* e)
     {
         CString sError;
-        sError.Format(_T("Inernet connection error : %d"), e->m_dwError);
+        sError.Format(_T("Internet connection error : %d"), e->m_dwError);
         e->Delete();
         AfxMessageBox(sError);
     }
