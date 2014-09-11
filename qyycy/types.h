@@ -10,4 +10,7 @@ enum OP_TYPES
     TYPES_PRODUCTINFO   = 5     //商品信息更新
 };
 
+#define WM_UPLOAD       (WM_USER+101)
+#define WM_DOWNLOAD     (WM_USER+102)
+
 #endif __TYPES_H__

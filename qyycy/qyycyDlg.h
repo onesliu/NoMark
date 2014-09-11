@@ -40,9 +40,10 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnTimer(UINT nIDEvent);
-    afx_msg LRESULT OnRecvStore(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnUploadData(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBtnUploadData();
 	afx_msg void OnBtnDownloadData();
+	afx_msg void OnBtnModifyShopNo();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

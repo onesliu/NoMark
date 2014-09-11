@@ -54,7 +54,7 @@ BOOL CQyycyApp::InitInstance()
 	Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
 
-	CQyycyDlg dlg;
+	CQyycyDlg dlg; 
 	m_pMainWnd = &dlg;
 	int nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

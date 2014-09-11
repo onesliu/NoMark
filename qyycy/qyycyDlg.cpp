@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "types.h"
 #include "HttpFileClient.h"
+#include "DialogModifyShopNo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -80,6 +81,8 @@ CQyycyDlg::CQyycyDlg(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
+    m_nShopNo = -1;
 }
 
 void CQyycyDlg::DoDataExchange(CDataExchange* pDX)
@@ -96,8 +99,10 @@ BEGIN_MESSAGE_MAP(CQyycyDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_TIMER()
+    ON_MESSAGE(WM_UPLOAD, OnUploadData)  
 	ON_BN_CLICKED(IDC_BTN_UPLOAD_DATA, OnBtnUploadData)
 	ON_BN_CLICKED(IDC_BTN_DOWNLOAD_DATA, OnBtnDownloadData)
+	ON_BN_CLICKED(IDC_BTN_MODIFY_SHOP_NO, OnBtnModifyShopNo)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -195,11 +200,21 @@ void CQyycyDlg::OnTimer(UINT nIDEvent)
 
 
 // Receive message from POS software
-LRESULT CQyycyDlg::OnRecvStore(WPARAM wParam, LPARAM lParam)
+LRESULT CQyycyDlg::OnUploadData(WPARAM wParam, LPARAM lParam)
 {
-    lParam = 1;
-    m_nShopNo = lParam; 
-    AfxMessageBox(_T("Receive msg!"));
+#if TEST_LOGIN > 0
+    CHttpFileClient hfc;
+    CString strURL;
+    
+    hfc.CanWebsiteVisit(QYYCY_URL_LOGIN);
+    hfc.Login(QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
+#endif
+    
+#if TEST_UPLOAD_CHANGEPRICE > 0
+    strURL.Format(_T("%s&type=%d&token=%s"), QYYCY_URL_UPLOAD, TYPES_UPDATE_PRICE, hfc.GetToken());
+    hfc.UploadFile(strURL, _T("upload_change_price.txt"));
+#endif	
+
     return 0;
 }
 
@@ -212,15 +227,18 @@ void CQyycyDlg::OnBtnUploadData()
     hfc.CanWebsiteVisit(QYYCY_URL_LOGIN);
     hfc.Login(QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
 #endif
-
+    
 #if TEST_UPLOAD_CHANGEPRICE > 0
     strURL.Format(_T("%s&type=%d&token=%s"), QYYCY_URL_UPLOAD, TYPES_UPDATE_PRICE, hfc.GetToken());
-    hfc.UploadFile(strURL, _T("UpdatePrice.txt"));
+    hfc.UploadFile(strURL, _T("upload_change_price.txt"));
 #endif	
 }
 
 void CQyycyDlg::OnBtnDownloadData() 
 { 
+    if ( m_nShopNo < 0 )
+        GetDlgItem(IDC_BTN_DOWNLOAD_DATA)->EnableWindow(FALSE);
+
 #if TEST_LOGIN > 0
     CHttpFileClient hfc;
     CString strURL;
@@ -231,6 +249,29 @@ void CQyycyDlg::OnBtnDownloadData()
     
 #if TEST_DOWNLOAD_CHANGEPRICE > 0
     strURL.Format(_T("%s&shopNo=%d&type=%d&token=%s"), QYYCY_URL_DOWNLOAD, m_nShopNo, TYPES_UPDATE_PRICE, hfc.GetToken());
-    hfc.DownLoadFile(strURL, _T("downloadFile.txt"));
+    hfc.DownLoadFile(strURL, _T("download_change_price.txt"));
+
+    CWnd *pWnd = CWnd::FindWindow(NULL, _T("销售客户端"));
+    if ( !pWnd )
+    {
+        AfxMessageBox(_T("Can not find window 销售客户端!"));
+        return;
+    }
+    else
+    {
+        pWnd->SendMessage(WM_DOWNLOAD, TYPES_UPDATE_PRICE, 0);
+    }
 #endif	
+}
+
+void CQyycyDlg::OnBtnModifyShopNo() 
+{
+	CDialogModifyShopNo dlg;
+
+    m_nShopNo = dlg.m_editShopNo;
+
+    CString str;
+    str.Format(_T("店号：%d"), m_nShopNo);
+    GetDlgItem(IDC_DLG_QYYCY_STATIC_SHOPNO)->SetWindowText(str);
+    GetDlgItem(IDC_BTN_DOWNLOAD_DATA)->EnableWindow(TRUE);
 }
