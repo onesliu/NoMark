@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "qyycy.h"
 #include "DialogModifyShopNo.h"
+#include "qyycyDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -36,9 +37,23 @@ void CDialogModifyShopNo::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CDialogModifyShopNo, CDialog)
 	//{{AFX_MSG_MAP(CDialogModifyShopNo)
-		// NOTE: the ClassWizard will add message map macros here
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogModifyShopNo message handlers
+
+BOOL CDialogModifyShopNo::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	
+	// TODO: Add extra initialization here
+	
+	return TRUE;  // return TRUE unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CDialogModifyShopNo::OnOK() 
+{
+	CDialog::OnOK();
+}

@@ -1,0 +1,7 @@
+; qyycy.def : Declares the module parameters for the DLL.
+
+LIBRARY      "qyycy"
+DESCRIPTION  'qyycy Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here

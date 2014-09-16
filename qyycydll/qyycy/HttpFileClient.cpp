@@ -83,7 +83,6 @@ char* CHttpFileClient::UnicodeToUTF8(const CString strSrc)
     return utf8Str;
 }
 
-
 LPCTSTR CHttpFileClient::GetCookie()
 {
     return m_strCookie;
@@ -415,7 +414,8 @@ BOOL CHttpFileClient::DownLoadFile(LPCTSTR szRemoteURI, LPCTSTR szLocalPath)
             goto _err_handler;
         
         DWORD dwWrite = 0, dwTotalWrite = 0;
-        UINT nRead = 0;       
+        UINT nRead = 0;
+        char* p = NULL;
         do
         {
             nRead = pHttpFile->Read(pszBuffer, __BUFFER_SIZE);

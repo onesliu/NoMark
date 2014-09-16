@@ -268,8 +268,9 @@ void CQyycyDlg::OnBtnModifyShopNo()
 {
 	CDialogModifyShopNo dlg;
 
+    dlg.DoModal();
     m_nShopNo = dlg.m_editShopNo;
-
+    
     CString str;
     str.Format(_T("µêºÅ£º%d"), m_nShopNo);
     GetDlgItem(IDC_DLG_QYYCY_STATIC_SHOPNO)->SetWindowText(str);
