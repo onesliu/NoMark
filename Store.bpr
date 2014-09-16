@@ -12,7 +12,7 @@
       debug\storetemp\LoginUnit.obj debug\storetemp\GoodAttribUnit.obj 
       debug\storetemp\StoreStatUnit.obj debug\storetemp\NameIMEUnit.obj 
       debug\storetemp\SelectUnit.obj debug\storetemp\ChangePriceUnit.obj 
-      debug\storetemp\BarcodeUnit.obj"/>
+      debug\storetemp\BarcodeUnit.obj debug\storetemp\GenerateListNo.obj"/>
     <RESFILES value="Store.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -20,7 +20,7 @@
     <RESDEPEN value="$(RESFILES) DbUnit.dfm ImcomingUnit.dfm StorageUnit.dfm GoodsFrameUnit.dfm 
       CheckUnit.dfm SysSetUnit.dfm LoginUnit.dfm GoodAttribUnit.dfm 
       StoreStatUnit.dfm NameIMEUnit.dfm SelectUnit.dfm ChangePriceUnit.dfm"/>
-    <LIBFILES value=""/>
+    <LIBFILES value="debug\qyycy.lib"/>
     <LIBRARIES value="vclx.lib TeeUI7C6.lib TeeDB7C6.lib Tee7C6.lib indy.lib vcldb.lib 
       dbexpress.lib dsnap.lib cds.lib ibxpress.lib dbrtl.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib dbrtl.lib ibxpress.lib cds.lib dsnap.lib dbexpress.lib 
@@ -84,6 +84,10 @@
       <FILE FILENAME="SelectUnit.cpp" FORMNAME="SelectForm" UNITNAME="SelectUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ChangePriceUnit.cpp" FORMNAME="ChangePriceForm" UNITNAME="ChangePriceUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="BarcodeUnit.cpp" FORMNAME="" UNITNAME="BarcodeUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="GenerateListNo.cpp" FORMNAME="" UNITNAME="GenerateListNo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="qyycy.h" FORMNAME="" UNITNAME="qyycy.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="debug\qyycy.lib" FORMNAME="" UNITNAME="qyycy.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="types.h" FORMNAME="" UNITNAME="types.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

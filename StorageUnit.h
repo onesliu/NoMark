@@ -124,6 +124,7 @@ __published:	// IDE-managed Components
     TToolButton *ToolButton16;
     TAction *PrividerManage;
     TAction *NewChangePrice;
+    TAction *UploadData;
     void __fastcall GoodTypeTreeContextPopup(TObject *Sender,
           TPoint &MousePos, bool &Handled);
     void __fastcall addtypeExecute(TObject *Sender);
@@ -167,6 +168,7 @@ __published:	// IDE-managed Components
     void __fastcall ChangePriceSheetShow(TObject *Sender);
     void __fastcall NewChangePriceExecute(TObject *Sender);
     void __fastcall GoodsSheetShow(TObject *Sender);
+    void __fastcall UploadDataExecute(TObject *Sender);
 private:	// User declarations
     TTreeNode * pGoodsRoot, *pIncomingRoot, *pSellRoot, *pCheckRoot,
     *pSearchRoot, *pPrintLabelRoot, *pAuditGoodRoot;

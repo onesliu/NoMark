@@ -23,15 +23,17 @@ int GenerateListNo::GetMaxListNo(LIST_TYPE type)
             q->SQL->Text = "select * from t_const where NAME='ShopNo'";
             q->Prepare();
             q->Open();
-            AnsiString shopNo = q->FieldByName("VAL")->AsString;
+            int shopNo = q->FieldByName("VAL")->AsInteger;
             
             q->Close();
-            sTmp1.sprintf("%d0000000", shopNo);
+            sTmp1.sprintf("%03d0000000", shopNo);
 
             sTmp2.sprintf("select max(IDX) as mid from t_changeprice_list where IDX>%s", sTmp1);
             q->SQL->Text = sTmp2;
             q->Open();
             nListNo = q->FieldByName("mid")->AsInteger;
+            if ( nListNo == 0 )
+                nListNo = StrToInt(sTmp1);
             q->Close();
             
             break;

@@ -6,7 +6,6 @@
 #include "DbUnit.h"
 //---------------------------------------------------------------------------
 USEFORM("DbUnit.cpp", d); /* TDataModule: File Type */
-USEFORM("OrderUnit.cpp", OrderForm);
 USEFORM("SetChangeUnit.cpp", SetChangeForm);
 USEFORM("UserLoginUnit.cpp", UserLoginForm);
 USEFORM("CashSetUnit.cpp", CashSetForm);
@@ -14,6 +13,7 @@ USEFORM("DetailUnit.cpp", DetailForm);
 USEFORM("ShowChangeUnit.cpp", ShowChangeForm);
 USEFORM("SelectUnit.cpp", SelectForm);
 USEFORM("PrinterUnit.cpp", PrinterForm);
+USEFORM("OrderUnit.cpp", OrderForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR param, int)
 {

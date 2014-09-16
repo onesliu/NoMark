@@ -551,8 +551,8 @@ object OrderForm: TOrderForm
           object OrderList: TListView
             Left = 0
             Top = 0
-            Width = 406
-            Height = 387
+            Width = 414
+            Height = 391
             Align = alClient
             Columns = <
               item
@@ -1016,7 +1016,7 @@ object OrderForm: TOrderForm
       object Panel4: TPanel
         Left = 0
         Top = 0
-        Width = 681
+        Width = 689
         Height = 57
         Align = alTop
         BevelOuter = bvNone
@@ -1046,16 +1046,16 @@ object OrderForm: TOrderForm
       object Panel6: TPanel
         Left = 0
         Top = 113
-        Width = 681
-        Height = 331
+        Width = 689
+        Height = 335
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
         object GoodsList: TListView
           Left = 0
           Top = 24
-          Width = 681
-          Height = 307
+          Width = 689
+          Height = 311
           Align = alClient
           Columns = <
             item
@@ -2341,6 +2341,12 @@ object OrderForm: TOrderForm
     Interval = 30000
     OnTimer = DutyTimerTimer
     Left = 592
+    Top = 8
+  end
+  object TimerDownload: TTimer
+    Interval = 300000
+    OnTimer = TimerDownloadTimer
+    Left = 624
     Top = 8
   end
 end

@@ -215,12 +215,12 @@ void __fastcall TSysSetForm::OkClick(TObject *Sender)
     }
 
     // save page4 (多店设置)
-    // 查询数据库中是否有相同调价单
-    q->SQL->Text = "select count(*) as line from t_const where NAME='ShopNo'";
+    q->Close();
+    q->SQL->Text = "SELECT COUNT(*) AS line FROM t_const where NAME='ShopNo'";
     q->Prepare();
     q->Open();
     int number = q->FieldByName("line")->AsInteger;
-    q->Close();
+
     if ( number == 0 )
     {
         ExecSQL( AnsiString().sprintf("INSERT INTO T_CONST(NAME, VAL) VALUES('ShopNo', '%s')", EditShopNo->Text));

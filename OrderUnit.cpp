@@ -20,7 +20,7 @@
 #include "CustomerLedUnit.h"
 #include "scale.h"
 #include "BarcodeUnit.h"
-#include "types.h"
+#include "qyycy.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -1257,85 +1257,100 @@ void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
 
 void __fastcall TOrderForm::CMRecieveNewPrice(TMessage &Message)
 {
-    if ( Message.WParam == TYPES_UPDATE_PRICE )
+}
+
+void __fastcall TOrderForm::TimerDownloadTimer(TObject *Sender)
+{
+    /* Download update price list from web server */
+    q->Close();
+    q->SQL->Text = "SELECT * FROM t_const WHERE NAME='ShopNo'";
+    q->Open();
+
+    HTTP_FILE_HANDLE hfcHandle;
+    hfcHandle = HFC_Init();
+    HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
+    HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
+    HFC_Download(hfcHandle, QYYCY_URL_DOWNLOAD, q->FieldByName("VAL")->AsInteger);
+    HFC_Release(hfcHandle);
+
+    /* Write update price list from to local database */
+    AnsiString strPath = ".\\download_change_price.txt";  //调价单
+    AnsiString r0, r1, sql1;
+
+    TStringList *list = new TStringList();
+    TStringList *changePricelist = new TStringList();
+    int nListIndex = 0;
+    int number;
+
+    list->LoadFromFile(strPath);
+
+    q->Close();
+
+    for ( int i=0; i<list->Count; i++ )
     {
-//        ShowInfo("into");
-        AnsiString strPath = ".\\UpdatePrice.txt";  //调价单
-        AnsiString r0, r1, sql1;
+        r0 = list->Strings[i];
 
-        TStringList *list = new TStringList();
-        TStringList *changePricelist = new TStringList();
-        int nListIndex = 0;
-        int number;
-
-        list->LoadFromFile(strPath);
-
-        q->Close();
-
-        for ( int i=0; i<list->Count; i++ )
+        if ( r0.IsEmpty() )
+            continue;
+        else
         {
-            r0 = list->Strings[i];
+            changePricelist->Clear();
+            SplitByChar(r0, '|', changePricelist);
 
-            if ( r0.IsEmpty() )
-                continue;
-            else
+            if ( changePricelist->Count == 5 )  //调价单开始的第一行
             {
-                changePricelist->Clear();
-                SplitByChar(r0, '|', changePricelist);
+                // 查询数据库中是否有相同调价单
+                sql1.sprintf("SELECT count(*) as line FROM T_CHANGEPRICE_LIST WHERE IDX=%d", changePricelist->Strings[0].Trim().ToInt());
+                q->SQL->Text = sql1;
+                q->Prepare();
+                q->Open();
+                number = q->FieldByName("line")->AsInteger;
+                q->Close();
 
-                if ( changePricelist->Count == 5 )  //调价单开始的第一行
+                if ( number == 0 )
                 {
-                    // 查询数据库中是否有相同调价单
-                    sql1.sprintf("SELECT count(*) as line FROM T_CHANGEPRICE_LIST WHERE IDX=%d", changePricelist->Strings[0].Trim().ToInt());
-                    q->SQL->Text = sql1;
-                    q->Prepare();
-                    q->Open();
-                    number = q->FieldByName("line")->AsInteger;
-                    q->Close();
-
-                    if ( number == 0 )
-                    {
-                        nListIndex = changePricelist->Strings[0].Trim().ToInt();
-
-                        sql1.sprintf("INSERT INTO T_CHANGEPRICE_LIST(IDX, CHANGEDATE, NAME, TOTALNUMBER, DESP) VALUES(%d, '%s', '%s', %d, '%s')",
-                                        changePricelist->Strings[0].Trim().ToInt(),
-                                        changePricelist->Strings[1].Trim(),
-                                        changePricelist->Strings[2].Trim(),
-                                        changePricelist->Strings[3].Trim().ToInt(),
-                                        changePricelist->Strings[4].Trim());
-                        q->SQL->Text = sql1;
-                        q->ExecSQL();
-                    }
-                    #if 0
-                    else if ( number == 1 )
-                    {
-                        sql1.sprintf("UPDATE T_CHANGEPRICE_LIST SET IDX=%d, CHANGEDATE='%s', NAME='%s', TOTALNUMBER=%d, DESP='%s'",
-                                        changePricelist->Strings[0].Trim().ToInt(),
-                                        changePricelist->Strings[1].Trim(),
-                                        changePricelist->Strings[2].Trim(),
-                                        changePricelist->Strings[3].Trim().ToInt(),
-                                        changePricelist->Strings[4].Trim());
-                        q->SQL->Text = sql1;
-                        q->ExecSQL();
-                    }
-                    #endif
-
                     nListIndex = changePricelist->Strings[0].Trim().ToInt();
-                }
-                else    //调价单的其他行
-                {
-                    q->Close();
-                    sql1.sprintf("INSERT INTO T_CHANGEPRICE_GOODS(GOODIDX, LISTIDX, OLDPRICE, NEWPRICE) VALUES(%d, %ld, %f, %f)",
+
+                    sql1.sprintf("INSERT INTO T_CHANGEPRICE_LIST(IDX, CHANGEDATE, NAME, TOTALNUMBER, DESP) VALUES(%d, '%s', '%s', %d, '%s')",
                                     changePricelist->Strings[0].Trim().ToInt(),
-                                    nListIndex,
-                                    changePricelist->Strings[2].Trim().ToDouble(),
-                                    changePricelist->Strings[3].Trim().ToDouble());
+                                    changePricelist->Strings[1].Trim(),
+                                    changePricelist->Strings[2].Trim(),
+                                    changePricelist->Strings[3].Trim().ToInt(),
+                                    changePricelist->Strings[4].Trim());
                     q->SQL->Text = sql1;
                     q->ExecSQL();
                 }
+                #if 0
+                else if ( number == 1 )
+                {
+                    sql1.sprintf("UPDATE T_CHANGEPRICE_LIST SET IDX=%d, CHANGEDATE='%s', NAME='%s', TOTALNUMBER=%d, DESP='%s'",
+                                    changePricelist->Strings[0].Trim().ToInt(),
+                                    changePricelist->Strings[1].Trim(),
+                                    changePricelist->Strings[2].Trim(),
+                                    changePricelist->Strings[3].Trim().ToInt(),
+                                    changePricelist->Strings[4].Trim());
+                    q->SQL->Text = sql1;
+                    q->ExecSQL();
+                }
+                #endif
+
+                nListIndex = changePricelist->Strings[0].Trim().ToInt();
+            }
+            else    //调价单的其他行
+            {
+                q->Close();
+                sql1.sprintf("INSERT INTO T_CHANGEPRICE_GOODS(GOODIDX, LISTIDX, OLDPRICE, NEWPRICE) VALUES(%d, %ld, %lf, %lf)",
+                                changePricelist->Strings[0].Trim().ToInt(),
+                                nListIndex,
+                                changePricelist->Strings[2].Trim().ToDouble(),
+                                changePricelist->Strings[3].Trim().ToDouble());
+                q->SQL->Text = sql1;
+                q->ExecSQL();
             }
         }
-        delete list;
-        delete changePricelist;
     }
+    delete list;
+    delete changePricelist;
 }
+//---------------------------------------------------------------------------
+

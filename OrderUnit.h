@@ -14,6 +14,7 @@
 #include <Menus.hpp>
 #include <ActnList.hpp>
 #include <ToolWin.hpp>
+#include "types.h"
 //---------------------------------------------------------------------------
 class TOrderForm : public TForm
 {
@@ -124,6 +125,7 @@ __published:	// IDE-managed Components
     TLabel *SellCountLabel;
     TToolButton *ToolButton7;
     TToolButton *ToolButton8;
+    TTimer *TimerDownload;
     void __fastcall NumberKeyPress(TObject *Sender, char &Key);
     void __fastcall PriceKeyPress(TObject *Sender, char &Key);
     void __fastcall FormShow(TObject *Sender);
@@ -166,6 +168,7 @@ __published:	// IDE-managed Components
     void __fastcall SellCountKeyPress(TObject *Sender, char &Key);
     void __fastcall ToolButton7Click(TObject *Sender);
     void __fastcall ToolButton8Click(TObject *Sender);
+    void __fastcall TimerDownloadTimer(TObject *Sender);
 private:	// User declarations
     TDateTime today;
     int orderlist, curlist;
@@ -204,10 +207,10 @@ public:		// User declarations
 private:
     void __fastcall CMRecieveNewPrice(TMessage &Message);
 
-#define WM_SEND  (WM_USER + 101)
-#define WM_RECV  (WM_USER + 102)
+//#define WM_SEND  (WM_USER + 101)
+//#define WM_RECV  (WM_USER + 102)
 BEGIN_MESSAGE_MAP
-  MESSAGE_HANDLER(WM_RECV, TMessage, CMRecieveNewPrice)
+  MESSAGE_HANDLER(WM_DOWNLOAD, TMessage, CMRecieveNewPrice)
 END_MESSAGE_MAP(TForm)
 };
 //---------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 object StorageForm: TStorageForm
-  Left = 372
-  Top = 128
+  Left = 380
+  Top = 87
   Width = 755
   Height = 547
   Caption = #24211#23384#31649#29702
@@ -19,7 +19,7 @@ object StorageForm: TStorageForm
   object title: TPanel
     Left = 0
     Top = 0
-    Width = 739
+    Width = 747
     Height = 49
     Align = alTop
     BevelOuter = bvNone
@@ -36,16 +36,16 @@ object StorageForm: TStorageForm
   object Panel3: TPanel
     Left = 0
     Top = 75
-    Width = 739
-    Height = 434
+    Width = 747
+    Height = 438
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
     object ListPage: TPageControl
       Left = 0
       Top = 0
-      Width = 739
-      Height = 434
+      Width = 747
+      Height = 438
       ActivePage = ChangePriceSheet
       Align = alClient
       Images = ImageList1
@@ -61,21 +61,21 @@ object StorageForm: TStorageForm
           Left = 185
           Top = 65
           Width = 3
-          Height = 337
+          Height = 341
           Cursor = crHSplit
           AutoSnap = False
         end
         inline GoodsFrame1: TGoodsFrame
           Left = 188
           Top = 65
-          Width = 543
-          Height = 337
+          Width = 551
+          Height = 341
           Align = alClient
           Ctl3D = False
           ParentCtl3D = False
           TabOrder = 0
           inherited CoolBar1: TCoolBar
-            Width = 543
+            Width = 551
             Bands = <
               item
                 Control = GoodsFrame1.ToolBar5
@@ -88,11 +88,11 @@ object StorageForm: TStorageForm
             end
           end
           inherited Info1: TPanel
-            Width = 543
+            Width = 551
           end
           inherited GoodsGrid: TDBGrid
-            Width = 543
-            Height = 290
+            Width = 551
+            Height = 294
             TitleFont.Charset = GB2312_CHARSET
             TitleFont.Height = -12
             TitleFont.Name = #23435#20307
@@ -111,7 +111,7 @@ object StorageForm: TStorageForm
           Left = 0
           Top = 65
           Width = 185
-          Height = 337
+          Height = 341
           Align = alLeft
           BevelOuter = bvNone
           TabOrder = 1
@@ -137,7 +137,7 @@ object StorageForm: TStorageForm
             Left = 0
             Top = 21
             Width = 185
-            Height = 316
+            Height = 320
             Align = alClient
             Ctl3D = True
             DragMode = dmAutomatic
@@ -159,7 +159,7 @@ object StorageForm: TStorageForm
         object GroupBox2: TGroupBox
           Left = 0
           Top = 0
-          Width = 731
+          Width = 739
           Height = 65
           Align = alTop
           Caption = #26597#35810#26465#20214
@@ -459,7 +459,7 @@ object StorageForm: TStorageForm
         object Splitter3: TSplitter
           Left = 0
           Top = 241
-          Width = 731
+          Width = 739
           Height = 3
           Cursor = crVSplit
           Align = alTop
@@ -467,8 +467,8 @@ object StorageForm: TStorageForm
         end
         object Splitter5: TSplitter
           Left = 0
-          Top = 309
-          Width = 731
+          Top = 313
+          Width = 739
           Height = 3
           Cursor = crVSplit
           Align = alBottom
@@ -477,7 +477,7 @@ object StorageForm: TStorageForm
         object CoolBar4: TCoolBar
           Left = 0
           Top = 0
-          Width = 731
+          Width = 739
           Height = 26
           AutoSize = True
           BandBorderStyle = bsNone
@@ -486,7 +486,7 @@ object StorageForm: TStorageForm
               Control = ToolBar4
               ImageIndex = -1
               MinHeight = 22
-              Width = 727
+              Width = 735
             end>
           Ctl3D = False
           object ToolBar4: TToolBar
@@ -545,8 +545,8 @@ object StorageForm: TStorageForm
         end
         object Panel4: TPanel
           Left = 0
-          Top = 312
-          Width = 731
+          Top = 316
+          Width = 739
           Height = 90
           Align = alBottom
           BevelOuter = bvNone
@@ -667,7 +667,7 @@ object StorageForm: TStorageForm
         object SellList: TDBGrid
           Left = 0
           Top = 26
-          Width = 731
+          Width = 739
           Height = 215
           Align = alTop
           DataSource = d.SellSource
@@ -774,8 +774,8 @@ object StorageForm: TStorageForm
         object SellGoodList: TDBGrid
           Left = 0
           Top = 244
-          Width = 731
-          Height = 65
+          Width = 739
+          Height = 69
           Align = alClient
           DataSource = d.SellGoodSource
           Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
@@ -886,7 +886,7 @@ object StorageForm: TStorageForm
         object Splitter7: TSplitter
           Left = 0
           Top = 209
-          Width = 731
+          Width = 739
           Height = 3
           Cursor = crVSplit
           Align = alTop
@@ -894,7 +894,7 @@ object StorageForm: TStorageForm
         object CoolBar5: TCoolBar
           Left = 0
           Top = 0
-          Width = 731
+          Width = 739
           Height = 26
           AutoSize = True
           BandBorderStyle = bsNone
@@ -903,13 +903,13 @@ object StorageForm: TStorageForm
               Control = ToolBar7
               ImageIndex = -1
               MinHeight = 22
-              Width = 727
+              Width = 735
             end>
           Ctl3D = False
           object ToolBar7: TToolBar
             Left = 9
             Top = 0
-            Width = 714
+            Width = 722
             Height = 22
             AutoSize = True
             ButtonWidth = 87
@@ -931,7 +931,7 @@ object StorageForm: TStorageForm
         object ChangeListGrid: TDBGrid
           Left = 0
           Top = 26
-          Width = 731
+          Width = 739
           Height = 183
           Align = alTop
           Ctl3D = True
@@ -983,8 +983,8 @@ object StorageForm: TStorageForm
         object ChangeGoodGrid: TDBGrid
           Left = 0
           Top = 212
-          Width = 731
-          Height = 190
+          Width = 739
+          Height = 194
           Align = alClient
           Ctl3D = True
           DataSource = d.ChangeGoodSource
@@ -1207,8 +1207,8 @@ object StorageForm: TStorageForm
         object PrintList: TListView
           Left = 0
           Top = 26
-          Width = 731
-          Height = 376
+          Width = 739
+          Height = 380
           Align = alClient
           Columns = <
             item
@@ -1249,7 +1249,7 @@ object StorageForm: TStorageForm
         object CoolBar6: TCoolBar
           Left = 0
           Top = 0
-          Width = 731
+          Width = 739
           Height = 26
           AutoSize = True
           BandBorderStyle = bsNone
@@ -1414,7 +1414,7 @@ object StorageForm: TStorageForm
   object CoolBar1: TCoolBar
     Left = 0
     Top = 49
-    Width = 739
+    Width = 747
     Height = 26
     AutoSize = True
     Bands = <
@@ -1422,12 +1422,12 @@ object StorageForm: TStorageForm
         Control = ToolBar1
         ImageIndex = -1
         MinHeight = 22
-        Width = 735
+        Width = 743
       end>
     object ToolBar1: TToolBar
       Left = 9
       Top = 0
-      Width = 722
+      Width = 730
       Height = 22
       AutoSize = True
       ButtonWidth = 99
@@ -1474,6 +1474,11 @@ object StorageForm: TStorageForm
         Top = 0
         Action = MonthSellStat
         AutoSize = True
+      end
+      object ToolButton17: TToolButton
+        Left = 289
+        Top = 0
+        Action = UploadData
       end
     end
   end
@@ -5937,6 +5942,11 @@ object StorageForm: TStorageForm
       Caption = #26032#24314#35843#20215#21333
       ImageIndex = 50
       OnExecute = NewChangePriceExecute
+    end
+    object UploadData: TAction
+      Caption = #19978#20256#25968#25454
+      ImageIndex = 33
+      OnExecute = UploadDataExecute
     end
   end
   object ImageList2: TImageList
