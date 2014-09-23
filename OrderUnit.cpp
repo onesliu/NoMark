@@ -1219,7 +1219,7 @@ void __fastcall TOrderForm::ToolButton7Click(TObject *Sender)
 //---------------------------------------------------------------------------
 
 void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
-{
+{     /*
     int num;
     q->Close();
     q->SQL->Text = "select count(*) as cnt from t_order_goods where orderlistidx = " + IntToStr(orderlist);
@@ -1248,13 +1248,69 @@ void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
     }
     delete printer;
 
-    TScale scale;
-    scale.ParseFile();
-    scale.SendScale();
+//    TScale scale;
+ //   scale.ParseFile();
+//    scale.SendScale();
+
+    */
+    AnsiString strPath = ".\\UpdatePrice.txt";  //调价单
+    AnsiString r0, r1, sql1;
+
+    TStringList *list = new TStringList();
+    TStringList *changePricelist = new TStringList();
+    int nListIndex = 0;
+     
+    list->LoadFromFile(strPath);
+
+    for ( int i=0; i<list->Count; i++ )
+    {
+        r0 = list->Strings[i];
+
+        if ( r0.IsEmpty() )
+            continue;
+        else
+        {
+            changePricelist->Clear();
+            SplitByChar(r0, '|', changePricelist);
+            if ( changePricelist->Count == 5 )
+            {//调价单开始的第一行
+                nListIndex = changePricelist->Strings[0].Trim().ToInt();
+                sql1.sprintf("INSERT INTO T_CHANGEPRICE_LIST(IDX, CHANGEDATE, NAME, TOTALNUMBER, DESP) VALUES(%d, '%s', '%s', %d, '%s')",
+                                changePricelist->Strings[0].Trim().ToInt(),
+                                changePricelist->Strings[1].Trim(),
+                                changePricelist->Strings[2].Trim(),
+                                changePricelist->Strings[3].Trim().ToInt(),
+                                changePricelist->Strings[4].Trim());
+                q->SQL->Text = sql1;
+                q->ExecSQL();
+                #if 0
+                q->SQL->Text = "INSERT INTO T_CHANGEPRICE_LIST(IDX, CHANGEDATE, NAME, TOTALNUMBER, DESP) VALUES(:idx, :changedate, :name, :totalnumber, :desp)";
+                q->ParamByName("idx")->AsInteger         = changePricelist->Strings[0].Trim().ToInt();
+                q->ParamByName("changedate")->AsString   = changePricelist->Strings[1].Trim();
+                q->ParamByName("name")->AsString         = changePricelist->Strings[2].Trim();
+                q->ParamByName("totalnumber")->AsInteger = changePricelist->Strings[3].Trim().ToInt();
+                q->ParamByName("desp")->AsString         = changePricelist->Strings[4].Trim();
+                q->ExecSQL();
+                #endif
+            }
+            else
+            {//调价单的其他行
+    //             sql1.sprintf("INSERT INTO T_CHANGEPRICE_GOODS SET GOODIDX=%d LISTIDX=%ld OLDPRICE=%d NEWPRICE=%d",
+    //                            changePricelist->Strings[0].Trim().ToInt(),
+    //                            nListIndex,
+     //                           changePricelist->Strings[2].Trim().ToInt(),
+     //                           changePricelist->Strings[3].Trim().ToInt());
+     //           q->SQL->Text = sql1;
+     //           q->ExecSQL();
+            }
+        }
+    }
+    delete list;
+    delete changePricelist;
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TOrderForm::CMRecieveNewPrice(TMessage &Message) {
+void __fastcall TOrderForm::CMRecieveNewPrice(TMessage &Message)
+{
 }
-//---------------------------------------------------------------------------
 

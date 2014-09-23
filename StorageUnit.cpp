@@ -672,7 +672,10 @@ void __fastcall TStorageForm::GoodsSheetShow(TObject *Sender)
     sGoodCode->Text = "";
     sNumber->Text = "";
 
-	FreshGoodsList( (int)GoodTypeTree->Selected->Data );
+    if (GoodTypeTree->Selected != NULL)
+    	FreshGoodsList( (int)GoodTypeTree->Selected->Data );
+    else
+        FreshGoodsList(0);
 }
 //---------------------------------------------------------------------------
 

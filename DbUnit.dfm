@@ -7,7 +7,7 @@ object d: Td
   Height = 553
   Width = 817
   object db: TIBDatabase
-    DatabaseName = 'debug/GOODS.GDB'
+    DatabaseName = 'debug\GOODS.GDB'
     Params.Strings = (
       'user_name=SYSDBA'
       'password=masterkey'

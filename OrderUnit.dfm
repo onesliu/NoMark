@@ -1139,7 +1139,7 @@ object OrderForm: TOrderForm
             Width = 145
             Height = 20
             Style = csDropDownList
-            ItemHeight = 12
+            ItemHeight = 0
             TabOrder = 0
             OnChange = GoodTypeChange
           end

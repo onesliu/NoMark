@@ -1,6 +1,6 @@
 object StorageForm: TStorageForm
-  Left = 372
-  Top = 128
+  Left = 359
+  Top = 157
   Width = 755
   Height = 547
   Caption = #24211#23384#31649#29702
@@ -46,12 +46,12 @@ object StorageForm: TStorageForm
       Top = 0
       Width = 739
       Height = 434
-      ActivePage = ChangePriceSheet
+      ActivePage = GoodsSheet
       Align = alClient
       Images = ImageList1
       MultiLine = True
       Style = tsFlatButtons
-      TabIndex = 3
+      TabIndex = 0
       TabOrder = 0
       object GoodsSheet: TTabSheet
         Caption = #21830#21697#20449#24687#31649#29702
@@ -495,8 +495,7 @@ object StorageForm: TStorageForm
             Width = 714
             Height = 22
             AutoSize = True
-            ButtonHeight = 18
-            ButtonWidth = 18
+            ButtonWidth = 75
             Caption = 'ToolBar1'
             EdgeBorders = []
             Flat = True
@@ -508,7 +507,7 @@ object StorageForm: TStorageForm
               Left = 0
               Top = 0
               Width = 96
-              Height = 12
+              Height = 22
               Caption = #36873#25321#21806#36135#21333#26085#26399': '
               Layout = tlCenter
             end
@@ -970,6 +969,7 @@ object StorageForm: TStorageForm
               Expanded = False
               FieldName = 'TOTALNUMBER'
               Title.Caption = #35843#20215#21830#21697#24635#25968
+              Width = 115
               Visible = True
             end
             item
@@ -1313,7 +1313,7 @@ object StorageForm: TStorageForm
           Left = 0
           Top = 24
           Width = 731
-          Height = 376
+          Height = 378
           Align = alClient
           DataSource = d.AuditGoodSource
           Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
