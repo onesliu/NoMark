@@ -1,6 +1,6 @@
 object SysSetForm: TSysSetForm
-  Left = 266
-  Top = 200
+  Left = 379
+  Top = 199
   BorderStyle = bsDialog
   BorderWidth = 5
   Caption = #31995#32479#35774#32622
@@ -49,9 +49,9 @@ object SysSetForm: TSysSetForm
     Top = 0
     Width = 451
     Height = 318
-    ActivePage = TabSheet1
+    ActivePage = TabSheet4
     Align = alClient
-    TabIndex = 0
+    TabIndex = 3
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #22522#26412#37197#32622
@@ -367,15 +367,35 @@ object SysSetForm: TSysSetForm
       end
     end
     object TabSheet4: TTabSheet
-      Caption = #36827#36135#35774#32622
+      Caption = #22810#24215#35774#32622
       ImageIndex = 3
-      object GroupBox3: TGroupBox
-        Left = 32
-        Top = 16
-        Width = 377
-        Height = 153
-        Caption = #36827#36135#33258#21160#21442#25968
+      object Label6: TLabel
+        Left = 16
+        Top = 32
+        Width = 48
+        Height = 12
+        Caption = #24215#32534#21495#65306
+      end
+      object EditShopNo: TEdit
+        Left = 64
+        Top = 24
+        Width = 33
+        Height = 20
         TabOrder = 0
+        Text = '0'
+        OnKeyPress = EditShopNoKeyPress
+      end
+      object UpDownShopNo: TUpDown
+        Left = 97
+        Top = 24
+        Width = 16
+        Height = 20
+        Associate = EditShopNo
+        Min = 0
+        Max = 999
+        Position = 0
+        TabOrder = 1
+        Wrap = False
       end
     end
   end

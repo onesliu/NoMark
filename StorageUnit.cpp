@@ -13,6 +13,8 @@
 #include "CheckUnit.h"
 #include "StoreStatUnit.h"
 #include "ChangePriceUnit.h"
+#include "types.h"
+#include "qyycy.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "GoodsFrameUnit"
@@ -50,7 +52,7 @@ void __fastcall TStorageForm::GoodTypeTreeContextPopup(TObject *Sender,
             edittype->Enabled = false;
         else
             edittype->Enabled = true;
-            
+
         TPoint p = GoodTypeTree->ClientToScreen( MousePos );
         GoodTypeTree->PopupMenu->Popup( p.x, p.y );
     }
@@ -143,7 +145,7 @@ void __fastcall TStorageForm::FreshTree()
 void __fastcall TStorageForm::FormShow(TObject *Sender)
 {
     GoodsSheet->TabVisible = true;
-    FreshTree();    
+    FreshTree();
 }
 //---------------------------------------------------------------------------
 
@@ -257,7 +259,7 @@ void __fastcall TStorageForm::FreshPrintSheet()
     q->Close();
 
     PrintList->Width = 1000;
-    
+
     if ( PrintList->Items->Count > 0 )
         PrintList->Items->Item[0]->Selected = true;
 }
@@ -553,13 +555,13 @@ void __fastcall TStorageForm::sNumberKeyPress(TObject *Sender, char &Key)
         SearchGoods();
         if ( pEdit->Name == "sBarCode" ) pEdit->Clear();
         else pEdit->SelectAll();
-    }    
+    }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TStorageForm::sGoodNameKeyPress(TObject *Sender, char &Key)
 {
-    if ( Key == '\'' || Key == '\"' ) Abort();    
+    if ( Key == '\'' || Key == '\"' ) Abort();
 
     TEdit *pEdit = (TEdit *)Sender;
     if ( Key == 0x0D )
@@ -676,6 +678,21 @@ void __fastcall TStorageForm::GoodsSheetShow(TObject *Sender)
     	FreshGoodsList( (int)GoodTypeTree->Selected->Data );
     else
         FreshGoodsList(0);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TStorageForm::UploadDataExecute(TObject *Sender)
+{
+    bool res;
+
+    HTTP_FILE_HANDLE hfcHandle;
+    hfcHandle = HFC_Init();
+
+    res = HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
+    res = HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
+
+    res = HFC_Upload(hfcHandle, QYYCY_URL_UPLOAD);
+    HFC_Release(hfcHandle);
 }
 //---------------------------------------------------------------------------
 

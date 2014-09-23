@@ -49,7 +49,9 @@ __published:	// IDE-managed Components
     TUpDown *LevelUpDown;
     TImageList *ImageList1;
     TTabSheet *TabSheet4;
-    TGroupBox *GroupBox3;
+    TLabel *Label6;
+    TEdit *EditShopNo;
+    TUpDown *UpDownShopNo;
     void __fastcall LowestProfitKeyPress(TObject *Sender, char &Key);
     void __fastcall AdminListSelectItem(TObject *Sender, TListItem *Item,
           bool Selected);
@@ -68,6 +70,7 @@ __published:	// IDE-managed Components
     void __fastcall UserSerialChange(TObject *Sender);
     void __fastcall UserDespChange(TObject *Sender);
     void __fastcall AdminNameKeyPress(TObject *Sender, char &Key);
+    void __fastcall EditShopNoKeyPress(TObject *Sender, char &Key);
 private:	// User declarations
     std::vector<int> deladmin, deluser;
 public:		// User declarations

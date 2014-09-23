@@ -23,8 +23,8 @@ object OrderForm: TOrderForm
   object SellPage: TPageControl
     Left = 0
     Top = 0
-    Width = 689
-    Height = 492
+    Width = 697
+    Height = 496
     ActivePage = ChangeSheet
     Align = alClient
     Font.Charset = GB2312_CHARSET
@@ -49,8 +49,8 @@ object OrderForm: TOrderForm
       object Panel2: TPanel
         Left = 0
         Top = 57
-        Width = 681
-        Height = 387
+        Width = 689
+        Height = 391
         Align = alClient
         BevelOuter = bvNone
         Font.Charset = GB2312_CHARSET
@@ -61,10 +61,10 @@ object OrderForm: TOrderForm
         ParentFont = False
         TabOrder = 0
         object OrderGuide: TPageControl
-          Left = 406
+          Left = 414
           Top = 0
           Width = 275
-          Height = 387
+          Height = 391
           ActivePage = TabSheet1
           Align = alRight
           Style = tsFlatButtons
@@ -542,8 +542,8 @@ object OrderForm: TOrderForm
         object Panel3: TPanel
           Left = 0
           Top = 0
-          Width = 406
-          Height = 387
+          Width = 414
+          Height = 391
           Align = alClient
           BevelOuter = bvNone
           Caption = 'Panel3'
@@ -551,8 +551,8 @@ object OrderForm: TOrderForm
           object OrderList: TListView
             Left = 0
             Top = 0
-            Width = 406
-            Height = 387
+            Width = 414
+            Height = 391
             Align = alClient
             Columns = <
               item
@@ -586,7 +586,7 @@ object OrderForm: TOrderForm
       object title: TPanel
         Left = 0
         Top = 0
-        Width = 681
+        Width = 689
         Height = 57
         Align = alTop
         BevelOuter = bvNone
@@ -602,7 +602,7 @@ object OrderForm: TOrderForm
         object TestMark1: TLabel
           Left = 32
           Top = 12
-          Width = 68
+          Width = 70
           Height = 33
           Caption = #32451#20064
           Font.Charset = GB2312_CHARSET
@@ -626,8 +626,8 @@ object OrderForm: TOrderForm
       OnShow = ChangeSheetShow
       object Splitter1: TSplitter
         Left = 0
-        Top = 349
-        Width = 681
+        Top = 353
+        Width = 689
         Height = 3
         Cursor = crVSplit
         Align = alBottom
@@ -637,7 +637,7 @@ object OrderForm: TOrderForm
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 681
+        Width = 689
         Height = 57
         Align = alTop
         BevelOuter = bvNone
@@ -653,7 +653,7 @@ object OrderForm: TOrderForm
         object TestMark2: TLabel
           Left = 32
           Top = 12
-          Width = 68
+          Width = 70
           Height = 33
           Caption = #32451#20064
           Font.Charset = GB2312_CHARSET
@@ -667,7 +667,7 @@ object OrderForm: TOrderForm
       object Panel5: TPanel
         Left = 0
         Top = 57
-        Width = 681
+        Width = 689
         Height = 56
         Align = alTop
         BevelOuter = bvNone
@@ -859,8 +859,8 @@ object OrderForm: TOrderForm
       object SellGoodsList: TListView
         Left = 0
         Top = 137
-        Width = 681
-        Height = 212
+        Width = 689
+        Height = 216
         Align = alClient
         Columns = <
           item
@@ -905,7 +905,7 @@ object OrderForm: TOrderForm
       object ToolBar1: TToolBar
         Left = 0
         Top = 113
-        Width = 681
+        Width = 689
         Height = 24
         AutoSize = True
         ButtonWidth = 99
@@ -956,8 +956,8 @@ object OrderForm: TOrderForm
       end
       object CancelList: TListView
         Left = 0
-        Top = 352
-        Width = 681
+        Top = 356
+        Width = 689
         Height = 92
         Align = alBottom
         Columns = <
@@ -1016,7 +1016,7 @@ object OrderForm: TOrderForm
       object Panel4: TPanel
         Left = 0
         Top = 0
-        Width = 681
+        Width = 689
         Height = 57
         Align = alTop
         BevelOuter = bvNone
@@ -1032,7 +1032,7 @@ object OrderForm: TOrderForm
         object TestMark3: TLabel
           Left = 32
           Top = 12
-          Width = 68
+          Width = 70
           Height = 33
           Caption = #32451#20064
           Font.Charset = GB2312_CHARSET
@@ -1046,16 +1046,16 @@ object OrderForm: TOrderForm
       object Panel6: TPanel
         Left = 0
         Top = 113
-        Width = 681
-        Height = 331
+        Width = 689
+        Height = 335
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
         object GoodsList: TListView
           Left = 0
           Top = 24
-          Width = 681
-          Height = 307
+          Width = 689
+          Height = 311
           Align = alClient
           Columns = <
             item
@@ -1101,7 +1101,7 @@ object OrderForm: TOrderForm
         object ToolBar2: TToolBar
           Left = 0
           Top = 0
-          Width = 681
+          Width = 689
           Height = 24
           AutoSize = True
           ButtonWidth = 99
@@ -1148,7 +1148,7 @@ object OrderForm: TOrderForm
       object Panel8: TPanel
         Left = 0
         Top = 57
-        Width = 681
+        Width = 689
         Height = 56
         Align = alTop
         BevelOuter = bvNone
@@ -2341,6 +2341,12 @@ object OrderForm: TOrderForm
     Interval = 30000
     OnTimer = DutyTimerTimer
     Left = 592
+    Top = 8
+  end
+  object TimerDownload: TTimer
+    Interval = 300000
+    OnTimer = TimerDownloadTimer
+    Left = 624
     Top = 8
   end
 end

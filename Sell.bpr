@@ -5,22 +5,22 @@
     <VERSION value="BCB.06.00"/>
     <PROJECT value=".\debug\Sell.exe"/>
     <OBJFILES value="debug\selltemp\Sell.obj debug\selltemp\DbUnit.obj 
-      debug\selltemp\OrderUnit.obj debug\selltemp\MessageBoxes.obj 
-      debug\selltemp\CommonUnit.obj debug\selltemp\GPrinterUnit.obj 
-      debug\selltemp\base_64.obj debug\selltemp\SetChangeUnit.obj 
-      debug\selltemp\UserLoginUnit.obj debug\selltemp\CashSetUnit.obj 
-      debug\selltemp\DetailUnit.obj debug\selltemp\ShowChangeUnit.obj 
-      debug\selltemp\SelectUnit.obj debug\selltemp\PrinterUnit.obj 
-      debug\selltemp\Scale.obj debug\selltemp\cJSON.obj 
-      debug\selltemp\CustomerLedUnit.obj debug\selltemp\BarcodeUnit.obj"/>
+      debug\selltemp\MessageBoxes.obj debug\selltemp\CommonUnit.obj 
+      debug\selltemp\GPrinterUnit.obj debug\selltemp\base_64.obj 
+      debug\selltemp\SetChangeUnit.obj debug\selltemp\UserLoginUnit.obj 
+      debug\selltemp\CashSetUnit.obj debug\selltemp\DetailUnit.obj 
+      debug\selltemp\ShowChangeUnit.obj debug\selltemp\SelectUnit.obj 
+      debug\selltemp\PrinterUnit.obj debug\selltemp\cJSON.obj 
+      debug\selltemp\CustomerLedUnit.obj debug\selltemp\BarcodeUnit.obj 
+      debug\selltemp\OrderUnit.obj debug\selltemp\Scale.obj"/>
     <RESFILES value="Sell.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) DbUnit.dfm OrderUnit.dfm SetChangeUnit.dfm UserLoginUnit.dfm 
-      CashSetUnit.dfm DetailUnit.dfm ShowChangeUnit.dfm SelectUnit.dfm 
-      PrinterUnit.dfm"/>
-    <LIBFILES value="lib\DhScalePluNet.lib"/>
+    <RESDEPEN value="$(RESFILES) DbUnit.dfm SetChangeUnit.dfm UserLoginUnit.dfm CashSetUnit.dfm 
+      DetailUnit.dfm ShowChangeUnit.dfm SelectUnit.dfm PrinterUnit.dfm 
+      OrderUnit.dfm"/>
+    <LIBFILES value="lib\DhScalePluNet.lib debug\qyycy.lib"/>
     <LIBRARIES value="bdertl.lib vclx.lib qrpt.lib indy.lib vcldb.lib dbexpress.lib dsnap.lib 
       cds.lib ibxpress.lib dbrtl.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib dbrtl.lib ibxpress.lib cds.lib dsnap.lib dbexpress.lib 
@@ -69,7 +69,6 @@
       <FILE FILENAME="Sell.res" FORMNAME="" UNITNAME="Sell.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Sell.cpp" FORMNAME="" UNITNAME="Sell" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="DbUnit.cpp" FORMNAME="d" UNITNAME="DbUnit" CONTAINERID="CCompiler" DESIGNCLASS="TDataModule" LOCALCOMMAND=""/>
-      <FILE FILENAME="OrderUnit.cpp" FORMNAME="OrderForm" UNITNAME="OrderUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="utility\MessageBoxes.cpp" FORMNAME="" UNITNAME="MessageBoxes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="utility\CommonUnit.cpp" FORMNAME="" UNITNAME="CommonUnit.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="utility\GPrinterUnit.cpp" FORMNAME="" UNITNAME="GPrinterUnit.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -81,11 +80,16 @@
       <FILE FILENAME="ShowChangeUnit.cpp" FORMNAME="ShowChangeForm" UNITNAME="ShowChangeUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SelectUnit.cpp" FORMNAME="SelectForm" UNITNAME="SelectUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PrinterUnit.cpp" FORMNAME="PrinterForm" UNITNAME="PrinterUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Scale.cpp" FORMNAME="" UNITNAME="Scale" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="utility\cJSON.c" FORMNAME="" UNITNAME="cJSON" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\DhScalePluNet.lib" FORMNAME="" UNITNAME="DhScalePluNet.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="CustomerLedUnit.cpp" FORMNAME="" UNITNAME="CustomerLedUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="BarcodeUnit.cpp" FORMNAME="" UNITNAME="BarcodeUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="types.h" FORMNAME="" UNITNAME="types.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OrderUnit.cpp" FORMNAME="OrderForm" UNITNAME="OrderUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="qyycy.h" FORMNAME="" UNITNAME="qyycy.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="debug\qyycy.lib" FORMNAME="" UNITNAME="qyycy.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Scale.h" FORMNAME="" UNITNAME="Scale.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Scale.cpp" FORMNAME="" UNITNAME="Scale" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

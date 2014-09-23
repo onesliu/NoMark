@@ -20,6 +20,7 @@
 #include "CustomerLedUnit.h"
 #include "scale.h"
 #include "BarcodeUnit.h"
+#include "qyycy.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -110,7 +111,7 @@ void __fastcall TOrderForm::NumberKeyPress(TObject *Sender, char &Key)
     //if ( (Key < '0' || Key > '9') && Key != 8 && Key != 0x0D ) Abort();
 
     AnsiString sql, barcode;
-	IBarcode oBar;
+    IBarcode oBar;
 
     if ( Key == 0x0D )
     {
@@ -119,7 +120,7 @@ void __fastcall TOrderForm::NumberKeyPress(TObject *Sender, char &Key)
             barcode = SelectForm->SelectGood( Number->Text, OrderList );
             if ( barcode == "" ) Abort();
             Number->Text = barcode;
-			oBar.parseCode( barcode );
+            oBar.parseCode( barcode );
         }
 
         title->Caption = "售货交易单(使用中)";
@@ -142,20 +143,20 @@ void __fastcall TOrderForm::NumberKeyPress(TObject *Sender, char &Key)
 
             OrderList->Selected->Caption = q->FieldByName("name")->AsString;
             Price->Text = MoneyStr(q->FieldByName("labelprice")->AsFloat);
-			
+
             if ( q->FieldByName("goodtype")->AsInteger == 0 ) // 计件商品
                 OrderList->Selected->SubItems->Strings[1] = "1";
             else {
-				if (oBar.type != IBarcode::WEIGHT) {
-					ShowError( "不是条码称打印的条码" );
-					q->Close();
-					Number->SelectAll();
-					return;
-				}
+                if (oBar.type != IBarcode::WEIGHT) {
+                    ShowError( "不是条码称打印的条码" );
+                    q->Close();
+                    Number->SelectAll();
+                    return;
+                }
                 OrderList->Selected->SubItems->Strings[1] = oBar.value.ToDouble() / 1000;
                 SellCount->Text = oBar.value.ToDouble() / 1000;
             }
-			
+
             OrderList->Selected->Data = (void*)q->FieldByName("idx")->AsInteger;
             CurLabelPrice = q->FieldByName("labelprice")->AsFloat;
             CurLowestPrice = q->FieldByName("lowestprice")->AsFloat;
@@ -276,7 +277,7 @@ void __fastcall TOrderForm::NewOrderList()
     TabSheet2->TabVisible = false;
     OrderGuide->ActivePageIndex = 0;
     NewGoodItem();
-	ShowCustomerLed(0,"");
+    ShowCustomerLed(0,"");
 }
 //---------------------------------------------------------------------------
 
@@ -448,7 +449,7 @@ void __fastcall TOrderForm::KeyProcess1( char &Key )
 {
     switch ( Key ) {
     case '+':
-        if ( OrderList->Selected->Index == 0 ) return; 
+        if ( OrderList->Selected->Index == 0 ) return;
         OrderList->Selected->Delete();
         OrderGuide->ActivePageIndex = 1;
         LeaveBox( Total, TotalLabel );
@@ -492,7 +493,7 @@ void __fastcall TOrderForm::AddUpTo()
 
     TotalReduce = 10;
 
-	ShowCustomerLed(CustomerLed::TOTAL, Total->Text);
+    ShowCustomerLed(CustomerLed::TOTAL, Total->Text);
 
 }
 //---------------------------------------------------------------------------
@@ -502,10 +503,10 @@ void __fastcall TOrderForm::ShowCustomerLed(int status, AnsiString price) {
     if (led->Open() == true) {
         led->Reset();
         led->OpenStatusLight(status);
-		if (status > 0)
-	        led->WritePrice(price);
-		else
-			led->WritePrice("0.00");
+        if (status > 0)
+            led->WritePrice(price);
+        else
+            led->WritePrice("0.00");
         led->Close();
     }
     else {
@@ -552,7 +553,7 @@ void __fastcall TOrderForm::GetMoneyKeyPress(TObject *Sender, char &Key)
     if ( Key == '+' || Key == 0x0D )
     {
         if ( GetMoney->Text == "" ) Abort();
-        
+
         // sellsheet over
         if ( GiveChange->Caption.ToDouble() < 0 ) {
             GetMoney->SelectAll();
@@ -711,7 +712,7 @@ void __fastcall TOrderForm::PosGoodItem( int goodidx )
 void __fastcall TOrderForm::ChangeSheetShow(TObject *Sender)
 {
     if ( Application->Terminated ) return;
-    SellDate->DateTime = today;    
+    SellDate->DateTime = today;
     FreshSellSheet( today );
 }
 //---------------------------------------------------------------------------
@@ -726,7 +727,7 @@ void __fastcall TOrderForm::SellGoodsListContextPopup(TObject *Sender,
     if ( pItem->ImageIndex == 0 || pItem->ImageIndex == 2 )
     {
         SellGoodsList->PopupMenu->Popup( p.x, p.y );
-    }   
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -763,7 +764,7 @@ void __fastcall TOrderForm::DoCancelExecute(TObject *Sender)
     if ( curlist != 0 && curlist != orderlist )
         CalcDayTotal( curlist );
     FreshSellSheet( today );
-    
+
     } catch (...) {
         ShowError("退货操作不成功");
     }
@@ -840,9 +841,9 @@ void __fastcall TOrderForm::PrintSellList1(AnsiString selltime)
     IPrinter * printer = new GiChengPrinter();
 
     if (printer->OpenPrinter() == false) {
-		return;
+        return;
     }
-	
+
     printer->ResetPrinter();
 
     if ( TestMode == 1 )
@@ -1014,13 +1015,13 @@ void __fastcall TOrderForm::GoodTypeChange(TObject *Sender)
 void __fastcall TOrderForm::BarCodeKeyPress(TObject *Sender, char &Key)
 {
     TEdit *pEdit = (TEdit *)Sender;
-    
+
     if ( Key == 0x0D )
     {
         SearchExecute(0);
         if ( pEdit->Name == "BarCode" ) pEdit->Clear();
         else pEdit->SelectAll();
-    }    
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -1312,5 +1313,99 @@ void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
 
 void __fastcall TOrderForm::CMRecieveNewPrice(TMessage &Message)
 {
+}
+
+void __fastcall TOrderForm::TimerDownloadTimer(TObject *Sender)
+{
+    /* Download update price list from web server */
+    q->Close();
+    q->SQL->Text = "SELECT * FROM t_const WHERE NAME='ShopNo'";
+    q->Open();
+
+    HTTP_FILE_HANDLE hfcHandle;
+    hfcHandle = HFC_Init();
+    HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
+    HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
+    HFC_Download(hfcHandle, QYYCY_URL_DOWNLOAD, q->FieldByName("VAL")->AsInteger);
+    HFC_Release(hfcHandle);
+
+    /* Write update price list from to local database */
+    AnsiString strPath = ".\\download_change_price.txt";  //调价单
+    AnsiString r0, r1, sql1;
+
+    TStringList *list = new TStringList();
+    TStringList *changePricelist = new TStringList();
+    int nListIndex = 0;
+    int number;
+
+    list->LoadFromFile(strPath);
+
+    q->Close();
+
+    for ( int i=0; i<list->Count; i++ )
+    {
+        r0 = list->Strings[i];
+
+        if ( r0.IsEmpty() )
+            continue;
+        else
+        {
+            changePricelist->Clear();
+            SplitByChar(r0, '|', changePricelist);
+
+            if ( changePricelist->Count == 5 )  //调价单开始的第一行
+            {
+                // 查询数据库中是否有相同调价单
+                sql1.sprintf("SELECT count(*) as line FROM T_CHANGEPRICE_LIST WHERE IDX=%d", changePricelist->Strings[0].Trim().ToInt());
+                q->SQL->Text = sql1;
+                q->Prepare();
+                q->Open();
+                number = q->FieldByName("line")->AsInteger;
+                q->Close();
+
+                if ( number == 0 )
+                {
+                    nListIndex = changePricelist->Strings[0].Trim().ToInt();
+
+                    sql1.sprintf("INSERT INTO T_CHANGEPRICE_LIST(IDX, CHANGEDATE, NAME, TOTALNUMBER, DESP) VALUES(%d, '%s', '%s', %d, '%s')",
+                                    changePricelist->Strings[0].Trim().ToInt(),
+                                    changePricelist->Strings[1].Trim(),
+                                    changePricelist->Strings[2].Trim(),
+                                    changePricelist->Strings[3].Trim().ToInt(),
+                                    changePricelist->Strings[4].Trim());
+                    q->SQL->Text = sql1;
+                    q->ExecSQL();
+                }
+                #if 0
+                else if ( number == 1 )
+                {
+                    sql1.sprintf("UPDATE T_CHANGEPRICE_LIST SET IDX=%d, CHANGEDATE='%s', NAME='%s', TOTALNUMBER=%d, DESP='%s'",
+                                    changePricelist->Strings[0].Trim().ToInt(),
+                                    changePricelist->Strings[1].Trim(),
+                                    changePricelist->Strings[2].Trim(),
+                                    changePricelist->Strings[3].Trim().ToInt(),
+                                    changePricelist->Strings[4].Trim());
+                    q->SQL->Text = sql1;
+                    q->ExecSQL();
+                }
+                #endif
+
+                nListIndex = changePricelist->Strings[0].Trim().ToInt();
+            }
+            else    //调价单的其他行
+            {
+                q->Close();
+                sql1.sprintf("INSERT INTO T_CHANGEPRICE_GOODS(GOODIDX, LISTIDX, OLDPRICE, NEWPRICE) VALUES(%d, %ld, %lf, %lf)",
+                                changePricelist->Strings[0].Trim().ToInt(),
+                                nListIndex,
+                                changePricelist->Strings[2].Trim().ToDouble(),
+                                changePricelist->Strings[3].Trim().ToDouble());
+                q->SQL->Text = sql1;
+                q->ExecSQL();
+            }
+        }
+    }
+    delete list;
+    delete changePricelist;
 }
 

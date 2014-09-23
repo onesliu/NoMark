@@ -19,7 +19,7 @@ object ChangePriceForm: TChangePriceForm
   object GroupBox1: TGroupBox
     Left = 0
     Top = 57
-    Width = 677
+    Width = 685
     Height = 64
     Align = alTop
     Caption = #21333#25454#20449#24687
@@ -76,7 +76,7 @@ object ChangePriceForm: TChangePriceForm
   object title: TPanel
     Left = 0
     Top = 0
-    Width = 677
+    Width = 685
     Height = 57
     Align = alTop
     BevelOuter = bvNone
@@ -93,8 +93,8 @@ object ChangePriceForm: TChangePriceForm
   object ChangeGrid: TDBGrid
     Left = 0
     Top = 121
-    Width = 677
-    Height = 379
+    Width = 685
+    Height = 383
     Align = alClient
     BorderStyle = bsNone
     DataSource = ChangePriceDataSource
@@ -143,8 +143,8 @@ object ChangePriceForm: TChangePriceForm
   end
   object Panel2: TPanel
     Left = 0
-    Top = 500
-    Width = 677
+    Top = 504
+    Width = 685
     Height = 45
     Align = alBottom
     BevelOuter = bvNone
@@ -152,7 +152,7 @@ object ChangePriceForm: TChangePriceForm
     ParentCtl3D = False
     TabOrder = 3
     DesignSize = (
-      677
+      685
       45)
     object Ok: TButton
       Left = 216

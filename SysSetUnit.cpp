@@ -35,6 +35,13 @@ void __fastcall TSysSetForm::SysSet()
     }
     q->Close();
 
+    q->SQL->Text = "select * from t_const where NAME='ShopNo'";
+    q->Prepare();
+    q->Open();
+    EditShopNo->Text = q->FieldByName("VAL")->AsString;
+    q->Close();
+
+        
     TListItem *pItem;
     AdminList->Clear();
     q->SQL->Text = "select * from t_admin";
@@ -207,6 +214,22 @@ void __fastcall TSysSetForm::OkClick(TObject *Sender)
         ExecSQL( "delete from t_user where idx=" + IntToStr(deluser[i]) );
     }
 
+    // save page4 (¶àµêÉèÖÃ)
+    q->Close();
+    q->SQL->Text = "SELECT COUNT(*) AS line FROM t_const where NAME='ShopNo'";
+    q->Prepare();
+    q->Open();
+    int number = q->FieldByName("line")->AsInteger;
+
+    if ( number == 0 )
+    {
+        ExecSQL( AnsiString().sprintf("INSERT INTO T_CONST(NAME, VAL) VALUES('ShopNo', '%s')", EditShopNo->Text));
+    }
+    else
+    {
+        ExecSQL( AnsiString().sprintf("UPDATE T_CONST SET VAL='%s' WHERE NAME='ShopNo'", EditShopNo->Text));
+    }
+
     ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------
@@ -312,6 +335,13 @@ void __fastcall TSysSetForm::UserDespChange(TObject *Sender)
 void __fastcall TSysSetForm::AdminNameKeyPress(TObject *Sender, char &Key)
 {
     if ( Key == '\'' || Key == '\"' ) Abort();    
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TSysSetForm::EditShopNoKeyPress(TObject *Sender, char &Key)
+{
+    if ( (Key < '0' || Key > '9') && Key != 8 && Key != 0x0D ) Abort();
 }
 //---------------------------------------------------------------------------
 
