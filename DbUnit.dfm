@@ -7,7 +7,8 @@ object d: Td
   Height = 553
   Width = 817
   object db: TIBDatabase
-    DatabaseName = 'debug\GOODS.GDB'
+    Connected = True
+    DatabaseName = 'GOODS.GDB'
     Params.Strings = (
       'user_name=SYSDBA'
       'password=masterkey'
@@ -454,14 +455,14 @@ object d: Td
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object IncomingSetINCOMINGDATE: TDateField
-      FieldName = 'INCOMINGDATE'
-      Origin = '"T_INCOMING_LIST"."INCOMINGDATE"'
-    end
     object IncomingSetNAME: TIBStringField
       FieldName = 'NAME'
       Origin = '"T_INCOMING_LIST"."NAME"'
       Size = 510
+    end
+    object IncomingSetINCOMINGDATE: TDateTimeField
+      FieldName = 'INCOMINGDATE'
+      Origin = '"T_INCOMING_LIST"."INCOMINGDATE"'
     end
     object IncomingSetTOTALCOST: TIBBCDField
       FieldName = 'TOTALCOST'
@@ -637,7 +638,7 @@ object d: Td
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object SellSetORDERDATE: TDateField
+    object SellSetORDERDATE: TDateTimeField
       FieldName = 'ORDERDATE'
       Origin = '"T_ORDER_LIST"."ORDERDATE"'
     end
@@ -787,10 +788,6 @@ object d: Td
       Precision = 18
       Size = 2
     end
-    object SellGoodSetCOUNTS: TIntegerField
-      FieldName = 'COUNTS'
-      Origin = '"T_ORDER_GOODS"."COUNTS"'
-    end
     object SellGoodSetCOST: TIBBCDField
       FieldName = 'COST'
       Origin = '"T_ORDER_GOODS"."COST"'
@@ -798,20 +795,18 @@ object d: Td
       Precision = 18
       Size = 2
     end
+    object SellGoodSetCOUNTS: TIBBCDField
+      FieldName = 'COUNTS'
+      Origin = '"T_ORDER_GOODS"."COUNTS"'
+      Precision = 18
+      Size = 3
+    end
     object SellGoodSetPROFIT: TIBBCDField
       FieldName = 'PROFIT'
       Origin = '"T_ORDER_GOODS"."PROFIT"'
       currency = True
       Precision = 18
       Size = 2
-    end
-    object SellGoodSetSELLTIME: TDateTimeField
-      FieldName = 'SELLTIME'
-      Origin = '"T_ORDER_GOODS"."SELLTIME"'
-    end
-    object SellGoodSetCANCELDATE: TDateField
-      FieldName = 'CANCELDATE'
-      Origin = '"T_ORDER_GOODS"."CANCELDATE"'
     end
     object SellGoodSetGOODTYPE: TIBStringField
       FieldName = 'GOODTYPE'
@@ -822,6 +817,14 @@ object d: Td
       FieldKind = fkCalculated
       FieldName = 'RATE'
       Calculated = True
+    end
+    object SellGoodSetSELLTIME: TDateTimeField
+      FieldName = 'SELLTIME'
+      Origin = '"T_ORDER_GOODS"."SELLTIME"'
+    end
+    object SellGoodSetCANCELDATE: TDateTimeField
+      FieldName = 'CANCELDATE'
+      Origin = '"T_ORDER_GOODS"."CANCELDATE"'
     end
   end
   object SellGoodSource: TDataSource
@@ -884,17 +887,11 @@ object d: Td
       Precision = 18
       Size = 2
     end
-    object CancelGoodSetCOUNTS: TIntegerField
+    object CancelGoodSetCOUNTS: TIBBCDField
       FieldName = 'COUNTS'
       Origin = '"T_ORDER_GOODS"."COUNTS"'
-    end
-    object CancelGoodSetSELLTIME: TDateTimeField
-      FieldName = 'SELLTIME'
-      Origin = '"T_ORDER_GOODS"."SELLTIME"'
-    end
-    object CancelGoodSetCANCELDATE: TDateField
-      FieldName = 'CANCELDATE'
-      Origin = '"T_ORDER_GOODS"."CANCELDATE"'
+      Precision = 18
+      Size = 3
     end
     object CancelGoodSetTOTALPRICE: TIBBCDField
       FieldName = 'TOTALPRICE'
@@ -921,6 +918,14 @@ object d: Td
       currency = True
       Precision = 18
       Size = 2
+    end
+    object CancelGoodSetSELLTIME: TDateTimeField
+      FieldName = 'SELLTIME'
+      Origin = '"T_ORDER_GOODS"."SELLTIME"'
+    end
+    object CancelGoodSetCANCELDATE: TDateTimeField
+      FieldName = 'CANCELDATE'
+      Origin = '"T_ORDER_GOODS"."CANCELDATE"'
     end
   end
   object CancelGoodSource: TDataSource

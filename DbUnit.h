@@ -100,7 +100,6 @@ __published:	// IDE-managed Components
     TDateTimeField *IncomingGoodSetINCOMINGTIME;
     TIBBCDField *IncomingGoodSetLOWESTPRICE;
     TIBStringField *IncomingGoodSetGOODTYPE;
-    TDateField *IncomingSetINCOMINGDATE;
     TIBStringField *IncomingSetNAME;
     TIBBCDField *IncomingSetTOTALCOST;
     TIBBCDField *IncomingSetTOTALNUMBER;
@@ -113,7 +112,6 @@ __published:	// IDE-managed Components
     TIBQuery *SellGoodSet;
     TDataSource *SellGoodSource;
     TIntegerField *SellSetIDX;
-    TDateField *SellSetORDERDATE;
     TIBBCDField *SellSetTOTALCHANGE;
     TIBBCDField *SellSetTOTALCASH;
     TIBBCDField *SellSetTOTALCOST;
@@ -133,11 +131,8 @@ __published:	// IDE-managed Components
     TIBStringField *SellGoodSetBARCODE;
     TIntegerField *SellGoodSetORDERGOODIDX;
     TIBBCDField *SellGoodSetPRICE;
-    TIntegerField *SellGoodSetCOUNTS;
     TIBBCDField *SellGoodSetCOST;
     TIBBCDField *SellGoodSetPROFIT;
-    TDateTimeField *SellGoodSetSELLTIME;
-    TDateField *SellGoodSetCANCELDATE;
     TIBStringField *SellGoodSetGOODTYPE;
     TStringField *SellGoodSetRATE;
     TIBQuery *CancelGoodSet;
@@ -149,9 +144,6 @@ __published:	// IDE-managed Components
     TIBStringField *CancelGoodSetBARCODE;
     TIntegerField *CancelGoodSetORDERGOODIDX;
     TIBBCDField *CancelGoodSetPRICE;
-    TIntegerField *CancelGoodSetCOUNTS;
-    TDateTimeField *CancelGoodSetSELLTIME;
-    TDateField *CancelGoodSetCANCELDATE;
     TIBBCDField *CancelGoodSetTOTALPRICE;
     TIBBCDField *CancelGoodSetTOTALSELLNUM;
     TIBBCDField *CancelGoodSetTOTALCANCELNUM;
@@ -177,6 +169,14 @@ __published:	// IDE-managed Components
     TIBQuery *ChangePriceSet;
     TIBBCDField *IncomingGoodSetSTORAGENUMBER;
     TIBBCDField *IncomingGoodSetORIGINCOST;
+    TDateTimeField *IncomingSetINCOMINGDATE;
+    TIBBCDField *SellGoodSetCOUNTS;
+    TIBBCDField *CancelGoodSetCOUNTS;
+    TDateTimeField *SellSetORDERDATE;
+    TDateTimeField *SellGoodSetSELLTIME;
+    TDateTimeField *SellGoodSetCANCELDATE;
+    TDateTimeField *CancelGoodSetSELLTIME;
+    TDateTimeField *CancelGoodSetCANCELDATE;
     void __fastcall DataModuleCreate(TObject *Sender);
     void __fastcall DataModuleDestroy(TObject *Sender);
     void __fastcall CheckGoodSetCalcFields(TDataSet *DataSet);
