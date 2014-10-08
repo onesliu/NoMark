@@ -60,6 +60,11 @@ object GoodsFrame: TGoodsFrame
         Action = StatInfo
         AutoSize = True
       end
+      object ToolButton4: TToolButton
+        Left = 269
+        Top = 0
+        Action = AddNewGoods
+      end
     end
   end
   object Info1: TPanel
@@ -200,6 +205,11 @@ object GoodsFrame: TGoodsFrame
     object StatInfo: TAction
       Caption = #32479#35745#20449#24687
       ImageIndex = 7
+    end
+    object AddNewGoods: TAction
+      Caption = #28155#21152#26032#21830#21697
+      ImageIndex = 5
+      OnExecute = AddNewGoodsExecute
     end
   end
   object ImageList1: TImageList

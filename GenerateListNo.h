@@ -14,7 +14,6 @@
 class GenerateListNo
 {
 public:
-
     int nListNo;
     int GetMaxListNo(LIST_TYPE type);
 };

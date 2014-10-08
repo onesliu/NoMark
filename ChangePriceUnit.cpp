@@ -8,6 +8,7 @@
 #include "CommonUnit.h"
 #include "MessageBoxes.h"
 #include "GenerateListNo.h"
+#include "qyycy.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -150,7 +151,11 @@ void __fastcall TChangePriceForm::FormClose(TObject *Sender,
                                        q->FieldByName("NEWPRICE")->AsFloat);
             list->Add(str);
         }
-        list->SaveToFile(".\\upload_change_price.txt");
+        
+        if ( !DirectoryExists(".\\data") )
+            CreateDir(".\\data");
+            
+        list->SaveToFile(FILE_UPLOAD_CHANGE_PRICE);
         delete list;
         list = NULL;
     }

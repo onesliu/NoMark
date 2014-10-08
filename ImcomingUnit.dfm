@@ -1,6 +1,6 @@
 object IncomingForm: TIncomingForm
-  Left = 384
-  Top = 161
+  Left = 497
+  Top = 104
   BorderIcons = [biMinimize, biMaximize]
   BorderStyle = bsDialog
   Caption = #36827#36135#21333

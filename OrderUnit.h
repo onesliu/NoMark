@@ -14,7 +14,6 @@
 #include <Menus.hpp>
 #include <ActnList.hpp>
 #include <ToolWin.hpp>
-#include "types.h"
 //---------------------------------------------------------------------------
 class TOrderForm : public TForm
 {
@@ -201,17 +200,10 @@ private:	// User declarations
     void __fastcall FreshGoodsList( AnsiString sql );
     void __fastcall FreshTotal( int orderlistid = 0 );
 	void __fastcall ShowCustomerLed(int status, AnsiString price);
+    void __fastcall DownloadUpdatePricelist();
+    void __fastcall DownloadGoodsInfo();
 public:		// User declarations
     __fastcall TOrderForm(TComponent* Owner);
-
-private:
-    void __fastcall CMRecieveNewPrice(TMessage &Message);
-
-//#define WM_SEND  (WM_USER + 101)
-//#define WM_RECV  (WM_USER + 102)
-BEGIN_MESSAGE_MAP
-  MESSAGE_HANDLER(WM_DOWNLOAD, TMessage, CMRecieveNewPrice)
-END_MESSAGE_MAP(TForm)
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TOrderForm *OrderForm;

@@ -7,7 +7,6 @@ object d: Td
   Height = 553
   Width = 817
   object db: TIBDatabase
-    Connected = True
     DatabaseName = 'GOODS.GDB'
     Params.Strings = (
       'user_name=SYSDBA'
@@ -427,13 +426,18 @@ object d: Td
     CachedUpdates = True
     DeleteSQL.Strings = (
       'delete from t_goods where idx=:IDX')
-    SelectSQL.Strings = (
-      'select * from T_GOODS')
+    InsertSQL.Strings = (
+      
+        'insert into t_goods(typeidx, barcode, name, goodcode, goodnumber' +
+        ', cost, labelprice, lowestprice, desp, goodtype, added) values(:' +
+        'TYPEIDX, :BARCODE, :NAME, :GOODCODE, :GOODNUMBER, :COST, :LABELP' +
+        'RICE, :LOWESTPRICE, :DESP, :GOODTYPE, :ADDED)')
     ModifySQL.Strings = (
-      'update t_goods set name=:NAME, goodcode=:GOODCODE,'
-      'barcode=:BARCODE, cost=:COST, labelprice=:LABELPRICE,'
-      'lowestprice=:LOWESTPRICE, goodnumber=:GOODNUMBER'
-      'where idx=:IDX')
+      
+        'update t_goods set typeidx=:TYPEIDX, name=:NAME, goodcode=:GOODC' +
+        'ODE, barcode=:BARCODE, cost=:COST, labelprice=:LABELPRICE, lowes' +
+        'tprice=:LOWESTPRICE, goodnumber=:GOODNUMBER, desp=:DESP, added=:' +
+        'ADDED where idx=:IDX')
     Left = 464
     Top = 80
   end

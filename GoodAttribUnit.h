@@ -14,6 +14,7 @@
 #include <IBCustomDataSet.hpp>
 #include <IBQuery.hpp>
 #include <IBTable.hpp>
+#include "qyycy.h"
 //---------------------------------------------------------------------------
 class TGoodAttribForm : public TForm
 {
@@ -25,21 +26,33 @@ __published:	// IDE-managed Components
     TLabel *Label12;
     TLabel *Label13;
     TLabel *Label15;
-    TEdit *GoodName;
-    TEdit *GoodCode;
-    TEdit *Cost;
-    TEdit *BarCode;
-    TEdit *SellPrice;
+    TEdit *GoodsName;
+    TEdit *GoodsCode;
+    TEdit *GoodsCost;
+    TEdit *GoodsBarcode;
+    TEdit *GoodsSellPrice;
     TPanel *Panel1;
     TButton *Ok;
     TButton *Cancel;
+    TComboBox *GoodsType;
+    TLabel *Label1;
+    TEdit *GoodsDesp;
+    TLabel *Label2;
+    TEdit *GoodsAttr;
+    TLabel *Label3;
+    TEdit *GoodsNumber;
+    TLabel *Label4;
+    TEdit *GoodsLowestPrice;
+    TLabel *Label5;
     void __fastcall OkClick(TObject *Sender);
 private:	// User declarations
     TListItem *Item;
     TDataSet *pDS;
+    OP_TYPES m_opType;
 public:		// User declarations
     __fastcall TGoodAttribForm(TComponent* Owner);
-    bool __fastcall SetGoodItem( TDataSet *pds );
+    bool __fastcall SetGoodItem(TDataSet *pds, OP_TYPES op_type);
+    bool __fastcall InsertGoods(TDataSet *pds, OP_TYPES op_type);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TGoodAttribForm *GoodAttribForm;

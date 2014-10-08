@@ -46,6 +46,8 @@ __published:	// IDE-managed Components
     TMenuItem *N8;
     TToolButton *ToolButton1;
     TAction *StatInfo;
+    TToolButton *ToolButton4;
+    TAction *AddNewGoods;
     void __fastcall ClearLabelExecute(TObject *Sender);
     void __fastcall SetLabelExecute(TObject *Sender);
     void __fastcall DelGoodExecute(TObject *Sender);
@@ -57,15 +59,19 @@ __published:	// IDE-managed Components
           TGridDrawState State);
     void __fastcall GoodsGridMouseUp(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
+    void __fastcall AddNewGoodsExecute(TObject *Sender);
 private:	// User declarations
     AnsiString GoodsListSql;
     bool blSelect;
     void * BookMark;
     int CurrNo, OldNo;
+    int m_nGoodsCatagory;
 public:		// User declarations
     __fastcall TGoodsFrame(TComponent* Owner);
 
-    void __fastcall SetSelectedType( int GoodTypeId, bool ClearOut=true );
+    void __fastcall SetSelectedType(int GoodTypeId, bool ClearOut=true);
+    void __fastcall SetGoodsCatagory(int catagory);
+    int  __fastcall GetGoodsCatagory(void);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TGoodsFrame *GoodsFrame;

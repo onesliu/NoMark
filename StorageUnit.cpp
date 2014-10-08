@@ -164,8 +164,9 @@ void __fastcall TStorageForm::edittypeExecute(TObject *Sender)
 void __fastcall TStorageForm::GoodTypeTreeChange(TObject *Sender,
       TTreeNode *Node)
 {
-	FreshGoodsList( (int)Node->Data );
-	ListPage->ActivePageIndex = 0;
+    FreshGoodsList((int)Node->Data);
+    ListPage->ActivePageIndex = 0;
+    GoodsFrame1->SetGoodsCatagory((int)Node->Data);
 }
 //---------------------------------------------------------------------------
 
@@ -336,12 +337,14 @@ void __fastcall TStorageForm::SetPrintLabel( int goodid, int storage )
 
 void __fastcall TStorageForm::FreshGoodsList( int GoodTypeId )
 {
-    AnsiString sql = "select g.idx, g.name, g.goodcode, g.cost, g.goodnumber, g.labelprice, \
-        g.barcode, g.lowestprice, g.labelprinted, t.name as goodtype from t_goods g \
-        left outer join t_goodtype t on g.typeidx = t.idx";
+    AnsiString sql = "select g.idx, g.typeidx, g.barcode, g.name, g.goodcode, \
+                      g.cost, g.goodnumber, g.labelprice, g.lowestprice, g.labelprinted, \
+                      g.desp, g.goodtype as g_goodtype, g.added, t.name as goodtype from t_goods g \
+                      left outer join t_goodtype t on g.typeidx = t.idx";
+
     if ( GoodTypeId >= 0 )
         sql += " where g.typeidx=" + IntToStr(GoodTypeId);
-    d->FreshGoodList( sql );
+    d->FreshGoodList(sql);
 }
 //---------------------------------------------------------------------------
 
@@ -574,16 +577,19 @@ void __fastcall TStorageForm::sGoodNameKeyPress(TObject *Sender, char &Key)
 
 void __fastcall TStorageForm::SearchGoods()
 {
-    AnsiString sql = "select g.idx, g.name, g.goodcode, g.cost, g.goodnumber, g.labelprice, \
-        g.barcode, g.lowestprice, g.labelprinted, t.name as goodtype from t_goods g \
-        left outer join t_goodtype t on g.typeidx = t.idx";
-    if ( sBarCode->Text != "" || sGoodName->Text != "" || sGoodCode->Text != "" || sNumber->Text != "" ) {
-		sql += " where ";
-	    if ( sBarCode->Text != "" ) sql += "g.barcode like '%" + sBarCode->Text + "%' or ";
-	    if ( sGoodName->Text != "" ) sql += "g.name like '%" + sGoodName->Text + "%' or ";
-	    if ( sGoodCode->Text != "" ) sql += "g.goodcode like '%" + sGoodCode->Text + "%' or ";
-	    if ( sNumber->Text != "" ) sql += "g.goodnumber=" + sNumber->Text + " or ";
-	    sql = sql.SubString(1, sql.Length()-3);
+    AnsiString sql = "select g.idx, g.typeidx, g.barcode, g.name, g.goodcode, \
+                      g.cost, g.goodnumber, g.labelprice, g.lowestprice, g.labelprinted, \
+                      g.desp, g.goodtype as g_goodtype, g.added, t.name as goodtype from t_goods g \
+                      left outer join t_goodtype t on g.typeidx = t.idx";
+
+    if ( sBarCode->Text != "" || sGoodName->Text != "" || sGoodCode->Text != "" || sNumber->Text != "" )
+    {
+        sql += " where ";
+        if ( sBarCode->Text != "" ) sql += "g.barcode like '%" + sBarCode->Text + "%' or ";
+        if ( sGoodName->Text != "" ) sql += "g.name like '%" + sGoodName->Text + "%' or ";
+        if ( sGoodCode->Text != "" ) sql += "g.goodcode like '%" + sGoodCode->Text + "%' or ";
+        if ( sNumber->Text != "" ) sql += "g.goodnumber=" + sNumber->Text + " or ";
+        sql = sql.SubString(1, sql.Length()-3);
     }
 
     d->FreshGoodList( sql );
@@ -675,7 +681,7 @@ void __fastcall TStorageForm::GoodsSheetShow(TObject *Sender)
     sNumber->Text = "";
 
     if (GoodTypeTree->Selected != NULL)
-    	FreshGoodsList( (int)GoodTypeTree->Selected->Data );
+        FreshGoodsList( (int)GoodTypeTree->Selected->Data );
     else
         FreshGoodsList(0);
 }
@@ -684,15 +690,61 @@ void __fastcall TStorageForm::GoodsSheetShow(TObject *Sender)
 void __fastcall TStorageForm::UploadDataExecute(TObject *Sender)
 {
     bool res;
-
     HTTP_FILE_HANDLE hfcHandle;
-    hfcHandle = HFC_Init();
+    AnsiString str;
 
+    // Update goods list
+    TStringList *list = new TStringList();
+
+    q->Close();
+    q->SQL->Text = "SELECT * FROM t_goods WHERE ADDED = 0";
+    q->Open();
+    if ( q->RecordCount != 0 )
+    {              
+        for ( q->First(); !q->Eof; q->Next() )
+        {
+            str.sprintf("%d|%s|%s|%s|%f|%f|%f|%f|%s|%d|1",
+                            q->FieldByName("typeidx")->AsInteger,
+                            q->FieldByName("barcode")->AsString,
+                            q->FieldByName("name")->AsString,
+                            q->FieldByName("goodcode")->AsString,
+                            q->FieldByName("goodnumber")->AsFloat,
+                            q->FieldByName("cost")->AsFloat,
+                            q->FieldByName("labelprice")->AsFloat,
+                            q->FieldByName("lowestprice")->AsFloat,
+                            q->FieldByName("desp")->AsString,
+                            q->FieldByName("goodtype")->AsInteger);
+
+            list->Add(str);
+        }
+        if ( !DirectoryExists(".\\data") )
+            CreateDir(".\\data");
+
+        list->SaveToFile(FILE_UPLOAD_GOODS_INFO);
+
+        hfcHandle = HFC_Init();
+        res = HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
+        res = HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
+        res = HFC_Upload(hfcHandle, QYYCY_URL_UPLOAD, TYPES_GOODSINFO, FILE_UPLOAD_GOODS_INFO);
+        HFC_Release(hfcHandle);
+
+        ExecSQL("UPDATE t_goods set ADDED = 1 WHERE ADDED = 0");
+    }
+    delete list;
+    list = NULL;
+
+    // Update change price list
+    hfcHandle = HFC_Init();
     res = HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
     res = HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
-
-    res = HFC_Upload(hfcHandle, QYYCY_URL_UPLOAD);
+    res = HFC_Upload(hfcHandle, QYYCY_URL_UPLOAD, TYPES_UPDATE_PRICE, FILE_UPLOAD_CHANGE_PRICE);
     HFC_Release(hfcHandle);
+
+
+    if ( res == true )
+        ShowInfo("上传成功！");
+    else
+        ShowInfo("上传失败！");
 }
 //---------------------------------------------------------------------------
 

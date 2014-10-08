@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "qyycy.h"
 #include "HttpFileClient.h"
-#include "types.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -93,7 +92,7 @@ __declspec(dllexport) bool HFC_CanWebsiteVisit(HTTP_FILE_HANDLE hdl, const char*
 
     wchar_t *p_url_login = AnsiToUnicode(url_login);
 
-    ((CHttpFileClient*)hdl)->CanWebsiteVisit(p_url_login);
+    result = ((CHttpFileClient*)hdl)->CanWebsiteVisit(p_url_login);
 
     delete [] p_url_login;
     p_url_login = NULL;
@@ -127,14 +126,15 @@ __declspec(dllexport) bool HFC_Login(HTTP_FILE_HANDLE hdl, const char* url_login
     return result;
 }
 
-__declspec(dllexport) bool HFC_Upload(HTTP_FILE_HANDLE hdl, const char* url_upload)
+__declspec(dllexport) bool HFC_Upload(HTTP_FILE_HANDLE hdl, const char* url_upload, OP_TYPES op_type, const char* filename)
 {
     BOOL result = FALSE;
     CString strURL;
     wchar_t *p_url_upload = AnsiToUnicode(url_upload);
+    wchar_t *p_filename = AnsiToUnicode(filename);
 
-    strURL.Format(_T("%s&type=%d&token=%s"), p_url_upload, TYPES_UPDATE_PRICE, ((CHttpFileClient*)hdl)->GetToken());
-    result = ((CHttpFileClient*)hdl)->UploadFile(strURL, _T("upload_change_price.txt"));
+    strURL.Format(_T("%s&type=%d&token=%s"), p_url_upload, op_type, ((CHttpFileClient*)hdl)->GetToken());
+    result = ((CHttpFileClient*)hdl)->UploadFile(strURL, p_filename);
 
     delete [] p_url_upload;
     p_url_upload = NULL;
@@ -142,14 +142,15 @@ __declspec(dllexport) bool HFC_Upload(HTTP_FILE_HANDLE hdl, const char* url_uplo
     return result;
 }
 
-__declspec(dllexport) bool HFC_Download(HTTP_FILE_HANDLE hdl, const char* url_download, int shop_no)
+__declspec(dllexport) bool HFC_Download(HTTP_FILE_HANDLE hdl, const char* url_download, OP_TYPES op_type, int shop_no, const char* filename)
 {
     BOOL result = FALSE;
     CString strURL;
     wchar_t *p_url_download = AnsiToUnicode(url_download);
+    wchar_t *p_filename = AnsiToUnicode(filename);
 
-    strURL.Format(_T("%s&shopNo=%d&type=%d&token=%s"), p_url_download, shop_no, TYPES_UPDATE_PRICE, ((CHttpFileClient*)hdl)->GetToken());
-    result = ((CHttpFileClient*)hdl)->DownLoadFile(strURL, _T("download_change_price.txt"));
+    strURL.Format(_T("%s&shopNo=%d&type=%d&token=%s"), p_url_download, shop_no, op_type, ((CHttpFileClient*)hdl)->GetToken());
+    result = ((CHttpFileClient*)hdl)->DownLoadFile(strURL, p_filename);
 
     delete [] p_url_download;
     p_url_download = NULL;

@@ -98,7 +98,7 @@ void __fastcall TGoodsFrame::EditGoodExecute(TObject *Sender)
     if ( GoodsGrid->SelectedRows->Count != 1 ) return;
     TIBQuery *pDS = (TIBQuery *)GoodsGrid->DataSource->DataSet;
     pDS->GotoBookmark((void *)GoodsGrid->SelectedRows->Items[0].c_str());
-    if ( GoodAttribForm->SetGoodItem( pDS ) )
+    if ( GoodAttribForm->SetGoodItem(pDS, TYPES_NULL) )
     {
         try {
             pDS->DisableControls();
@@ -221,6 +221,34 @@ void __fastcall TGoodsFrame::GoodsGridMouseUp(TObject *Sender,
         return;
     }
 */
+}
+
+void __fastcall TGoodsFrame::SetGoodsCatagory(int catagory)
+{
+    m_nGoodsCatagory = catagory;
+}
+
+int __fastcall TGoodsFrame::GetGoodsCatagory(void)
+{
+    return m_nGoodsCatagory;
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TGoodsFrame::AddNewGoodsExecute(TObject *Sender)
+{
+    TIBQuery *pDS = (TIBQuery *)GoodsGrid->DataSource->DataSet;
+    if ( GoodAttribForm->InsertGoods(pDS, TYPES_GOODSINFO) )
+    {
+        try {
+            pDS->DisableControls();
+            pDS->ApplyUpdates();
+            pDS->EnableControls();
+        } catch(...) {
+            d->trans->Rollback();
+            return;
+        }
+        d->trans->Commit();
+    }
 }
 //---------------------------------------------------------------------------
 

@@ -43,13 +43,14 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Store.cpp"/>
-    <INCLUDEPATH value="D:\Borland\CBuilder6\Projects;utility;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="utility;$(BCB)\Bin;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;D:\Borland\CBuilder6\Projects;utility;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;utility;$(BCB)\Bin;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-ID:\Borland\CBuilder6\Projects -Iutility -I$(BCB)\include 
+    <IDLCFLAGS value="-I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; 
+      -ID:\Borland\CBuilder6\Projects -Iutility -I$(BCB)\include 
       -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
       -tW -tWM"/>
@@ -87,7 +88,6 @@
       <FILE FILENAME="GenerateListNo.cpp" FORMNAME="" UNITNAME="GenerateListNo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="qyycy.h" FORMNAME="" UNITNAME="qyycy.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="debug\qyycy.lib" FORMNAME="" UNITNAME="qyycy.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="types.h" FORMNAME="" UNITNAME="types.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

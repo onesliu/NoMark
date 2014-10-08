@@ -123,10 +123,10 @@ private:	// User declarations
     int __fastcall CheckComplete(TListItem *pCurGood);
 
     void __fastcall Cancel2Click(TObject *Sender);
-    AnsiString GenerateBarCode();
 public:		// User declarations
     __fastcall TIncomingForm(TComponent* Owner);
-
+    AnsiString GenerateBarCode();
+    
     int dGoodType;
     bool __fastcall NewIncoming( int idx = 0, int goodtype = 0 );
 };

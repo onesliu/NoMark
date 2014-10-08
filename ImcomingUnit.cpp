@@ -9,6 +9,7 @@
 #include "CommonUnit.h"
 #include "MessageBoxes.h"
 #include "SelectUnit.h"
+#include "qyycy.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -30,7 +31,7 @@ AnsiString TIncomingForm::GenerateBarCode()
         maxbar = q2->FieldByName("maxbar")->AsString.SubString(3, 5).ToInt();
     q2->Close();
 
-    return AnsiString().sprintf( "20%05d00000", maxbar+BuyList->Items->Count );
+    return AnsiString().sprintf( "20%05d00000", maxbar+1 );
 }
 //---------------------------------------------------------------------------
 
