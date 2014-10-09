@@ -1256,6 +1256,7 @@ void __fastcall TOrderForm::DownloadUpdatePricelist()
     for ( int i=0; i<list->Count; i++ )
     {
         r0 = list->Strings[i];
+        r0.Trim();
 
         if ( r0.IsEmpty() )
             continue;
@@ -1264,7 +1265,7 @@ void __fastcall TOrderForm::DownloadUpdatePricelist()
             changePricelist->Clear();
             SplitByChar(r0, '|', changePricelist);
 
-            if ( changePricelist->Count == 5 )  //调价单开始的第一行
+            if ( changePricelist->Count == 6 )  //调价单开始的第一行
             {
                 // 查询数据库中是否有相同调价单
                 sql1.sprintf("SELECT count(*) as line FROM T_CHANGEPRICE_LIST WHERE IDX=%d", changePricelist->Strings[0].Trim().ToInt());
@@ -1309,8 +1310,8 @@ void __fastcall TOrderForm::DownloadUpdatePricelist()
                 sql1.sprintf("INSERT INTO T_CHANGEPRICE_GOODS(GOODIDX, LISTIDX, OLDPRICE, NEWPRICE) VALUES(%d, %ld, %lf, %lf)",
                                 changePricelist->Strings[0].Trim().ToInt(),
                                 nListIndex,
-                                changePricelist->Strings[2].Trim().ToDouble(),
-                                changePricelist->Strings[3].Trim().ToDouble());
+                                changePricelist->Strings[3].Trim().ToDouble(),
+                                changePricelist->Strings[4].Trim().ToDouble());
                 q->SQL->Text = sql1;
                 q->ExecSQL();
             }
@@ -1340,8 +1341,6 @@ void __fastcall TOrderForm::DownloadGoodsInfo()
     AnsiString r0, r1, sql;
     TStringList *list = new TStringList();
     TStringList *goods_info_list = new TStringList();
-    int nListIndex = 0;
-    int number = 0;
 
     list->LoadFromFile(FILE_DOWNLOAD_GOODS_INFO);
 
@@ -1359,18 +1358,40 @@ void __fastcall TOrderForm::DownloadGoodsInfo()
             sql.sprintf("INSERT INTO T_GOODS(TYPEIDX, BARCODE, NAME, GOODCODE, GOODNUMBER, COST, LABELPRICE, LOWESTPRICE, DESP, GOODTYPE, ADDED) \
                                       VALUES(%d, '%s', '%s', '%s', %f, %f, %f, %f, '%s', %d, %d)",
                             goods_info_list->Strings[0].Trim().ToInt(),
-                            goods_info_list->Strings[1].Trim(),
                             goods_info_list->Strings[2].Trim(),
                             goods_info_list->Strings[3].Trim(),
-                            goods_info_list->Strings[4].Trim().ToDouble(),
+                            goods_info_list->Strings[4].Trim(),
                             goods_info_list->Strings[5].Trim().ToDouble(),
                             goods_info_list->Strings[6].Trim().ToDouble(),
                             goods_info_list->Strings[7].Trim().ToDouble(),
-                            goods_info_list->Strings[8].Trim(),
-                            goods_info_list->Strings[9].Trim().ToInt(),
-                            goods_info_list->Strings[10].Trim().ToInt());
+                            goods_info_list->Strings[8].Trim().ToDouble(),
+                            goods_info_list->Strings[9].Trim(),
+                            goods_info_list->Strings[10].Trim().ToInt(),
+                            goods_info_list->Strings[11].Trim().ToInt());
             q->SQL->Text = sql;
             q->ExecSQL();
+
+            /* Update T_GOODTYPE table */
+            sql.sprintf("SELECT * FROM T_GOODTYPE WHERE IDX=%d", goods_info_list->Strings[0].Trim().ToInt());
+            q->SQL->Text = sql;
+            q->Open();
+            q->Close();
+            if ( q->RecordCount == 0 )
+            {
+                sql.sprintf("INSERT INTO T_GOODTYPE(TYPEIDX, NAME) VALUES(%d, '%s')",
+                                goods_info_list->Strings[0].Trim().ToInt(),
+                                goods_info_list->Strings[1].Trim());
+                q->SQL->Text = sql;
+                q->ExecSQL();
+            }
+            else
+            {
+                sql.sprintf("UPDATE T_GOODTYPE SET NAME=%s WHERE IDX=%d",
+                                goods_info_list->Strings[1].Trim(),
+                                goods_info_list->Strings[0].Trim().ToInt());
+                q->SQL->Text = sql;
+                q->ExecSQL();
+            }
         }
     }
 }

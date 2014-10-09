@@ -227,5 +227,6 @@ extern TReduce oReduce;
 //---------------------------------------------------------------------------
 #define q d->q
 #define q2 d->q2
+#define q3 d->q3
 
 #endif

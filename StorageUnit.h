@@ -186,6 +186,8 @@ private:	// User declarations
     void __fastcall SetPrintLabel( int goodid, int storage );
 
     void __fastcall SearchGoods();
+    AnsiString __fastcall UploadGoodsInfo();
+    AnsiString __fastcall UploadChangePriceList();
 public:		// User declarations
     __fastcall TStorageForm(TComponent* Owner);
 };

@@ -13,7 +13,6 @@
 #include "CheckUnit.h"
 #include "StoreStatUnit.h"
 #include "ChangePriceUnit.h"
-#include "types.h"
 #include "qyycy.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -686,12 +685,11 @@ void __fastcall TStorageForm::GoodsSheetShow(TObject *Sender)
         FreshGoodsList(0);
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TStorageForm::UploadDataExecute(TObject *Sender)
+AnsiString __fastcall TStorageForm::UploadGoodsInfo()
 {
     bool res;
     HTTP_FILE_HANDLE hfcHandle;
-    AnsiString str;
+    AnsiString str, sql, strTypeName;
 
     // Update goods list
     TStringList *list = new TStringList();
@@ -699,12 +697,23 @@ void __fastcall TStorageForm::UploadDataExecute(TObject *Sender)
     q->Close();
     q->SQL->Text = "SELECT * FROM t_goods WHERE ADDED = 0";
     q->Open();
-    if ( q->RecordCount != 0 )
-    {              
+    if ( q->RecordCount == 0 )
+    {
+        str = "商品信息: 无更新！";
+    }
+    else
+    {
         for ( q->First(); !q->Eof; q->Next() )
         {
-            str.sprintf("%d|%s|%s|%s|%f|%f|%f|%f|%s|%d|1",
+            sql.sprintf("SELECT * FROM T_GOODTYPE WHERE IDX=%d", q->FieldByName("typeidx")->AsInteger);
+            q2->SQL->Text = sql;
+            q2->Open();
+            strTypeName = q2->FieldByName("name")->AsString;
+            q2->Close();
+
+            str.sprintf("%d|%s|%s|%s|%s|%f|%f|%f|%f|%s|%d|1",
                             q->FieldByName("typeidx")->AsInteger,
+                            strTypeName,
                             q->FieldByName("barcode")->AsString,
                             q->FieldByName("name")->AsString,
                             q->FieldByName("goodcode")->AsString,
@@ -724,27 +733,127 @@ void __fastcall TStorageForm::UploadDataExecute(TObject *Sender)
 
         hfcHandle = HFC_Init();
         res = HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
-        res = HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
-        res = HFC_Upload(hfcHandle, QYYCY_URL_UPLOAD, TYPES_GOODSINFO, FILE_UPLOAD_GOODS_INFO);
+        if ( res == false )
+            str = "商品信息: 网络连接失败";
+        else
+        {
+            res = HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
+            if ( res == false )
+                str = "商品信息: 登陆失败！";
+            else
+            {
+                res = HFC_Upload(hfcHandle, QYYCY_URL_UPLOAD, TYPES_GOODSINFO, FILE_UPLOAD_GOODS_INFO);
+                if ( res == false )
+                    str = "商品信息: 上传数据失败！";
+                else
+                {
+                    str = "商品信息: 上传成功！";
+                    ExecSQL("UPDATE t_goods set ADDED = 1 WHERE ADDED = 0");
+                }
+            }
+        }
         HFC_Release(hfcHandle);
-
-        ExecSQL("UPDATE t_goods set ADDED = 1 WHERE ADDED = 0");
     }
     delete list;
     list = NULL;
 
+    return str;
+}
+
+AnsiString __fastcall TStorageForm::UploadChangePriceList()
+{
+    bool res;
+    HTTP_FILE_HANDLE hfcHandle;
+    AnsiString str, sql, strTypeName;
+    // Update goods list
+
+
     // Update change price list
-    hfcHandle = HFC_Init();
-    res = HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
-    res = HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
-    res = HFC_Upload(hfcHandle, QYYCY_URL_UPLOAD, TYPES_UPDATE_PRICE, FILE_UPLOAD_CHANGE_PRICE);
-    HFC_Release(hfcHandle);
-
-
-    if ( res == true )
-        ShowInfo("上传成功！");
+    q->Close();
+    q->SQL->Text = "SELECT * FROM T_CHANGEPRICE_LIST WHERE UPLOADED = 0";
+    q->Open();
+    if ( q->RecordCount == 0 )
+    {
+        str += "调价单: 无更新！";
+    }
     else
-        ShowInfo("上传失败！");
+    {
+        TStringList *list = new TStringList();
+
+        for ( q->First(); !q->Eof; q->Next() )
+        {
+            str.sprintf("%d|%s|%s|%d|%s|%d",
+                                        q->FieldByName("IDX")->AsInteger,
+                                        q->FieldByName("CHANGEDATE")->AsString,
+                                        q->FieldByName("NAME")->AsString,
+                                        q->FieldByName("TOTALNUMBER")->AsInteger,
+                                        q->FieldByName("DESP")->AsString,
+                                        q->FieldByName("UPLOADED")->AsInteger);
+            list->Add(str);
+
+            q2->Close();
+            sql.sprintf("SELECT * FROM t_changeprice_goods WHERE LISTIDX = %d", q->FieldByName("IDX")->AsInteger);
+            q2->SQL->Text = sql;
+            q2->Open();
+	        for ( q2->First(); !q2->Eof; q2->Next() )
+	        {
+	            // Get Product name
+	            q3->Close();
+	            q3->SQL->Text = "SELECT * FROM t_goods WHERE IDX = " + q2->FieldByName("GOODIDX")->AsString;
+	            q3->Open();
+
+	            str.sprintf("%d|%s|%s|%f|%f", q2->FieldByName("GOODIDX")->AsInteger,
+	                                          q3->FieldByName("NAME")->AsString,
+	                                          q3->FieldByName("BARCODE")->AsString,
+	                                          q2->FieldByName("OLDPRICE")->AsFloat,
+	                                          q2->FieldByName("NEWPRICE")->AsFloat);
+                list->Add(str);
+	        }
+            list->Add("\r\n");
+        }
+
+        if ( !DirectoryExists(".\\data") )
+        	CreateDir(".\\data");
+
+        list->SaveToFile(FILE_UPLOAD_CHANGE_PRICE);
+
+        delete list;
+        list = NULL;
+
+        // Update change price list
+        hfcHandle = HFC_Init();
+        res = HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
+        if ( res == false )
+            str = "调价单: 网络连接失败！";
+        else
+        {
+            res = HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
+            if ( res == false )
+                str = "调价单: 登陆失败！";
+            else
+            {
+                res = HFC_Upload(hfcHandle, QYYCY_URL_UPLOAD, TYPES_UPDATE_PRICE, FILE_UPLOAD_CHANGE_PRICE);
+                if ( res == false )
+                    str = "调价单: 上传数据失败！";
+                else
+                {
+                    str = "商品信息: 上传成功！";
+                    ExecSQL("UPDATE T_CHANGEPRICE_LIST set UPLOADED = 1 WHERE UPLOADED = 0");
+                }
+            }
+        }
+        HFC_Release(hfcHandle);
+    }
+
+    return str;
+}
+
+void __fastcall TStorageForm::UploadDataExecute(TObject *Sender)
+{
+    AnsiString str;
+
+    str = UploadGoodsInfo() + "\r\n" + UploadChangePriceList();
+    ShowInfo(str.c_str());
 }
 //---------------------------------------------------------------------------
 

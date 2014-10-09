@@ -204,7 +204,6 @@ object d: Td
     Top = 144
   end
   object trans2: TIBTransaction
-    AllowAutoStart = False
     DefaultDatabase = db
     Left = 264
     Top = 16

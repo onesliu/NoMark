@@ -54,7 +54,7 @@ bool __fastcall TChangePriceForm::NewChangePrice()
 
     //插入新的调价单
     listId = gln.GetMaxListNo(CHANGEPRICE_LIST) + 1;
-    sTmp1.sprintf("insert into t_changeprice_list(idx, name, desp) values(%d, '%s', 'desp')", listId, ListName->Text);
+    sTmp1.sprintf("insert into t_changeprice_list(idx, name, desp, uploaded) values(%d, '%s', '%s', %d)", listId, ListName->Text, "desp", 0);
     q->SQL->Text = sTmp1;
     q->ExecSQL();
 
@@ -79,7 +79,7 @@ void __fastcall TChangePriceForm::FormClose(TObject *Sender,
 {
     int goods_count;
     AnsiString sql;
-    
+
     if ( ModalResult != mrOk ) // 不保存新的调价单
     {
         // 删除新的调价单
@@ -99,9 +99,10 @@ void __fastcall TChangePriceForm::FormClose(TObject *Sender,
         q->ExecSQL();
 
         q->Close();
-        q->SQL->Text = "SELECT COUNT(*) AS RES FROM t_changeprice_goods";
+        sql.sprintf("select count(*) as res from tmp_changeprice_goods where newprice is not null");
+        q->SQL->Text = sql;
         q->Open();
-        goods_count = q->FieldByName("RES")->AsInteger;
+        goods_count = q->FieldByName("res")->AsInteger;
 
         sql.sprintf("UPDATE t_changeprice_list SET TOTALNUMBER=%d WHERE idx=%d", goods_count, listId);
         q->SQL->Text = sql;
@@ -119,45 +120,6 @@ void __fastcall TChangePriceForm::FormClose(TObject *Sender,
             q->ExecSQL();
         }
         q2->Close();
-
-        // Write change price list to download_upload_price.txt and inform qyycy.exe
-        q->Close();
-        q->SQL->Text = "SELECT * FROM t_changeprice_list WHERE IDX=:listidx";
-        q->ParamByName("listidx")->AsInteger = listId;
-        q->Open();
-
-        AnsiString str;
-        str.sprintf("%d|%s|%s|%d|%s", listId,
-                                      q->FieldByName("CHANGEDATE")->AsString,
-                                      q->FieldByName("NAME")->AsString,
-                                      q->FieldByName("TOTALNUMBER")->AsInteger,
-                                      q->FieldByName("DESP")->AsString);
-        TStringList *list = new TStringList();
-        list->Add(str);
-
-        q->Close();
-        q->SQL->Text = "SELECT * FROM t_changeprice_goods WHERE LISTIDX = " + IntToStr(listId);
-        q->Open();
-        for ( q->First(); !q->Eof; q->Next() )
-        {
-            // Get Product name
-            q2->Close();
-            q2->SQL->Text = "SELECT * FROM t_goods WHERE IDX = " + q->FieldByName("GOODIDX")->AsString;
-            q2->Open();
-
-            str.sprintf("%d|%s|%f|%f", q->FieldByName("GOODIDX")->AsInteger,
-                                       q2->FieldByName("NAME")->AsString,
-                                       q->FieldByName("OLDPRICE")->AsFloat,
-                                       q->FieldByName("NEWPRICE")->AsFloat);
-            list->Add(str);
-        }
-        
-        if ( !DirectoryExists(".\\data") )
-            CreateDir(".\\data");
-            
-        list->SaveToFile(FILE_UPLOAD_CHANGE_PRICE);
-        delete list;
-        list = NULL;
     }
 }
 //---------------------------------------------------------------------------
