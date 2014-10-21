@@ -126,7 +126,10 @@ __declspec(dllexport) bool HFC_Login(HTTP_FILE_HANDLE hdl, const char* url_login
     return result;
 }
 
-__declspec(dllexport) bool HFC_Upload(HTTP_FILE_HANDLE hdl, const char* url_upload, OP_TYPES op_type, const char* filename)
+__declspec(dllexport) bool HFC_Upload(HTTP_FILE_HANDLE hdl, 
+                                      const char* url_upload, 
+                                      OP_TYPES op_type, 
+                                      const char* filename)
 {
     BOOL result = FALSE;
     CString strURL;
@@ -142,7 +145,34 @@ __declspec(dllexport) bool HFC_Upload(HTTP_FILE_HANDLE hdl, const char* url_uplo
     return result;
 }
 
-__declspec(dllexport) bool HFC_Download(HTTP_FILE_HANDLE hdl, const char* url_download, OP_TYPES op_type, int shop_no, const char* filename)
+__declspec(dllexport) bool HFC_Upload_Buf(HTTP_FILE_HANDLE hdl, 
+                                          const char* url_upload, 
+                                          OP_TYPES op_type, 
+                                          const char* buf)
+{
+    BOOL result = FALSE;
+    CFile file;
+    wchar_t *p_filename = AnsiToUnicode(FILE_TEMP);
+    
+
+    if ( file.Open(p_filename, CFile::modeCreate|CFile::typeText|CFile::modeWrite) )
+    {
+        file.SeekToBegin();
+        file.Write(buf, strlen(buf));
+        file.Flush();
+        file.Close();
+    }
+    
+    result = HFC_Upload(hdl, url_upload, op_type, FILE_TEMP);
+
+    return result;
+}
+
+__declspec(dllexport) bool HFC_Download(HTTP_FILE_HANDLE hdl, 
+                                        const char* url_download, 
+                                        OP_TYPES op_type, 
+                                        int shop_no, 
+                                        const char* filename)
 {
     BOOL result = FALSE;
     CString strURL;
@@ -154,6 +184,32 @@ __declspec(dllexport) bool HFC_Download(HTTP_FILE_HANDLE hdl, const char* url_do
 
     delete [] p_url_download;
     p_url_download = NULL;
+
+    return result;
+}
+
+__declspec(dllexport) bool HFC_Download_Buf(HTTP_FILE_HANDLE hdl, 
+                                            const char* url_download, 
+                                            OP_TYPES op_type, 
+                                            int shop_no, 
+                                            char* buf)
+{
+    BOOL result = FALSE;
+    CFile file;
+    wchar_t *p_filename = AnsiToUnicode(FILE_TEMP);
+    
+    result = HFC_Download(hdl, url_download, op_type, shop_no, FILE_TEMP);
+
+    if ( file.Open(p_filename, CFile::modeRead) )
+    {
+        while (1)
+        {
+            int ret = file.Read(buf, 100);
+  
+            if ( ret < 100 )
+                break;
+        }
+    }
 
     return result;
 }

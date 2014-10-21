@@ -320,7 +320,7 @@ BOOL CHttpFileClient::UploadFile(LPCTSTR szRemoteURI, LPCTSTR szLocalPath)
         pHttpConn = session.GetHttpConnection(strServer, wPort, NULL, NULL);
         VERIFY(pHttpConn != NULL);
         
-        pHttpFile = pHttpConn->OpenRequest(CHttpConnection::HTTP_VERB_PUT, strObject);
+        pHttpFile = pHttpConn->OpenRequest(CHttpConnection::HTTP_VERB_POST, strObject);
         VERIFY(pHttpFile != NULL);
         
         if ( UseHttpSendReqEx(pHttpFile, szLocalPath) )

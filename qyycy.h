@@ -26,6 +26,7 @@ enum OP_TYPES
 #define FILE_DOWNLOAD_CHANGE_PRICE  (".\\data\\download_change_price.txt")
 #define FILE_UPLOAD_GOODS_INFO      (".\\data\\upload_goods_info.txt")
 #define FILE_DOWNLOAD_GOODS_INFO    (".\\data\\download_goods_info.txt")
+#define FILE_TEMP                   (".\\data\\temp.txt")
 
 typedef void* HTTP_FILE_HANDLE;
 
@@ -33,25 +34,37 @@ __declspec(dllexport) HTTP_FILE_HANDLE HFC_Init();
 
 __declspec(dllexport) void HFC_Release(HTTP_FILE_HANDLE hdl);
 
-__declspec(dllexport) bool HFC_CanWebsiteVisit(HTTP_FILE_HANDLE hdl, 
+__declspec(dllexport) bool HFC_CanWebsiteVisit(HTTP_FILE_HANDLE hdl,
                                                const char* url_login);
 
-__declspec(dllexport) bool HFC_Login(HTTP_FILE_HANDLE hdl, 
+__declspec(dllexport) bool HFC_Login(HTTP_FILE_HANDLE hdl,
                                      const char* url_login,
                                      const char* name,
                                      const char* pwd,
                                      const char* url_login_ok);
 
-__declspec(dllexport) bool HFC_Upload(HTTP_FILE_HANDLE hdl, 
-                                      const char* url_upload, 
-                                      OP_TYPES op_type, 
+__declspec(dllexport) bool HFC_Upload(HTTP_FILE_HANDLE hdl,
+                                      const char* url_upload,
+                                      OP_TYPES op_type,
                                       const char* filename);
 
-__declspec(dllexport) bool HFC_Download(HTTP_FILE_HANDLE hdl, 
-                                        const char* url_download, 
-                                        OP_TYPES op_type, 
-                                        int shop_no, 
+
+__declspec(dllexport) bool HFC_Upload_Buf(HTTP_FILE_HANDLE hdl,
+                                      const char* url_upload,
+                                      OP_TYPES op_type,
+                                      const char* buf);
+
+__declspec(dllexport) bool HFC_Download(HTTP_FILE_HANDLE hdl,
+                                        const char* url_download,
+                                        OP_TYPES op_type,
+                                        int shop_no,
                                         const char* filename);
+
+__declspec(dllexport) bool HFC_Download_Buf(HTTP_FILE_HANDLE hdl,
+                                        const char* url_download,
+                                        OP_TYPES op_type,
+                                        int shop_no,
+                                        char* buf);
 
 #ifdef __cplusplus
 } /* extern "C" */

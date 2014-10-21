@@ -689,7 +689,8 @@ AnsiString __fastcall TStorageForm::UploadGoodsInfo()
 {
     bool res;
     HTTP_FILE_HANDLE hfcHandle;
-    AnsiString str, sql, strTypeName;
+    AnsiString str, sql, type_name;
+    int parent_id;
 
     // Update goods list
     TStringList *list = new TStringList();
@@ -708,12 +709,14 @@ AnsiString __fastcall TStorageForm::UploadGoodsInfo()
             sql.sprintf("SELECT * FROM T_GOODTYPE WHERE IDX=%d", q->FieldByName("typeidx")->AsInteger);
             q2->SQL->Text = sql;
             q2->Open();
-            strTypeName = q2->FieldByName("name")->AsString;
+            type_name = q2->FieldByName("name")->AsString;
+            parent_id = q2->FieldByName("pid")->AsInteger;
             q2->Close();
 
-            str.sprintf("%d|%s|%s|%s|%s|%f|%f|%f|%f|%s|%d|1",
+            str.sprintf("%d|%d|%s|%s|%s|%s|%f|%f|%f|%f|%s|%d|1",
                             q->FieldByName("typeidx")->AsInteger,
-                            strTypeName,
+                            parent_id,
+                            type_name,
                             q->FieldByName("barcode")->AsString,
                             q->FieldByName("name")->AsString,
                             q->FieldByName("goodcode")->AsString,
@@ -837,7 +840,7 @@ AnsiString __fastcall TStorageForm::UploadChangePriceList()
                     str = "调价单: 上传数据失败！";
                 else
                 {
-                    str = "商品信息: 上传成功！";
+                    str = "调价单: 上传成功！";
                     ExecSQL("UPDATE T_CHANGEPRICE_LIST set UPLOADED = 1 WHERE UPLOADED = 0");
                 }
             }
