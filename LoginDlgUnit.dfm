@@ -1,0 +1,71 @@
+object LoginDlg: TLoginDlg
+  Left = 514
+  Top = 235
+  BorderStyle = bsDialog
+  Caption = #24080#25143#30331#24405
+  ClientHeight = 253
+  ClientWidth = 313
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -16
+  Font.Name = #24494#36719#38597#40657
+  Font.Style = []
+  FormStyle = fsStayOnTop
+  OldCreateOrder = True
+  Position = poScreenCenter
+  PixelsPerInch = 96
+  TextHeight = 21
+  object Bevel1: TBevel
+    Left = 8
+    Top = 8
+    Width = 297
+    Height = 161
+    Shape = bsFrame
+  end
+  object OKBtn: TButton
+    Left = 79
+    Top = 188
+    Width = 75
+    Height = 45
+    Caption = #30331#24405
+    Default = True
+    ModalResult = 1
+    TabOrder = 0
+  end
+  object CancelBtn: TButton
+    Left = 159
+    Top = 188
+    Width = 75
+    Height = 45
+    Cancel = True
+    Caption = #21462#28040
+    ModalResult = 2
+    TabOrder = 1
+  end
+  object User: TLabeledEdit
+    Left = 48
+    Top = 48
+    Width = 225
+    Height = 29
+    EditLabel.Width = 48
+    EditLabel.Height = 21
+    EditLabel.Caption = #24080#25143#65306
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 2
+  end
+  object Password: TLabeledEdit
+    Left = 48
+    Top = 112
+    Width = 225
+    Height = 29
+    EditLabel.Width = 48
+    EditLabel.Height = 21
+    EditLabel.Caption = #23494#30721#65306
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    PasswordChar = '*'
+    TabOrder = 3
+  end
+end
