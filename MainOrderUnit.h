@@ -35,7 +35,7 @@ __published:	// IDE-managed Components
     TOrderFrame *OrderFrame4;
     TLabel *Label1;
     TDateTimePicker *DateTimePicker1;
-    TButton *Button1;
+    TButton *BtnQuery;
     TPanel *Panel1;
     TOrderFrame *OrderFrame5;
     void __fastcall ToolButton2Click(TObject *Sender);
@@ -45,6 +45,7 @@ __published:	// IDE-managed Components
     void __fastcall TabSheet3Show(TObject *Sender);
     void __fastcall TabSheet4Show(TObject *Sender);
     void __fastcall TabSheet5Show(TObject *Sender);
+    void __fastcall BtnQueryClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
     __fastcall TMainOrderForm(TComponent* Owner);
