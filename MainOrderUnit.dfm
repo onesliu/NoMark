@@ -20,10 +20,10 @@ object MainOrderForm: TMainOrderForm
     Top = 44
     Width = 788
     Height = 388
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     Align = alClient
     Images = ImageList1
-    TabIndex = 0
+    TabIndex = 2
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #24453#31216#37325#35746#21333
