@@ -6,14 +6,18 @@
     <PROJECT value=".\debug\OrderMobile.exe"/>
     <OBJFILES value="debug\ordermobile\OrderMobile.obj debug\ordermobile\MainOrderUnit.obj 
       debug\ordermobile\OrderFrameUnit.obj debug\ordermobile\LoginDlgUnit.obj 
-      debug\ordermobile\CheckoutUnit.obj"/>
+      debug\ordermobile\CheckoutUnit.obj debug\ordermobile\CommonUnit.obj 
+      debug\ordermobile\MessageBoxes.obj debug\ordermobile\OrderList.obj 
+      debug\ordermobile\Order.obj debug\ordermobile\Product.obj 
+      debug\ordermobile\BarcodeUnit.obj debug\ordermobile\OrderStatus.obj 
+      debug\ordermobile\SoundPlay.obj"/>
     <RESFILES value="OrderMobile.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) MainOrderUnit.dfm OrderFrameUnit.dfm LoginDlgUnit.dfm 
       CheckoutUnit.dfm"/>
-    <LIBFILES value=""/>
+    <LIBFILES value="lib\IniFile.lib"/>
     <LIBRARIES value=""/>
     <SPARELIBS value="vcl.lib rtl.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
@@ -23,7 +27,7 @@
       nmfast.bpi webdsnap.bpi bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi 
       dbexpress.bpi dbxcds.bpi indy.bpi bcb2kaxserver.bpi TeeLanguage7C6.bpi 
       TeePro7C6.bpi TeeDB7C6.bpi Tee7C6.bpi TeeUI7C6.bpi TeeGL7C6.bpi TeeQR7C6.bpi"/>
-    <PATHCPP value=".;"/>
+    <PATHCPP value=".;utility"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -63,6 +67,15 @@
       <FILE FILENAME="OrderFrameUnit.cpp" FORMNAME="OrderFrame" UNITNAME="OrderFrameUnit" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="LoginDlgUnit.cpp" FORMNAME="LoginDlg" UNITNAME="LoginDlgUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="CheckoutUnit.cpp" FORMNAME="CheckoutForm" UNITNAME="CheckoutUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\IniFile.lib" FORMNAME="" UNITNAME="IniFile.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="utility\CommonUnit.cpp" FORMNAME="" UNITNAME="CommonUnit.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="utility\MessageBoxes.cpp" FORMNAME="" UNITNAME="MessageBoxes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OrderList.cpp" FORMNAME="" UNITNAME="OrderList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Order.cpp" FORMNAME="" UNITNAME="Order" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Product.cpp" FORMNAME="" UNITNAME="Product" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="BarcodeUnit.cpp" FORMNAME="" UNITNAME="BarcodeUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OrderStatus.cpp" FORMNAME="" UNITNAME="OrderStatus" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SoundPlay.cpp" FORMNAME="" UNITNAME="SoundPlay" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

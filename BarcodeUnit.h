@@ -13,6 +13,8 @@ public:
 
 	AnsiString code;
 	AnsiString value;
+    int productId;
+    double weight;
 	int type;
 };
 

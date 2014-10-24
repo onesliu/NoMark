@@ -20,10 +20,10 @@ object MainOrderForm: TMainOrderForm
     Top = 44
     Width = 788
     Height = 388
-    ActivePage = TabSheet3
+    ActivePage = TabSheet5
     Align = alClient
     Images = ImageList1
-    TabIndex = 2
+    TabIndex = 4
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #24453#31216#37325#35746#21333
@@ -44,18 +44,104 @@ object MainOrderForm: TMainOrderForm
     object TabSheet2: TTabSheet
       Caption = #24453#20184#27454#35746#21333
       ImageIndex = 7
+      inline OrderFrame2: TOrderFrame
+        Left = 0
+        Top = 0
+        Width = 780
+        Height = 343
+        Align = alClient
+        TabOrder = 0
+        inherited ListView1: TListView
+          Width = 780
+          Height = 343
+        end
+      end
     end
     object TabSheet3: TTabSheet
       Caption = #24453#37197#36865#35746#21333
       ImageIndex = 2
+      inline OrderFrame3: TOrderFrame
+        Left = 0
+        Top = 0
+        Width = 780
+        Height = 343
+        Align = alClient
+        TabOrder = 0
+        inherited ListView1: TListView
+          Width = 780
+          Height = 343
+        end
+      end
     end
     object TabSheet4: TTabSheet
       Caption = #24050#23436#25104#35746#21333
       ImageIndex = 3
+      inline OrderFrame4: TOrderFrame
+        Left = 0
+        Top = 0
+        Width = 780
+        Height = 343
+        Align = alClient
+        TabOrder = 0
+        inherited ListView1: TListView
+          Width = 780
+          Height = 343
+        end
+      end
     end
     object TabSheet5: TTabSheet
       Caption = #35746#21333#26597#35810
       ImageIndex = 4
+      object Panel1: TPanel
+        Left = 0
+        Top = 0
+        Width = 780
+        Height = 57
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 0
+        object Label1: TLabel
+          Left = 16
+          Top = 16
+          Width = 80
+          Height = 21
+          Caption = #35746#21333#26085#26399#65306
+        end
+        object Button1: TButton
+          Left = 312
+          Top = 8
+          Width = 121
+          Height = 33
+          Caption = #26597#35810
+          TabOrder = 0
+        end
+        object DateTimePicker1: TDateTimePicker
+          Left = 104
+          Top = 12
+          Width = 186
+          Height = 29
+          CalAlignment = dtaLeft
+          Date = 41936.4876940394
+          Time = 41936.4876940394
+          DateFormat = dfShort
+          DateMode = dmComboBox
+          Kind = dtkDate
+          ParseInput = False
+          TabOrder = 1
+        end
+      end
+      inline OrderFrame5: TOrderFrame
+        Left = 0
+        Top = 57
+        Width = 780
+        Height = 286
+        Align = alClient
+        TabOrder = 1
+        inherited ListView1: TListView
+          Width = 780
+          Height = 286
+        end
+      end
     end
   end
   object CoolBar1: TCoolBar

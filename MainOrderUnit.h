@@ -30,6 +30,14 @@ __published:	// IDE-managed Components
     TOrderFrame *OrderFrame1;
     TTabSheet *TabSheet5;
     TTimer *MainTimer;
+    TOrderFrame *OrderFrame2;
+    TOrderFrame *OrderFrame3;
+    TOrderFrame *OrderFrame4;
+    TLabel *Label1;
+    TDateTimePicker *DateTimePicker1;
+    TButton *Button1;
+    TPanel *Panel1;
+    TOrderFrame *OrderFrame5;
     void __fastcall ToolButton2Click(TObject *Sender);
     void __fastcall ToolButton1Click(TObject *Sender);
 private:	// User declarations
