@@ -28,6 +28,7 @@ object MainOrderForm: TMainOrderForm
     object TabSheet1: TTabSheet
       Caption = #24453#31216#37325#35746#21333
       ImageIndex = 5
+      OnShow = TabSheet1Show
       inline OrderFrame1: TOrderFrame
         Left = 0
         Top = 0
@@ -35,7 +36,7 @@ object MainOrderForm: TMainOrderForm
         Height = 343
         Align = alClient
         TabOrder = 0
-        inherited ListView1: TListView
+        inherited OrderListView: TListView
           Width = 780
           Height = 343
         end
@@ -44,6 +45,7 @@ object MainOrderForm: TMainOrderForm
     object TabSheet2: TTabSheet
       Caption = #24453#20184#27454#35746#21333
       ImageIndex = 7
+      OnShow = TabSheet2Show
       inline OrderFrame2: TOrderFrame
         Left = 0
         Top = 0
@@ -51,7 +53,7 @@ object MainOrderForm: TMainOrderForm
         Height = 343
         Align = alClient
         TabOrder = 0
-        inherited ListView1: TListView
+        inherited OrderListView: TListView
           Width = 780
           Height = 343
         end
@@ -60,6 +62,7 @@ object MainOrderForm: TMainOrderForm
     object TabSheet3: TTabSheet
       Caption = #24453#37197#36865#35746#21333
       ImageIndex = 2
+      OnShow = TabSheet3Show
       inline OrderFrame3: TOrderFrame
         Left = 0
         Top = 0
@@ -67,7 +70,7 @@ object MainOrderForm: TMainOrderForm
         Height = 343
         Align = alClient
         TabOrder = 0
-        inherited ListView1: TListView
+        inherited OrderListView: TListView
           Width = 780
           Height = 343
         end
@@ -76,6 +79,7 @@ object MainOrderForm: TMainOrderForm
     object TabSheet4: TTabSheet
       Caption = #24050#23436#25104#35746#21333
       ImageIndex = 3
+      OnShow = TabSheet4Show
       inline OrderFrame4: TOrderFrame
         Left = 0
         Top = 0
@@ -83,7 +87,7 @@ object MainOrderForm: TMainOrderForm
         Height = 343
         Align = alClient
         TabOrder = 0
-        inherited ListView1: TListView
+        inherited OrderListView: TListView
           Width = 780
           Height = 343
         end
@@ -92,6 +96,7 @@ object MainOrderForm: TMainOrderForm
     object TabSheet5: TTabSheet
       Caption = #35746#21333#26597#35810
       ImageIndex = 4
+      OnShow = TabSheet5Show
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -137,7 +142,7 @@ object MainOrderForm: TMainOrderForm
         Height = 286
         Align = alClient
         TabOrder = 1
-        inherited ListView1: TListView
+        inherited OrderListView: TListView
           Width = 780
           Height = 286
         end

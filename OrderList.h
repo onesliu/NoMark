@@ -4,6 +4,7 @@
 #define OrderListH
 #include <vcl.h>
 #include <list>
+#include <algorithms.h>
 #include "Order.h"
 #include "SoundPlay.h"
 //---------------------------------------------------------------------------
@@ -105,5 +106,11 @@ public:
 			itr->commit();
 		}
 	}
+
+    void sortOrderByTime() {
+        orders.sort();
+    }
+
 };
+
 #endif

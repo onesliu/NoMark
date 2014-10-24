@@ -40,6 +40,11 @@ __published:	// IDE-managed Components
     TOrderFrame *OrderFrame5;
     void __fastcall ToolButton2Click(TObject *Sender);
     void __fastcall ToolButton1Click(TObject *Sender);
+    void __fastcall TabSheet1Show(TObject *Sender);
+    void __fastcall TabSheet2Show(TObject *Sender);
+    void __fastcall TabSheet3Show(TObject *Sender);
+    void __fastcall TabSheet4Show(TObject *Sender);
+    void __fastcall TabSheet5Show(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
     __fastcall TMainOrderForm(TComponent* Owner);

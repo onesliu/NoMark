@@ -133,6 +133,12 @@ public:
 		}
 		return total;	
 	}
+
 };
+
+bool operator<(const Order& o1, const Order& o2)
+{
+    return o1.shipping_time < o2.shipping_time;
+}
 #endif
  

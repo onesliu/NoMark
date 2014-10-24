@@ -8,7 +8,8 @@ public:
     SoundPlay() {
     }
 
-    play(int id);
+    void play(int id) {
+    }
 };
 #endif
  

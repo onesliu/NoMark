@@ -5,7 +5,7 @@ object OrderFrame: TOrderFrame
   Height = 327
   Align = alClient
   TabOrder = 0
-  object ListView1: TListView
+  object OrderListView: TListView
     Left = 0
     Top = 0
     Width = 855
@@ -37,7 +37,7 @@ object OrderFrame: TOrderFrame
         Width = 200
       end
       item
-        Caption = #19979#21333#26102#38388
+        Caption = #37197#36865#26102#38388
         Width = 100
       end
       item
