@@ -21,7 +21,11 @@ __published:
 	TBevel *Bevel1;
     TLabeledEdit *User;
     TLabeledEdit *Password;
+    void __fastcall FormShow(TObject *Sender);
+    void __fastcall OKBtnClick(TObject *Sender);
 private:
+    void __fastcall ReadConfig();
+    void __fastcall SaveConfig();
 public:
 	virtual __fastcall TLoginDlg(TComponent* AOwner);
 };

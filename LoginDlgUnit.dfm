@@ -14,6 +14,7 @@ object LoginDlg: TLoginDlg
   FormStyle = fsStayOnTop
   OldCreateOrder = True
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 21
   object Bevel1: TBevel
@@ -30,8 +31,8 @@ object LoginDlg: TLoginDlg
     Height = 45
     Caption = #30331#24405
     Default = True
-    ModalResult = 1
     TabOrder = 0
+    OnClick = OKBtnClick
   end
   object CancelBtn: TButton
     Left = 159
