@@ -7,10 +7,8 @@
     <OBJFILES value="debug\ordermobile\OrderMobile.obj debug\ordermobile\MainOrderUnit.obj 
       debug\ordermobile\OrderFrameUnit.obj debug\ordermobile\LoginDlgUnit.obj 
       debug\ordermobile\CheckoutUnit.obj debug\ordermobile\CommonUnit.obj 
-      debug\ordermobile\MessageBoxes.obj debug\ordermobile\OrderList.obj 
-      debug\ordermobile\Order.obj debug\ordermobile\Product.obj 
-      debug\ordermobile\BarcodeUnit.obj debug\ordermobile\OrderStatus.obj 
-      debug\ordermobile\SoundPlay.obj"/>
+      debug\ordermobile\MessageBoxes.obj debug\ordermobile\json_writer.obj 
+      debug\ordermobile\json_reader.obj debug\ordermobile\json_value.obj"/>
     <RESFILES value="OrderMobile.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -27,7 +25,7 @@
       nmfast.bpi webdsnap.bpi bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi 
       dbexpress.bpi dbxcds.bpi indy.bpi bcb2kaxserver.bpi TeeLanguage7C6.bpi 
       TeePro7C6.bpi TeeDB7C6.bpi Tee7C6.bpi TeeUI7C6.bpi TeeGL7C6.bpi TeeQR7C6.bpi"/>
-    <PATHCPP value=".;utility"/>
+    <PATHCPP value=".;utility;jsoncpp\src\lib_json"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -37,14 +35,15 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="OrderMobile.cpp"/>
-    <INCLUDEPATH value="C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility"/>
-    <LIBPATH value="C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility"/>
+    <INCLUDEPATH value="C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp\include;jsoncpp\src\lib_json"/>
+    <LIBPATH value="jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
     <IDLCFLAGS value="-IC:\Windows\system32 -ID:\Projects\NoMarkManager -I$(BCB)\include 
-      -I$(BCB)\include\vcl -Iutility -src_suffix cpp -D_DEBUG -boa"/>
+      -I$(BCB)\include\vcl -Iutility -Ijsoncpp\include -Ijsoncpp\src\lib_json 
+      -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
       -tW -tWM"/>
     <PFLAGS value="-N2.\debug\ordermobile -N0.\debug\ordermobile -$YD -$W -$O- -$A8 -v -JPHNE 
@@ -70,12 +69,9 @@
       <FILE FILENAME="lib\IniFile.lib" FORMNAME="" UNITNAME="IniFile.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="utility\CommonUnit.cpp" FORMNAME="" UNITNAME="CommonUnit.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="utility\MessageBoxes.cpp" FORMNAME="" UNITNAME="MessageBoxes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="OrderList.cpp" FORMNAME="" UNITNAME="OrderList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Order.cpp" FORMNAME="" UNITNAME="Order" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Product.cpp" FORMNAME="" UNITNAME="Product" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="BarcodeUnit.cpp" FORMNAME="" UNITNAME="BarcodeUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="OrderStatus.cpp" FORMNAME="" UNITNAME="OrderStatus" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SoundPlay.cpp" FORMNAME="" UNITNAME="SoundPlay" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="jsoncpp\src\lib_json\json_writer.cpp" FORMNAME="" UNITNAME="json_writer.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="jsoncpp\src\lib_json\json_reader.cpp" FORMNAME="" UNITNAME="json_reader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="jsoncpp\src\lib_json\json_value.cpp" FORMNAME="" UNITNAME="json_value.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -109,14 +105,16 @@ ProductVersion=1.0.0.0
 Comments=
 
 [Excluded Packages]
-d:\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
-d:\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
-d:\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
+c:\program files\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
+c:\program files\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
+c:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
 
 [HistoryLists\hlIncludePath]
-Count=2
-Item0=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility
-Item1=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl
+Count=4
+Item0=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp\include;jsoncpp\src\lib_json
+Item1=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp\include
+Item2=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility
+Item3=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
 Count=2
