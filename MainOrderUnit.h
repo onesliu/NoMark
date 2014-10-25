@@ -23,9 +23,9 @@ __published:	// IDE-managed Components
     TTabSheet *TabSheet4;
     TCoolBar *CoolBar1;
     TToolBar *ToolBar1;
-    TToolButton *ToolButton1;
+    TToolButton *LoginButton;
     TImageList *ImageList1;
-    TToolButton *ToolButton2;
+    TToolButton *CheckoutButton;
     TStatusBar *StatusBar1;
     TOrderFrame *OrderFrame1;
     TTabSheet *TabSheet5;
@@ -38,8 +38,8 @@ __published:	// IDE-managed Components
     TButton *BtnQuery;
     TPanel *Panel1;
     TOrderFrame *OrderFrame5;
-    void __fastcall ToolButton2Click(TObject *Sender);
-    void __fastcall ToolButton1Click(TObject *Sender);
+    void __fastcall CheckoutButtonClick(TObject *Sender);
+    void __fastcall LoginButtonClick(TObject *Sender);
     void __fastcall TabSheet1Show(TObject *Sender);
     void __fastcall TabSheet2Show(TObject *Sender);
     void __fastcall TabSheet3Show(TObject *Sender);

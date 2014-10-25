@@ -11,13 +11,14 @@
       debug\ordermobile\Order.obj debug\ordermobile\Product.obj 
       debug\ordermobile\BarcodeUnit.obj debug\ordermobile\OrderStatus.obj 
       debug\ordermobile\SoundPlay.obj debug\ordermobile\json_reader.obj 
-      debug\ordermobile\json_value.obj debug\ordermobile\json_writer.obj"/>
+      debug\ordermobile\json_value.obj debug\ordermobile\json_writer.obj 
+      debug\ordermobile\OrderInfoUnit.obj debug\ordermobile\ScaleInputUnit.obj"/>
     <RESFILES value="OrderMobile.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) MainOrderUnit.dfm OrderFrameUnit.dfm LoginDlgUnit.dfm 
-      CheckoutUnit.dfm"/>
+      CheckoutUnit.dfm OrderInfoUnit.dfm ScaleInputUnit.dfm"/>
     <LIBFILES value="lib\IniFile.lib"/>
     <LIBRARIES value=""/>
     <SPARELIBS value="vcl.lib rtl.lib"/>
@@ -81,6 +82,8 @@
       <FILE FILENAME="jsoncpp\src\lib_json\json_reader.cpp" FORMNAME="" UNITNAME="json_reader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="jsoncpp\src\lib_json\json_value.cpp" FORMNAME="" UNITNAME="json_value.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="jsoncpp\src\lib_json\json_writer.cpp" FORMNAME="" UNITNAME="json_writer.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OrderInfoUnit.cpp" FORMNAME="OrderInfoForm" UNITNAME="OrderInfoUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ScaleInputUnit.cpp" FORMNAME="ScaleInputForm" UNITNAME="ScaleInputUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -23,12 +23,12 @@ __fastcall TMainOrderForm::TMainOrderForm(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
-void __fastcall TMainOrderForm::ToolButton2Click(TObject *Sender)
+void __fastcall TMainOrderForm::CheckoutButtonClick(TObject *Sender)
 {
     CheckoutForm->ShowModal();
 }
 //---------------------------------------------------------------------------
-void __fastcall TMainOrderForm::ToolButton1Click(TObject *Sender)
+void __fastcall TMainOrderForm::LoginButtonClick(TObject *Sender)
 {
     LoginDlg->ShowModal();    
 }

@@ -20,10 +20,10 @@ object MainOrderForm: TMainOrderForm
     Top = 44
     Width = 788
     Height = 388
-    ActivePage = TabSheet5
+    ActivePage = TabSheet1
     Align = alClient
     Images = ImageList1
-    TabIndex = 4
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #24453#31216#37325#35746#21333
@@ -177,19 +177,19 @@ object MainOrderForm: TMainOrderForm
       List = True
       ShowCaptions = True
       TabOrder = 0
-      object ToolButton1: TToolButton
+      object LoginButton: TToolButton
         Left = 0
         Top = 0
         Caption = #24080#21495#30331#24405
         ImageIndex = 0
-        OnClick = ToolButton1Click
+        OnClick = LoginButtonClick
       end
-      object ToolButton2: TToolButton
+      object CheckoutButton: TToolButton
         Left = 107
         Top = 0
         Caption = #19978#32593#32467#31639
         ImageIndex = 9
-        OnClick = ToolButton2Click
+        OnClick = CheckoutButtonClick
       end
     end
   end

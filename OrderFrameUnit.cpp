@@ -29,7 +29,7 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
     AnsiString lastShippingtime = "";
 
     for(itr = olist->orders.begin(); itr != olist->orders.end(); ++itr) {
-        if (itr->order_status != order_status) continue;
+        if (order_status != 0 && itr->order_status != order_status) continue;
         if (lastShippingtime != "" && itr->shipping_time != lastShippingtime) {
             item = OrderListView->Items->Add();
             item->Caption = "----------------------------------------------------------";

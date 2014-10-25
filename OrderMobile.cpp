@@ -7,6 +7,8 @@ USEFORM("MainOrderUnit.cpp", MainOrderForm);
 USEFORM("OrderFrameUnit.cpp", OrderFrame); /* TFrame: File Type */
 USEFORM("LoginDlgUnit.cpp", LoginDlg);
 USEFORM("CheckoutUnit.cpp", CheckoutForm);
+USEFORM("OrderInfoUnit.cpp", OrderInfoForm);
+USEFORM("ScaleInputUnit.cpp", ScaleInputForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -16,6 +18,8 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
          Application->CreateForm(__classid(TMainOrderForm), &MainOrderForm);
          Application->CreateForm(__classid(TLoginDlg), &LoginDlg);
          Application->CreateForm(__classid(TCheckoutForm), &CheckoutForm);
+         Application->CreateForm(__classid(TOrderInfoForm), &OrderInfoForm);
+         Application->CreateForm(__classid(TScaleInputForm), &ScaleInputForm);
          Application->Run();
     }
     catch (Exception &exception)

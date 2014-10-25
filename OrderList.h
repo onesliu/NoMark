@@ -10,11 +10,6 @@
 //---------------------------------------------------------------------------
 class OrderList {
 public:
-    enum {  SOUND_ORDER_NEW = 0,
-            SOUND_ORDER_MODIFY = 1,
-            SOUND_ORDER_FINISH = 2,
-    };
-    
 	std::list<Order> orders;
 	
 	OrderList() {
@@ -63,7 +58,7 @@ public:
 			if (o_new == NULL && o_old->is_delete == false) {
 				//有完成订单，报警
 				o_old->is_delete = true;
-				SoundPlayer.play(3);
+				SoundPlayer.play(SoundPlay::SOUND_ORDER_FINISH);
 			}
 		}
 
@@ -75,13 +70,13 @@ public:
 			if (o_old == NULL) {
 				//有新订单，报警
 				new_orders.push_back(*o_new);
-				SoundPlayer.play(1);
+				SoundPlayer.play(SoundPlay::SOUND_ORDER_NEW);
 			}
 			else if (o_old != NULL) {
 				if (o_old->order_status_orign != o_new->order_status_orign) {
 					//有修改订单，报警
 					o_old->initStatus(o_new->order_status);
-					SoundPlayer.play(2);
+					SoundPlayer.play(SoundPlay::SOUND_ORDER_MODIFY);
 				}
 			}
 		}
