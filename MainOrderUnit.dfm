@@ -1,6 +1,6 @@
 object MainOrderForm: TMainOrderForm
-  Left = 310
-  Top = 130
+  Left = 281
+  Top = 82
   BorderStyle = bsSingle
   Caption = #38738#24736#24736#25509#21333#31995#32479
   ClientHeight = 462
@@ -20,10 +20,10 @@ object MainOrderForm: TMainOrderForm
     Top = 44
     Width = 788
     Height = 388
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     Images = ImageList1
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #24453#31216#37325#35746#21333
@@ -2334,6 +2334,7 @@ object MainOrderForm: TMainOrderForm
   end
   object MainTimer: TTimer
     Interval = 10000
+    OnTimer = MainTimerTimer
     Left = 600
     Top = 8
   end

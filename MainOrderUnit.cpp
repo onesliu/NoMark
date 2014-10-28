@@ -14,6 +14,7 @@
 #pragma package(smart_init)
 #pragma link "OrderFrameUnit"
 #pragma resource "*.dfm"
+
 TMainOrderForm *MainOrderForm;
 OrderList orderlist;
 OrderList querylist;
@@ -21,6 +22,11 @@ OrderList querylist;
 __fastcall TMainOrderForm::TMainOrderForm(TComponent* Owner)
     : TForm(Owner)
 {
+    m_bLogin = false;
+    
+    hfcData = new HFC_DATA_S;
+    memset(hfcData, 0, sizeof(hfcData));
+    hfcData->hdl = HFC_Init();
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainOrderForm::CheckoutButtonClick(TObject *Sender)
@@ -68,7 +74,7 @@ void __fastcall TMainOrderForm::BtnQueryClick(TObject *Sender)
  
     Json::Reader reader;
     Json::Value root;
-    
+
     if (!reader.parse(ifs, root, false))
     {
         return ;
@@ -78,6 +84,60 @@ void __fastcall TMainOrderForm::BtnQueryClick(TObject *Sender)
     AnsiString str;
     str = name.c_str();
     int age = root["age"].asInt(); 
+}
+
+bool __fastcall TMainOrderForm::GetOrders()
+{
+    bool res = false;
+
+    hfcData->url = QYYCY_URL_DOWNLOAD_ORDERS;
+    hfcData->type = TYPES_NULL;
+    hfcData->shopNo = -1;
+    hfcData->data.filename = FILE_ORDER_QUERY;
+    hfcData->data.buf = NULL;
+    res = HFC_Download(hfcData);
+    
+    return res;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainOrderForm::MainTimerTimer(TObject *Sender)
+{
+    bool res = false;
+
+    hfcData->url = QYYCY_URL_LOGIN;
+    if ( m_bLogin == false )    // Login
+    {
+        res = HFC_CanWebsiteVisit(hfcData);
+        if ( res == false )
+        {
+            return;
+        }
+        else
+        {
+            hfcData->url = QYYCY_URL_LOGIN;
+            hfcData->login.name = LoginDlg->GetUsername().c_str();
+            hfcData->login.pwd = LoginDlg->GetPassword().c_str();
+            hfcData->url_login_ok = QYYCY_URL_LOGIN_OK;
+            res = HFC_Login(hfcData);
+            if ( res == false )
+            {
+                return;
+            }
+            else
+            {
+                m_bLogin = true;
+            }
+        }        
+    }
+    else
+    {
+        res = GetOrders();
+        if ( res == false )
+        {
+            m_bLogin = false;
+        }
+    }
 }
 //---------------------------------------------------------------------------
 

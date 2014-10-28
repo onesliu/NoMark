@@ -80,40 +80,49 @@ __declspec(dllexport) HTTP_FILE_HANDLE HFC_Init()
     return http_file_client;
 }
 
-__declspec(dllexport) void HFC_Release(HTTP_FILE_HANDLE hdl)
+__declspec(dllexport) void HFC_Release(HFC_DATA_S * hfc)
 {
-    delete (CHttpFileClient*)hdl;
-    hdl = NULL;
+    if ( hfc == NULL || hfc->hdl == NULL ) 
+        return;
+    
+    delete (CHttpFileClient*)(hfc->hdl);
+    hfc->hdl = NULL;
 }
 
-__declspec(dllexport) bool HFC_CanWebsiteVisit(HTTP_FILE_HANDLE hdl, const char* url_login)
+__declspec(dllexport) bool HFC_CanWebsiteVisit(HFC_DATA_S * hfc)
 {
+    if ( hfc == NULL || hfc->hdl == NULL || hfc->url == NULL ) 
+        return FALSE;
+    
     BOOL result = FALSE;
-
-    wchar_t *p_url_login = AnsiToUnicode(url_login);
-
-    result = ((CHttpFileClient*)hdl)->CanWebsiteVisit(p_url_login);
+    
+    wchar_t *p_url_login = AnsiToUnicode(hfc->url);
+    
+    result = ((CHttpFileClient*)(hfc->hdl))->CanWebsiteVisit(p_url_login);
 
     delete [] p_url_login;
     p_url_login = NULL;
-
+    
     return result;
 }
 
-__declspec(dllexport) bool HFC_Login(HTTP_FILE_HANDLE hdl, const char* url_login,
-                                                           const char* name,
-                                                           const char* pwd,
-                                                           const char* url_login_ok)
+__declspec(dllexport) bool HFC_Login(HFC_DATA_S * hfc)
 {
+    if ( hfc == NULL || hfc->hdl == NULL || hfc->url == NULL || hfc->login.name == NULL || 
+         hfc->login.pwd == NULL || hfc->url_login_ok == NULL ) 
+    {
+        return FALSE;
+    }
+    
     BOOL result = FALSE;
-
-    wchar_t *p_url_login    = AnsiToUnicode(url_login);
-    wchar_t *p_name         = AnsiToUnicode(name);
-    wchar_t *p_pwd          = AnsiToUnicode(pwd);
-    wchar_t *p_url_login_ok = AnsiToUnicode(url_login_ok);
-
-    result = ((CHttpFileClient*)hdl)->Login(p_url_login, p_name, p_pwd, p_url_login_ok);
-
+    
+    wchar_t *p_url_login    = AnsiToUnicode(hfc->url);
+    wchar_t *p_name         = AnsiToUnicode(hfc->login.name);
+    wchar_t *p_pwd          = AnsiToUnicode(hfc->login.pwd);
+    wchar_t *p_url_login_ok = AnsiToUnicode(hfc->url_login_ok);
+    
+    result = ((CHttpFileClient*)(hfc->hdl))->Login(p_url_login, p_name, p_pwd, p_url_login_ok);
+    
     delete [] p_url_login;
     p_url_login = NULL;
     delete [] p_name;
@@ -122,94 +131,96 @@ __declspec(dllexport) bool HFC_Login(HTTP_FILE_HANDLE hdl, const char* url_login
     p_pwd = NULL;
     delete [] p_url_login_ok;
     p_url_login_ok = NULL;
-
+    
     return result;
 }
 
-__declspec(dllexport) bool HFC_Upload(HTTP_FILE_HANDLE hdl, 
-                                      const char* url_upload, 
-                                      OP_TYPES op_type, 
-                                      const char* filename)
+__declspec(dllexport) bool HFC_Upload(HFC_DATA_S * hfc)
 {
+    if ( hfc == NULL || hfc->hdl == NULL || hfc->url == NULL ) 
+    {
+        return FALSE;
+    }
+
+    if ( (hfc->data.filename == NULL && hfc->data.buf == NULL) || 
+         (hfc->data.filename != NULL && hfc->data.buf != NULL) )
+    {
+        return FALSE;
+    }
+
     BOOL result = FALSE;
     CString strURL;
-    wchar_t *p_url_upload = AnsiToUnicode(url_upload);
-    wchar_t *p_filename = AnsiToUnicode(filename);
+    wchar_t *p_url_upload = AnsiToUnicode(hfc->url);
+    wchar_t *p_filename = NULL;
 
-    strURL.Format(_T("%s&type=%d&token=%s"), p_url_upload, op_type, ((CHttpFileClient*)hdl)->GetToken());
-    result = ((CHttpFileClient*)hdl)->UploadFile(strURL, p_filename);
+    if ( hfc->data.buf != NULL )
+    {
+        CFile file;
+        p_filename = AnsiToUnicode(FILE_TEMP);
+        
+        if ( file.Open(p_filename, CFile::modeCreate|CFile::typeText|CFile::modeWrite) )
+        {
+            file.SeekToBegin();
+            file.Write(hfc->data.buf, strlen(hfc->data.buf));
+            file.Flush();
+            file.Close();
+        }           
+    }
+    else if ( hfc->data.filename != NULL )
+    {
+        p_filename = AnsiToUnicode(hfc->data.filename);
+    }
 
+    if ( hfc->type != TYPES_NULL )
+    {
+        strURL.Format(_T("%s&type=%d&token=%s"), p_url_upload, hfc->type, ((CHttpFileClient*)(hfc->hdl))->GetToken());
+    }
+
+    result = ((CHttpFileClient*)(hfc->hdl))->UploadFile(strURL, p_filename);
+    
     delete [] p_url_upload;
     p_url_upload = NULL;
-
+    delete [] p_filename;
+    p_filename = NULL;
+    
     return result;
 }
 
-__declspec(dllexport) bool HFC_Upload_Buf(HTTP_FILE_HANDLE hdl, 
-                                          const char* url_upload, 
-                                          OP_TYPES op_type, 
-                                          const char* buf)
+__declspec(dllexport) bool HFC_Download(HFC_DATA_S * hfc)
 {
-    BOOL result = FALSE;
-    CFile file;
-    wchar_t *p_filename = AnsiToUnicode(FILE_TEMP);
+    if ( hfc == NULL || hfc->hdl == NULL || hfc->url == NULL ) 
+        return FALSE;
     
-
-    if ( file.Open(p_filename, CFile::modeCreate|CFile::typeText|CFile::modeWrite) )
-    {
-        file.SeekToBegin();
-        file.Write(buf, strlen(buf));
-        file.Flush();
-        file.Close();
-    }
-    
-    result = HFC_Upload(hdl, url_upload, op_type, FILE_TEMP);
-
-    return result;
-}
-
-__declspec(dllexport) bool HFC_Download(HTTP_FILE_HANDLE hdl, 
-                                        const char* url_download, 
-                                        OP_TYPES op_type, 
-                                        int shop_no, 
-                                        const char* filename)
-{
     BOOL result = FALSE;
     CString strURL;
-    wchar_t *p_url_download = AnsiToUnicode(url_download);
-    wchar_t *p_filename = AnsiToUnicode(filename);
+    wchar_t *p_url_download = AnsiToUnicode(hfc->url);
+    wchar_t *p_filename = NULL;
 
-    strURL.Format(_T("%s&shopNo=%d&type=%d&token=%s"), p_url_download, shop_no, op_type, ((CHttpFileClient*)hdl)->GetToken());
-    result = ((CHttpFileClient*)hdl)->DownLoadFile(strURL, p_filename);
-
+    if ( hfc->data.buf != NULL )
+    {
+        p_filename = AnsiToUnicode(FILE_TEMP);     
+    }
+    else if ( hfc->data.filename != NULL )
+    {
+        p_filename = AnsiToUnicode(hfc->data.filename);
+    }
+ 
+    if ( (hfc->shopNo >= 0) && (hfc->type != TYPES_NULL) )
+    {
+        strURL.Format(_T("%s&shopNo=%d&type=%d&token=%s"), p_url_download, 
+                      hfc->shopNo, hfc->type, ((CHttpFileClient*)(hfc->hdl))->GetToken());
+    } 
+    else
+    {
+        strURL.Format(_T("%s&token=%s"), p_url_download, ((CHttpFileClient*)(hfc->hdl))->GetToken());
+    }
+    
+    result = ((CHttpFileClient*)(hfc->hdl))->DownLoadFile(strURL, p_filename);
+    
     delete [] p_url_download;
     p_url_download = NULL;
-
-    return result;
-}
-
-__declspec(dllexport) bool HFC_Download_Buf(HTTP_FILE_HANDLE hdl, 
-                                            const char* url_download, 
-                                            OP_TYPES op_type, 
-                                            int shop_no, 
-                                            char* buf)
-{
-    BOOL result = FALSE;
-    CFile file;
-    wchar_t *p_filename = AnsiToUnicode(FILE_TEMP);
+    delete [] p_filename;
+    p_filename = NULL;
     
-    result = HFC_Download(hdl, url_download, op_type, shop_no, FILE_TEMP);
-
-    if ( file.Open(p_filename, CFile::modeRead) )
-    {
-        while (1)
-        {
-            int ret = file.Read(buf, 100);
-  
-            if ( ret < 100 )
-                break;
-        }
-    }
-
     return result;
 }

@@ -688,7 +688,6 @@ void __fastcall TStorageForm::GoodsSheetShow(TObject *Sender)
 AnsiString __fastcall TStorageForm::UploadGoodsInfo()
 {
     bool res;
-    HTTP_FILE_HANDLE hfcHandle;
     AnsiString str, sql, type_name;
     int parent_id;
 
@@ -734,18 +733,30 @@ AnsiString __fastcall TStorageForm::UploadGoodsInfo()
 
         list->SaveToFile(FILE_UPLOAD_GOODS_INFO);
 
-        hfcHandle = HFC_Init();
-        res = HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
+        HFC_DATA_S *hfcData = new HFC_DATA_S;
+        memset(hfcData, 0, sizeof(hfcData));
+        
+        hfcData->hdl = HFC_Init();
+        hfcData->url = QYYCY_URL_LOGIN;
+        res = HFC_CanWebsiteVisit(hfcData);
         if ( res == false )
             str = "商品信息: 网络连接失败";
         else
         {
-            res = HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
+            hfcData->url = QYYCY_URL_LOGIN;
+            hfcData->login.name = QYYCY_USERNAME;
+            hfcData->login.pwd = QYYCY_PASSWORD;
+            hfcData->url_login_ok = QYYCY_URL_LOGIN_OK;
+            res = HFC_Login(hfcData);
             if ( res == false )
                 str = "商品信息: 登陆失败！";
             else
             {
-                res = HFC_Upload(hfcHandle, QYYCY_URL_UPLOAD, TYPES_GOODSINFO, FILE_UPLOAD_GOODS_INFO);
+                hfcData->url = QYYCY_URL_UPLOAD;
+                hfcData->type = TYPES_GOODSINFO;
+                hfcData->data.filename = FILE_UPLOAD_GOODS_INFO;
+                hfcData->data.buf = NULL;
+                res = HFC_Upload(hfcData);
                 if ( res == false )
                     str = "商品信息: 上传数据失败！";
                 else
@@ -755,7 +766,10 @@ AnsiString __fastcall TStorageForm::UploadGoodsInfo()
                 }
             }
         }
-        HFC_Release(hfcHandle);
+        HFC_Release(hfcData);
+
+        delete hfcData;
+        hfcData = NULL;
     }
     delete list;
     list = NULL;
@@ -766,10 +780,7 @@ AnsiString __fastcall TStorageForm::UploadGoodsInfo()
 AnsiString __fastcall TStorageForm::UploadChangePriceList()
 {
     bool res;
-    HTTP_FILE_HANDLE hfcHandle;
     AnsiString str, sql, strTypeName;
-    // Update goods list
-
 
     // Update change price list
     q->Close();
@@ -824,18 +835,30 @@ AnsiString __fastcall TStorageForm::UploadChangePriceList()
         list = NULL;
 
         // Update change price list
-        hfcHandle = HFC_Init();
-        res = HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
+        HFC_DATA_S *hfcData = new HFC_DATA_S;
+        memset(hfcData, 0, sizeof(hfcData));
+        
+        hfcData->hdl = HFC_Init();
+        hfcData->url = QYYCY_URL_LOGIN;
+        res = HFC_CanWebsiteVisit(hfcData);
         if ( res == false )
             str = "调价单: 网络连接失败！";
         else
         {
-            res = HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
+            hfcData->url = QYYCY_URL_LOGIN;
+            hfcData->login.name = QYYCY_USERNAME;
+            hfcData->login.pwd = QYYCY_PASSWORD;
+            hfcData->url_login_ok = QYYCY_URL_LOGIN_OK;
+            res = HFC_Login(hfcData);
             if ( res == false )
                 str = "调价单: 登陆失败！";
             else
             {
-                res = HFC_Upload(hfcHandle, QYYCY_URL_UPLOAD, TYPES_UPDATE_PRICE, FILE_UPLOAD_CHANGE_PRICE);
+                hfcData->url = QYYCY_URL_UPLOAD;
+                hfcData->type = TYPES_UPDATE_PRICE;
+                hfcData->data.filename = FILE_UPLOAD_CHANGE_PRICE;
+                hfcData->data.buf = NULL;            
+                res = HFC_Upload(hfcData);
                 if ( res == false )
                     str = "调价单: 上传数据失败！";
                 else
@@ -845,9 +868,12 @@ AnsiString __fastcall TStorageForm::UploadChangePriceList()
                 }
             }
         }
-        HFC_Release(hfcHandle);
-    }
+        HFC_Release(hfcData);
 
+        delete hfcData;
+        hfcData = NULL;        
+    }
+    
     return str;
 }
 

@@ -19,7 +19,7 @@
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) MainOrderUnit.dfm OrderFrameUnit.dfm LoginDlgUnit.dfm 
       CheckoutUnit.dfm OrderInfoUnit.dfm ScaleInputUnit.dfm"/>
-    <LIBFILES value="lib\IniFile.lib"/>
+    <LIBFILES value="lib\IniFile.lib debug\qyycy.lib"/>
     <LIBRARIES value=""/>
     <SPARELIBS value="vcl.lib rtl.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
@@ -84,6 +84,7 @@
       <FILE FILENAME="jsoncpp\src\lib_json\json_writer.cpp" FORMNAME="" UNITNAME="json_writer.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="OrderInfoUnit.cpp" FORMNAME="OrderInfoForm" UNITNAME="OrderInfoUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ScaleInputUnit.cpp" FORMNAME="ScaleInputForm" UNITNAME="ScaleInputUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="debug\qyycy.lib" FORMNAME="" UNITNAME="qyycy.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

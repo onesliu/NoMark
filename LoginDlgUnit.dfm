@@ -1,6 +1,6 @@
 object LoginDlg: TLoginDlg
-  Left = 514
-  Top = 235
+  Left = 337
+  Top = 180
   BorderStyle = bsDialog
   Caption = #24080#25143#30331#24405
   ClientHeight = 253
