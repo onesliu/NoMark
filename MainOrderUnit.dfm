@@ -13,6 +13,8 @@ object MainOrderForm: TMainOrderForm
   Font.Style = []
   OldCreateOrder = False
   WindowState = wsMaximized
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 21
   object PageControl1: TPageControl

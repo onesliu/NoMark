@@ -46,6 +46,8 @@ __published:	// IDE-managed Components
     void __fastcall TabSheet4Show(TObject *Sender);
     void __fastcall TabSheet5Show(TObject *Sender);
     void __fastcall BtnQueryClick(TObject *Sender);
+    void __fastcall FormCreate(TObject *Sender);
+    void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
     __fastcall TMainOrderForm(TComponent* Owner);

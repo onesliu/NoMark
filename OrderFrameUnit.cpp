@@ -24,13 +24,13 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
 
     olist->sortOrderByTime();
     TListItem * item;
-    list<Order>::iterator itr;
+    list<Order*>::iterator itr;
     OrderStatus * os = OrderStatus::getInstance();
     AnsiString lastShippingtime = "";
 
     for(itr = olist->orders.begin(); itr != olist->orders.end(); ++itr) {
-        if (order_status != 0 && itr->order_status != order_status) continue;
-        if (lastShippingtime != "" && itr->shipping_time != lastShippingtime) {
+        if (order_status != 0 && (*itr)->order_status != order_status) continue;
+        if (lastShippingtime != "" && (*itr)->shipping_time != lastShippingtime) {
             item = OrderListView->Items->Add();
             item->Caption = "----------------------------------------------------------";
             item->SubItems->Add("----------------------------------------------------------");
@@ -42,15 +42,15 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
             item->SubItems->Add("----------------------------------------------------------");
         }
         item = OrderListView->Items->Add();
-        item->Caption = itr->order_id;
-        item->SubItems->Add(itr->comment);
-        item->SubItems->Add(os->getStatus(itr->order_status));
-        item->SubItems->Add(itr->customer_name);
-        item->SubItems->Add(itr->customer_phone);
-        item->SubItems->Add(itr->shipping_addr);
-        item->SubItems->Add(itr->shipping_time);
+        item->Caption = (*itr)->order_id;
+        item->SubItems->Add((*itr)->comment);
+        item->SubItems->Add(os->getStatus((*itr)->order_status));
+        item->SubItems->Add((*itr)->customer_name);
+        item->SubItems->Add((*itr)->customer_phone);
+        item->SubItems->Add((*itr)->shipping_addr);
+        item->SubItems->Add((*itr)->shipping_time);
         item->SubItems->Add("");
-        lastShippingtime = itr->shipping_time;
+        lastShippingtime = (*itr)->shipping_time;
     }
 
     OrderListView->Items->EndUpdate();

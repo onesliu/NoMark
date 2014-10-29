@@ -10,24 +10,35 @@
 //---------------------------------------------------------------------------
 class OrderList {
 public:
-	std::list<Order> orders;
+	std::list<Order*> orders;
 	
 	OrderList() {
 	}
+
+    virtual ~OrderList() {
+        clear();
+    }
 	
 	void clear() {
+        std::list<Order*>::iterator itr;
+		for(itr = orders.begin(); itr != orders.end(); ++itr) {
+			if (*itr != NULL) {
+                delete *itr;
+			}
+		}
+        orders.clear();
 	}
 	
 	Order * get(__int64 orderid) {
-        std::list<Order>::iterator itr;
+        std::list<Order*>::iterator itr;
 		for(itr = orders.begin(); itr != orders.end(); ++itr) {
-			if (itr->order_id == orderid)
-				return &(*itr);
+			if ((*itr)->order_id == orderid)
+				return *itr;
 		}
 		return NULL;
 	}
 	
-	void add(Order order) {
+	void add(Order * order) {
 		orders.push_back(order);
 	}
 	
@@ -36,9 +47,9 @@ public:
 	}
 	
 	boolean hasChangedOrder() {
-        std::list<Order>::iterator itr;
+        std::list<Order*>::iterator itr;
 		for(itr = orders.begin(); itr != orders.end(); ++itr) {
-			if (itr->hasChanged())
+			if ((*itr)->hasChanged())
 				return true;
 		}
 		return false;
@@ -50,9 +61,9 @@ public:
 		//删除上次完成的订单
 		clearFinished();
 		
-        std::list<Order>::iterator itr;
+        std::list<Order*>::iterator itr;
 		for(itr = orders.begin(); itr != orders.end(); ++itr) {
-			Order * o_old = &(*itr);
+			Order * o_old = *itr;
 			Order * o_new = newlist->get(o_old->order_id);
 
 			if (o_new == NULL && o_old->is_delete == false) {
@@ -62,14 +73,14 @@ public:
 			}
 		}
 
-		std::list<Order> new_orders;
+		std::list<Order*> new_orders;
 		for(itr = newlist->orders.begin(); itr != newlist->orders.end(); ++itr) {
-			Order * o_new = &(*itr);
+			Order * o_new = *itr;
 			Order * o_old = this->get(o_new->order_id);
 			
 			if (o_old == NULL) {
 				//有新订单，报警
-				new_orders.push_back(*o_new);
+				new_orders.push_back(o_new);
 				SoundPlayer.play(SoundPlay::SOUND_ORDER_NEW);
 			}
 			else if (o_old != NULL) {
@@ -87,18 +98,19 @@ public:
 	}
 	
 	void clearFinished() {
-        std::list<Order>::iterator itr;
+        std::list<Order*>::iterator itr;
 		for(itr = orders.begin(); itr != orders.end(); ++itr) {
-			if (itr->is_delete == true) {
+			if ((*itr)->is_delete == true) {
+                if (*itr != NULL) delete *itr;
 				orders.erase(itr);
 			}
 		}
 	}
 	
 	void commitAllOrders() {
-        std::list<Order>::iterator itr;
+        std::list<Order*>::iterator itr;
 		for(itr = orders.begin(); itr != orders.end(); ++itr) {
-			itr->commit();
+			(*itr)->commit();
 		}
 	}
 
