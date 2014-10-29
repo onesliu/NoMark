@@ -41,7 +41,8 @@ void __fastcall TLoginDlg::ReadConfig()
         return;
     }
     User->Text = val;
-
+    m_strUsername = val;
+    
     memset(val, 0, sizeof(val));
     len = get_value(dom, "Login", "Password", val);
     if (len == -1) {
@@ -49,6 +50,7 @@ void __fastcall TLoginDlg::ReadConfig()
         return;
     }
     Password->Text = val;
+    m_strPassword = val;
 }
 //---------------------------------------------------------------------
 
@@ -57,6 +59,9 @@ void __fastcall TLoginDlg::SaveConfig()
     ini_dom_handle dom = get_dom(NULL);
     Janitor g_fp( free_dom, dom );
 
+    m_strUsername = User->Text;
+    m_strPassword = Password->Text;
+    
     add_section(dom, "Login");
     add_keypair(dom, "Login", "UserName", User->Text.c_str());
     add_keypair(dom, "Login", "Password", Password->Text.c_str());
@@ -76,4 +81,14 @@ void __fastcall TLoginDlg::OKBtnClick(TObject *Sender)
     ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------
+
+AnsiString __fastcall TLoginDlg::GetUsername()
+{
+    return m_strUsername;
+}
+
+AnsiString __fastcall TLoginDlg::GetPassword()
+{
+    return m_strPassword;
+}
 

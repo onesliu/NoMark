@@ -245,7 +245,7 @@ BOOL CHttpFileClient::Login(LPCTSTR sURI, LPCTSTR szUsername, LPCTSTR szPassword
         pHttpFile->AddRequestHeaders(_T("Content-Type: application/x-www-form-urlencoded\r\n"));
         pHttpFile->AddRequestHeaders(_T("Connection: Keep-Alive\r\n"));
         pHttpFile->AddRequestHeaders(m_strCookie);
-        strUserinfo.Format(_T("%s&%s&redirect=%s"), szUsername, szPassword, URLEncode(redirectURL));
+        strUserinfo.Format(_T("username=%s&password=%s&redirect=%s"), szUsername, szPassword, URLEncode(redirectURL));
         p = UnicodeToUTF8(strUserinfo);
 
         if ( !pHttpFile->SendRequest(NULL, 0, (LPVOID)(LPCTSTR)p, strlen(p)) )

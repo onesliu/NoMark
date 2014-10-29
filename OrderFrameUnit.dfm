@@ -1,15 +1,15 @@
 object OrderFrame: TOrderFrame
   Left = 0
   Top = 0
-  Width = 855
-  Height = 327
+  Width = 443
+  Height = 270
   Align = alClient
   TabOrder = 0
   object OrderListView: TListView
     Left = 0
     Top = 0
-    Width = 855
-    Height = 327
+    Width = 443
+    Height = 270
     Align = alClient
     Columns = <
       item

@@ -12,6 +12,8 @@
 #include <ImgList.hpp>
 #include "OrderFrameUnit.h"
 #include <ExtCtrls.hpp>
+#include "qyycy.h"
+
 //---------------------------------------------------------------------------
 class TMainOrderForm : public TForm
 {
@@ -48,7 +50,11 @@ __published:	// IDE-managed Components
     void __fastcall BtnQueryClick(TObject *Sender);
     void __fastcall FormCreate(TObject *Sender);
     void __fastcall FormDestroy(TObject *Sender);
+    void __fastcall MainTimerTimer(TObject *Sender);
 private:	// User declarations
+    bool m_bLogin;
+    HFC_DATA_S *hfcData;
+    bool __fastcall GetOrders();
 public:		// User declarations
     __fastcall TMainOrderForm(TComponent* Owner);
 };

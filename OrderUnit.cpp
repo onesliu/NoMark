@@ -1228,19 +1228,54 @@ void __fastcall TOrderForm::ToolButton8Click(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TOrderForm::DownloadUpdatePricelist()
 {
+	bool res = false;
+	AnsiString str;
+
     /* Download update price list from web server */
     q->Close();
     q->SQL->Text = "SELECT * FROM t_const WHERE NAME='ShopNo'";
     q->Open();
-
     if ( q->FieldByName("VAL")->AsInteger == 0 ) return; //总店版本不用下载
 
-    HTTP_FILE_HANDLE hfcHandle;
-    hfcHandle = HFC_Init();
-    HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
-    HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
-    HFC_Download(hfcHandle, QYYCY_URL_DOWNLOAD, TYPES_UPDATE_PRICE, q->FieldByName("VAL")->AsInteger, FILE_DOWNLOAD_CHANGE_PRICE);
-    HFC_Release(hfcHandle);
+    HFC_DATA_S *hfcData = new HFC_DATA_S;
+    memset(hfcData, 0, sizeof(hfcData));
+    
+    hfcData->hdl = HFC_Init();
+    hfcData->url = QYYCY_URL_LOGIN;
+    res = HFC_CanWebsiteVisit(hfcData);
+    if ( res == false )
+     	str = "调价单：网络连接失败！";
+    else
+    {
+        hfcData->url = QYYCY_URL_LOGIN;
+        hfcData->login.name = QYYCY_USERNAME;
+        hfcData->login.pwd = QYYCY_PASSWORD;
+        hfcData->url_login_ok = QYYCY_URL_LOGIN_OK;
+    	res = HFC_Login(hfcData);
+    	if ( res == false )
+			str = "调价单：登录失败！";
+		else
+		{
+            hfcData->url = QYYCY_URL_DOWNLOAD;
+            hfcData->type = TYPES_UPDATE_PRICE;
+            hfcData->shopNo = q->FieldByName("VAL")->AsInteger;
+            hfcData->data.filename = FILE_DOWNLOAD_CHANGE_PRICE;
+            hfcData->data.buf = NULL;
+			res = HFC_Download(hfcData);
+			if ( res == false )
+				str = "调价单：下载失败！";
+			else
+			{
+                // TODO...
+			}
+		}
+    }
+    HFC_Release(hfcData);
+
+    delete hfcData;
+    hfcData = NULL;
+    
+	if ( res == false ) return;
 
     /* Write update price list from to local database */
     AnsiString r0, r1, sql1;
@@ -1323,19 +1358,54 @@ void __fastcall TOrderForm::DownloadUpdatePricelist()
 
 void __fastcall TOrderForm::DownloadGoodsInfo()
 {
+    bool res;
+
     /* Download update price list from web server */
     q->Close();
     q->SQL->Text = "SELECT * FROM t_const WHERE NAME='ShopNo'";
     q->Open();
-
     if ( q->FieldByName("VAL")->AsInteger == 0 ) return; //总店版本不用下载
 
-    HTTP_FILE_HANDLE hfcHandle;
-    hfcHandle = HFC_Init();
-    HFC_CanWebsiteVisit(hfcHandle, QYYCY_URL_LOGIN);
-    HFC_Login(hfcHandle, QYYCY_URL_LOGIN, QYYCY_USERNAME, QYYCY_PASSWORD, QYYCY_URL_LOGIN_OK);
-    HFC_Download(hfcHandle, QYYCY_URL_DOWNLOAD, TYPES_GOODSINFO, q->FieldByName("VAL")->AsInteger, FILE_DOWNLOAD_GOODS_INFO);
-    HFC_Release(hfcHandle);
+    HFC_DATA_S *hfcData = new HFC_DATA_S;
+    memset(hfcData, 0, sizeof(hfcData));
+
+    hfcData->hdl = HFC_Init();
+    hfcData->url = QYYCY_URL_LOGIN;
+    res = HFC_CanWebsiteVisit(hfcData);
+    if ( res == false )
+    {
+        return;
+    }
+    else
+    {
+        hfcData->url = QYYCY_URL_LOGIN;
+        hfcData->login.name = QYYCY_USERNAME;
+        hfcData->login.pwd = QYYCY_PASSWORD;
+        hfcData->url_login_ok = QYYCY_URL_LOGIN_OK;
+        res = HFC_Login(hfcData);
+        if ( res == false )
+        {
+            return;
+        }
+        else
+        {
+            hfcData->url = QYYCY_URL_DOWNLOAD;
+            hfcData->type = TYPES_GOODSINFO;
+            hfcData->shopNo = q->FieldByName("VAL")->AsInteger;
+            hfcData->data.filename = FILE_DOWNLOAD_GOODS_INFO;
+            hfcData->data.buf = NULL;
+            res = HFC_Download(hfcData);
+            if ( res == false )
+            {
+                return;
+            }
+        }
+    }
+
+    HFC_Release(hfcData);
+
+    delete hfcData;
+    hfcData = NULL;
 
     /* Write update price list from to local database */
     AnsiString r0, r1, sql;

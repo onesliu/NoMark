@@ -26,8 +26,12 @@ __published:
 private:
     void __fastcall ReadConfig();
     void __fastcall SaveConfig();
+    AnsiString m_strUsername;
+    AnsiString m_strPassword;
 public:
 	virtual __fastcall TLoginDlg(TComponent* AOwner);
+    AnsiString __fastcall GetUsername();
+    AnsiString __fastcall GetPassword();
 };
 //----------------------------------------------------------------------------
 extern PACKAGE TLoginDlg *LoginDlg;
