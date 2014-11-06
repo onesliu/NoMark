@@ -54,7 +54,11 @@ __published:	// IDE-managed Components
 private:	// User declarations
     bool m_bLogin;
     HFC_DATA_S *hfcData;
+    char outch[MAX_PATH];
     bool __fastcall GetOrders();
+    bool __fastcall ParseOrders();
+    bool __fastcall InsertList();
+    char* __fastcall UTF8toGBK(string str);
 public:		// User declarations
     __fastcall TMainOrderForm(TComponent* Owner);
 };

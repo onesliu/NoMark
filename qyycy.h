@@ -21,14 +21,14 @@ enum OP_TYPES
 #define QYYCY_URL_LOGIN_OK          ("http://qy.gz.1251102575.clb.myqcloud.com/admin/index.php?route=qingyou/login_ok")
 #define QYYCY_URL_UPLOAD            ("http://qy.gz.1251102575.clb.myqcloud.com/admin/index.php?route=qingyou/cq_exchange_data/upload")
 #define QYYCY_URL_DOWNLOAD          ("http://qy.gz.1251102575.clb.myqcloud.com/admin/index.php?route=qingyou/cq_exchange_data/download")
-#define QYYCY_URL_DOWNLOAD_ORDERS   ("http://qy.gz.1251102575.clb.myqcloud.com/admin/index.php?route=qingyou/order_query")
+#define QYYCY_URL_DOWNLOAD_ORDERS   ("http://qy.gz.1251102575.clb.myqcloud.com/admin/index.php?route=qingyou/order_query&districtid=1")
 
 #define FILE_UPLOAD_CHANGE_PRICE    (".\\data\\upload_change_price.txt")
 #define FILE_DOWNLOAD_CHANGE_PRICE  (".\\data\\download_change_price.txt")
 #define FILE_UPLOAD_GOODS_INFO      (".\\data\\upload_goods_info.txt")
 #define FILE_DOWNLOAD_GOODS_INFO    (".\\data\\download_goods_info.txt")
 #define FILE_TEMP                   (".\\data\\temp.txt")
-#define FILE_ORDER_QUERY            (".\\data\\order_query.txt")
+#define FILE_ORDER_QUERY            (".\\data\\order_query.json")
 
 typedef void* HTTP_FILE_HANDLE;
 

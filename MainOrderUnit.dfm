@@ -1,6 +1,6 @@
 object MainOrderForm: TMainOrderForm
-  Left = 281
-  Top = 82
+  Left = 346
+  Top = 240
   BorderStyle = bsSingle
   Caption = #38738#24736#24736#25509#21333#31995#32479
   ClientHeight = 462

@@ -43,7 +43,7 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
         }
         item = OrderListView->Items->Add();
         item->Caption = (*itr)->order_id;
-        item->SubItems->Add((*itr)->comment);
+        item->SubItems->Add((*itr)->productSubject);
         item->SubItems->Add(os->getStatus((*itr)->order_status));
         item->SubItems->Add((*itr)->customer_name);
         item->SubItems->Add((*itr)->customer_phone);
