@@ -81,6 +81,7 @@ public:
 			if (o_old == NULL) {
 				//有新订单，报警
 				new_orders.push_back(o_new);
+                newlist->orders.erase(itr);
 				SoundPlayer.play(SoundPlay::SOUND_ORDER_NEW);
 			}
 			else if (o_old != NULL) {
