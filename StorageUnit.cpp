@@ -734,8 +734,8 @@ AnsiString __fastcall TStorageForm::UploadGoodsInfo()
         list->SaveToFile(FILE_UPLOAD_GOODS_INFO);
 
         HFC_DATA_S *hfcData = new HFC_DATA_S;
-        memset(hfcData, 0, sizeof(hfcData));
-        
+        memset(hfcData, 0, sizeof(HFC_DATA_S));
+
         hfcData->hdl = HFC_Init();
         hfcData->url = QYYCY_URL_LOGIN;
         res = HFC_CanWebsiteVisit(hfcData);
@@ -836,8 +836,8 @@ AnsiString __fastcall TStorageForm::UploadChangePriceList()
 
         // Update change price list
         HFC_DATA_S *hfcData = new HFC_DATA_S;
-        memset(hfcData, 0, sizeof(hfcData));
-        
+        memset(hfcData, 0, sizeof(HFC_DATA_S));
+
         hfcData->hdl = HFC_Init();
         hfcData->url = QYYCY_URL_LOGIN;
         res = HFC_CanWebsiteVisit(hfcData);
@@ -857,7 +857,7 @@ AnsiString __fastcall TStorageForm::UploadChangePriceList()
                 hfcData->url = QYYCY_URL_UPLOAD;
                 hfcData->type = TYPES_UPDATE_PRICE;
                 hfcData->data.filename = FILE_UPLOAD_CHANGE_PRICE;
-                hfcData->data.buf = NULL;            
+                hfcData->data.buf = NULL;
                 res = HFC_Upload(hfcData);
                 if ( res == false )
                     str = "调价单: 上传数据失败！";
@@ -871,9 +871,9 @@ AnsiString __fastcall TStorageForm::UploadChangePriceList()
         HFC_Release(hfcData);
 
         delete hfcData;
-        hfcData = NULL;        
+        hfcData = NULL;
     }
-    
+
     return str;
 }
 

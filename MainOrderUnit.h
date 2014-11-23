@@ -52,15 +52,14 @@ __published:	// IDE-managed Components
     void __fastcall FormDestroy(TObject *Sender);
     void __fastcall MainTimerTimer(TObject *Sender);
 private:	// User declarations
-    bool m_bLogin;
-    HFC_DATA_S *hfcData;
     char outch[MAX_PATH];
     bool __fastcall GetOrders();
     bool __fastcall ParseOrders();
-    bool __fastcall InsertList();
     char* __fastcall UTF8toGBK(string str);
 public:		// User declarations
+    HFC_DATA_S *hfcData;
     __fastcall TMainOrderForm(TComponent* Owner);
+    bool GetLoginStatus();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainOrderForm *MainOrderForm;

@@ -3,7 +3,7 @@ object LoginDlg: TLoginDlg
   Top = 180
   BorderStyle = bsDialog
   Caption = #24080#25143#30331#24405
-  ClientHeight = 253
+  ClientHeight = 305
   ClientWidth = 313
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -24,9 +24,17 @@ object LoginDlg: TLoginDlg
     Height = 161
     Shape = bsFrame
   end
+  object LoginResult: TLabel
+    Left = 8
+    Top = 176
+    Width = 64
+    Height = 21
+    Alignment = taCenter
+    Caption = #30331#38470#32467#26524
+  end
   object OKBtn: TButton
-    Left = 79
-    Top = 188
+    Left = 71
+    Top = 228
     Width = 75
     Height = 45
     Caption = #30331#24405
@@ -36,7 +44,7 @@ object LoginDlg: TLoginDlg
   end
   object CancelBtn: TButton
     Left = 159
-    Top = 188
+    Top = 228
     Width = 75
     Height = 45
     Cancel = True

@@ -52,6 +52,7 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
         item->SubItems->Add("");
         lastShippingtime = (*itr)->shipping_time;
     }
+    
 
     OrderListView->Items->EndUpdate();
 }

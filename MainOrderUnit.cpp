@@ -11,6 +11,7 @@
 #include "json/json.h"
 #include "Order.h"
 #include "SoundPlay.h"
+#include "LoginDlgUnit.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -26,10 +27,8 @@ SoundPlay   soundplay;
 __fastcall TMainOrderForm::TMainOrderForm(TComponent* Owner)
     : TForm(Owner)
 {
-    m_bLogin = false;
-    
     hfcData = new HFC_DATA_S;
-    memset(hfcData, 0, sizeof(hfcData));
+    memset(hfcData, 0, sizeof(HFC_DATA_S));
     hfcData->hdl = HFC_Init();
 }
 //---------------------------------------------------------------------------
@@ -40,7 +39,7 @@ void __fastcall TMainOrderForm::CheckoutButtonClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainOrderForm::LoginButtonClick(TObject *Sender)
 {
-    LoginDlg->ShowModal();    
+    LoginDlg->ShowModal();
 }
 //---------------------------------------------------------------------------
 
@@ -72,13 +71,13 @@ void __fastcall TMainOrderForm::TabSheet5Show(TObject *Sender)
 
 void __fastcall TMainOrderForm::BtnQueryClick(TObject *Sender)
 {
-    int a = 1;
+    OrderFrame5->FreshOrderList(querylist, 0);
 }
 
 char* __fastcall TMainOrderForm::UTF8toGBK(string str)
 {
     int len = strlen(str.c_str())+1;
-    
+
     WCHAR * wChar = new WCHAR[len];
     wChar[0] = 0;
     MultiByteToWideChar(CP_UTF8, 0, str.c_str(), len, wChar, len);
@@ -93,10 +92,9 @@ char* __fastcall TMainOrderForm::UTF8toGBK(string str)
 bool __fastcall TMainOrderForm::GetOrders()
 {
     bool res = false;
-
+    
     hfcData->url = QYYCY_URL_DOWNLOAD_ORDERS;
-    hfcData->type = TYPES_NULL;
-    hfcData->shopNo = -1;
+    hfcData->type = TYPES_DOWNLOAD_ORDER;
     hfcData->data.filename = FILE_ORDER_QUERY;
     hfcData->data.buf = NULL;
     res = HFC_Download(hfcData);
@@ -112,10 +110,10 @@ bool __fastcall TMainOrderForm::ParseOrders()
     AnsiString  str;
     ifstream    ifs;
     AnsiString  productSubject;
-    
+
     ifs.open(FILE_ORDER_QUERY);
     assert(ifs.is_open());
- 
+
     Json::Reader reader;
     Json::Value order;
     Json::Value product;
@@ -123,12 +121,12 @@ bool __fastcall TMainOrderForm::ParseOrders()
     if ( !reader.parse(ifs, order, false) )
     {
         return false;
-    }           
+    }
 
     for ( int i=0; i<order.size(); i++ )
     {
         pOrder = new Order;
-        
+
         pOrder->order_id = ((AnsiString)(UTF8toGBK(order[i]["order_id"].asCString()))).ToDouble();
         pOrder->order_status = ((AnsiString)(UTF8toGBK(order[i]["order_status_id"].asCString()))).ToInt();
         pOrder->order_createtime = (AnsiString)(UTF8toGBK(order[i]["order_createtime"].asCString()));
@@ -146,9 +144,9 @@ bool __fastcall TMainOrderForm::ParseOrders()
         for ( int j=0; j<order[i]["products"].size(); j++ )
         {
             product = order[i]["products"];
-            
+
             pProduct = new Product;
-            
+
             pProduct->product_id = ((AnsiString)(UTF8toGBK(product[j]["product_id"].asCString()))).ToInt();
             pProduct->product_name = (AnsiString)(UTF8toGBK(product[j]["product_name"].asCString()));
             pProduct->product_type = ((AnsiString)(UTF8toGBK(product[j]["product_type"].asCString()))).ToInt();
@@ -161,7 +159,7 @@ bool __fastcall TMainOrderForm::ParseOrders()
 
             if ( pOrder->order_status > OrderStatus::ORDER_STATUS_WAITING )
 			    pProduct->finishScan();
-                        
+
             ordertype += pProduct->product_type;
             pOrder->add_product(pProduct);
             productSubject += pProduct->product_name + " ";
@@ -171,7 +169,7 @@ bool __fastcall TMainOrderForm::ParseOrders()
             pOrder->order_type = 0; //0:固定客单价订单, 1:变客单价订单
         else
             pOrder->order_type = 1;
-				
+
         pOrder->productSubject = productSubject;
         pOrderlist->add(pOrder);
     }
@@ -179,36 +177,17 @@ bool __fastcall TMainOrderForm::ParseOrders()
     orderlist->mergeOrderList(pOrderlist, &soundplay);
 }
 
-bool __fastcall TMainOrderForm::InsertList()
-{
-    bool res = false;
-    ifstream ifs;
-    
-    ifs.open(FILE_ORDER_QUERY);
-    assert(ifs.is_open());
- 
-    Json::Reader reader;
-    Json::Value root;
-
-    if (!reader.parse(ifs, root, false))
-    {
-        return false;
-    }
- 
-
-    return res;
-}
-
-
 //---------------------------------------------------------------------------
 
 void __fastcall TMainOrderForm::MainTimerTimer(TObject *Sender)
 {
-    bool res = false;
+//    if ( LoginDlg->GetLoginStatus() == false )
+//        return;
 
-    hfcData->url = QYYCY_URL_LOGIN;
-    if ( m_bLogin == false )    // Login
-    {
+    bool res = false;
+    
+#if 1
+        hfcData->url = QYYCY_URL_LOGIN;
         res = HFC_CanWebsiteVisit(hfcData);
         if ( res == false )
         {
@@ -217,8 +196,8 @@ void __fastcall TMainOrderForm::MainTimerTimer(TObject *Sender)
         else
         {
             hfcData->url = QYYCY_URL_LOGIN;
-            hfcData->login.name = "admin";//LoginDlg->GetUsername().c_str();
-            hfcData->login.pwd = "!@#qwe";//LoginDlg->GetPassword().c_str();
+            hfcData->login.name = LoginDlg->GetUsername().c_str();
+            hfcData->login.pwd = LoginDlg->GetPassword().c_str();
             hfcData->url_login_ok = QYYCY_URL_LOGIN_OK;
             res = HFC_Login(hfcData);
             if ( res == false )
@@ -227,28 +206,26 @@ void __fastcall TMainOrderForm::MainTimerTimer(TObject *Sender)
             }
             else
             {
-                m_bLogin = true;
+//                m_bLogin = true;
             }
-        }        
-    }
-    else
-    {
+        }
+#endif
+
         res = GetOrders();
         if ( res == false )
         {
-            m_bLogin = false;
+            return;
         }
         else
         {
             ParseOrders();
-            
+
             OrderFrame1->FreshOrderList(orderlist, OrderStatus::ORDER_STATUS_WAITING);
             OrderFrame2->FreshOrderList(orderlist, OrderStatus::ORDER_STATUS_PAYING);
             OrderFrame3->FreshOrderList(orderlist, OrderStatus::ORDER_STATUS_SCALED);
             OrderFrame4->FreshOrderList(orderlist, OrderStatus::ORDER_STATUS_FINISHED);
-            OrderFrame5->FreshOrderList(querylist, 0);
+            //
         }
-    }
 }
 //---------------------------------------------------------------------------
 
@@ -262,7 +239,8 @@ void __fastcall TMainOrderForm::FormCreate(TObject *Sender)
 void __fastcall TMainOrderForm::FormDestroy(TObject *Sender)
 {
     if (orderlist) delete orderlist;
-    if (querylist) delete querylist;   
+    if (querylist) delete querylist;
 }
 //---------------------------------------------------------------------------
+
 

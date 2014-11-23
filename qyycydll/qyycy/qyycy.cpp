@@ -173,7 +173,10 @@ __declspec(dllexport) bool HFC_Upload(HFC_DATA_S * hfc)
 
     if ( hfc->type != TYPES_NULL )
     {
-        strURL.Format(_T("%s&type=%d&token=%s"), p_url_upload, hfc->type, ((CHttpFileClient*)(hfc->hdl))->GetToken());
+        strURL.Format(_T("%s&token=%s&type=%d"), 
+                        p_url_upload,     
+                        ((CHttpFileClient*)(hfc->hdl))->GetToken(),
+                        hfc->type);
     }
 
     result = ((CHttpFileClient*)(hfc->hdl))->UploadFile(strURL, p_filename);
@@ -190,7 +193,7 @@ __declspec(dllexport) bool HFC_Download(HFC_DATA_S * hfc)
 {
     if ( hfc == NULL || hfc->hdl == NULL || hfc->url == NULL ) 
         return FALSE;
-    
+  
     BOOL result = FALSE;
     CString strURL;
     wchar_t *p_url_download = AnsiToUnicode(hfc->url);
@@ -204,17 +207,22 @@ __declspec(dllexport) bool HFC_Download(HFC_DATA_S * hfc)
     {
         p_filename = AnsiToUnicode(hfc->data.filename);
     }
- 
-    if ( (hfc->shopNo >= 0) && (hfc->type != TYPES_NULL) )
+
+    if ( hfc->type == TYPES_GOODSINFO || 
+         hfc->type == TYPES_UPDATE_PRICE )
     {
-        strURL.Format(_T("%s&shopNo=%d&type=%d&token=%s"), p_url_download, 
-                      hfc->shopNo, hfc->type, ((CHttpFileClient*)(hfc->hdl))->GetToken());
-    } 
-    else
+        strURL.Format(_T("%s&token=%s&shopNo=%d&type=%d"), 
+                        p_url_download, 
+                        ((CHttpFileClient*)(hfc->hdl))->GetToken(),
+                        hfc->shopNo, 
+                        hfc->type);
+    }
+    else if ( hfc->type == TYPES_DOWNLOAD_ORDER || 
+              hfc->type == TYPES_BALANCE )
     {
         strURL.Format(_T("%s&token=%s"), p_url_download, ((CHttpFileClient*)(hfc->hdl))->GetToken());
     }
-    
+
     result = ((CHttpFileClient*)(hfc->hdl))->DownLoadFile(strURL, p_filename);
     
     delete [] p_url_download;

@@ -28,10 +28,12 @@ public:
 
     LPCTSTR GetCookie();
     LPCTSTR GetToken();
+    LPCTSTR GetDistrictID();
 
 private:
 	CString m_strCookie;
     CString m_strToken;
+    CString m_strDistrictID;
 
     CString URLEncode       (CString sIn);
     char*   UnicodeToUTF8   (const CString strSrc); 
