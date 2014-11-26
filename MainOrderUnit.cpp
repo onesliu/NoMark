@@ -7,7 +7,6 @@
 #include "CheckoutUnit.h"
 #include "LoginDlgUnit.h"
 #include "fstream.h"
-#include <cassert>
 #include "json/json.h"
 
 //---------------------------------------------------------------------------
@@ -152,6 +151,12 @@ void __fastcall TMainOrderForm::FormDestroy(TObject *Sender)
 {
     if (orderlist) delete orderlist;
     if (querylist) delete querylist;   
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainOrderForm::FormShow(TObject *Sender)
+{
+    if (LoginDlg->ShowModal() != mrOk) Close();    
 }
 //---------------------------------------------------------------------------
 

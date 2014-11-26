@@ -15,6 +15,7 @@ object MainOrderForm: TMainOrderForm
   WindowState = wsMaximized
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 21
   object PageControl1: TPageControl
