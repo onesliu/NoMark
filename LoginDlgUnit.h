@@ -21,15 +21,22 @@ __published:
 	TBevel *Bevel1;
     TLabeledEdit *User;
     TLabeledEdit *Password;
+    TLabeledEdit *ServerDomain;
+    TSpeedButton *SpeedButton1;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall OKBtnClick(TObject *Sender);
+    void __fastcall SpeedButton1Click(TObject *Sender);
 private:
-    void __fastcall ReadConfig();
-    void __fastcall SaveConfig();
+    bool m_bLogin;
     AnsiString m_strUsername;
     AnsiString m_strPassword;
 public:
+    void __fastcall ReadConfig();
+    void __fastcall SaveConfig();
 	virtual __fastcall TLoginDlg(TComponent* AOwner);
+    bool __fastcall Login();
+    bool __fastcall GetLoginStatus();
+    void __fastcall SetLoginStatus(bool status);
     AnsiString __fastcall GetUsername();
     AnsiString __fastcall GetPassword();
 };

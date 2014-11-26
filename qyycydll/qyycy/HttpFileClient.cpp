@@ -93,6 +93,11 @@ LPCTSTR CHttpFileClient::GetToken()
     return m_strToken;
 }
 
+LPCTSTR CHttpFileClient::GetDistrictID()
+{
+    return m_strDistrictID;
+}
+
 void CHttpFileClient::Cookie(CHttpFile *pHttpFile)
 {
     VERIFY(pHttpFile != NULL);
@@ -120,8 +125,10 @@ void CHttpFileClient::Token(CHttpFile *pHttpFile)
         }
     }
     
-    cJSON *json, *json1;
-    
+    cJSON *json, *json1, *json2;
+  
+    strLine = strTemp;
+
     json = cJSON_Parse((LPSTR)(LPCTSTR)strTemp);
     if ( !json )
     {
@@ -129,14 +136,20 @@ void CHttpFileClient::Token(CHttpFile *pHttpFile)
     }
     else
     {
-        json1 = cJSON_GetObjectItem(json, "token");
-        
+        json1 = cJSON_GetObjectItem(json, "token");   
         if ( json1 )
         {
             USES_CONVERSION;
             m_strToken = A2T(json1->valuestring);
-            //            AfxMessageBox(m_strToken);
         }
+
+        json2 = cJSON_GetObjectItem(json, "district_id");  
+        if ( json2 )
+        {
+            USES_CONVERSION;
+            m_strDistrictID = A2T(json2->valuestring);
+        }
+
         cJSON_Delete(json);
     }
 }

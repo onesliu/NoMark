@@ -394,3 +394,20 @@ int RoundToInt( double d )
     return int(d);
 }
 
+AnsiString UTF8toGBK(AnsiString str)
+{
+    int len = strlen(str.c_str())+1;
+
+    char * outch = new char[sizeof(WCHAR)*len];
+    WCHAR * wChar = new WCHAR[len];
+    memset(wChar, 0, sizeof(WCHAR)*len);
+    MultiByteToWideChar(CP_UTF8, 0, str.c_str(), len, wChar, len);
+    WideCharToMultiByte(CP_ACP, 0, wChar, len, outch, len, 0, 0);
+
+    AnsiString ret = outch;
+    delete [] wChar;
+    delete [] outch;
+
+    return ret;
+}
+

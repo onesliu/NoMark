@@ -24,4 +24,5 @@ template <typename T> void del( T* p ) { if ( p ) {delete p; p = 0; } }
 AnsiString MoneyStr( double m );
 AnsiString WeightStr( double m );
 int RoundToInt( double d );
+AnsiString UTF8toGBK(AnsiString str);
 #endif

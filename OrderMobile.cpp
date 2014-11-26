@@ -9,6 +9,7 @@ USEFORM("LoginDlgUnit.cpp", LoginDlg);
 USEFORM("CheckoutUnit.cpp", CheckoutForm);
 USEFORM("OrderInfoUnit.cpp", OrderInfoForm);
 USEFORM("ScaleInputUnit.cpp", ScaleInputForm);
+USEFORM("PwdVerify.cpp", PasswordVerify);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -20,6 +21,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
          Application->CreateForm(__classid(TCheckoutForm), &CheckoutForm);
          Application->CreateForm(__classid(TOrderInfoForm), &OrderInfoForm);
          Application->CreateForm(__classid(TScaleInputForm), &ScaleInputForm);
+         Application->CreateForm(__classid(TPasswordVerify), &PasswordVerify);
          Application->Run();
     }
     catch (Exception &exception)

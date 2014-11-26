@@ -1,37 +1,28 @@
 //---------------------------------------------------------------------------
 
-#ifndef CheckoutUnitH
-#define CheckoutUnitH
+#ifndef PwdVerifyH
+#define PwdVerifyH
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include <ComCtrls.hpp>
+#include <Mask.hpp>
+#include <ExtCtrls.hpp>
 //---------------------------------------------------------------------------
-class TCheckoutForm : public TForm
+class TPasswordVerify : public TForm
 {
 __published:	// IDE-managed Components
-    TButton *BtnBalance;
     TLabel *Label1;
-    TLabel *Label2;
-    TLabel *LabelBalanceWeight;
-    TLabel *LabelBalanceMoney;
-    TLabel *Label3;
-    TLabel *Label4;
-    TLabel *LabelBalanceDateCurr;
-    TLabel *Label6;
-    TLabel *LabelBalanceOrderNumber;
-    TLabel *LabelBalanceKinds;
-    TLabel *BalanceResult;
-    TLabel *Label5;
-    TLabel *LabelBalanceDateLast;
-    void __fastcall BtnBalanceClick(TObject *Sender);
+    TButton *BtnConfirm;
+    TLabeledEdit *EditPwd;
+    TLabel *ConfirmResult;
+    void __fastcall BtnConfirmClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
-    __fastcall TCheckoutForm(TComponent* Owner);
+    __fastcall TPasswordVerify(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TCheckoutForm *CheckoutForm;
+extern PACKAGE TPasswordVerify *PasswordVerify;
 //---------------------------------------------------------------------------
 #endif

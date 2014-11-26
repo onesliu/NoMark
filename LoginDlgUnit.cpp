@@ -7,6 +7,10 @@
 #include "Janitor.h"
 #include "CommonUnit.h"
 #include "MessageBoxes.h"
+#include "qyycy.h"
+#include "PwdVerify.h"
+#include "MainOrderUnit.h"
+
 //--------------------------------------------------------------------- 
 #pragma resource "*.dfm"
 TLoginDlg *LoginDlg;
@@ -16,6 +20,7 @@ const char * INIFILE = "OrderMobile.ini";
 __fastcall TLoginDlg::TLoginDlg(TComponent* AOwner)
 	: TForm(AOwner)
 {
+    m_bLogin = false;
 }
 //---------------------------------------------------------------------
 
@@ -74,13 +79,45 @@ void __fastcall TLoginDlg::FormShow(TObject *Sender)
     ReadConfig();
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TLoginDlg::OKBtnClick(TObject *Sender)
+bool __fastcall TLoginDlg::Login()
 {
-    SaveConfig();
-    ModalResult = mrOk;
+	AnsiString strUser, strPwd;
+    HFC_DATA_S * hfcData = MainOrderForm->hfcData;
+
+    hfcData->url = QYYCY_URL_LOGIN;
+    m_bLogin = HFC_CanWebsiteVisit(hfcData);
+    if ( m_bLogin == true )
+    {
+        strUser = User->Text;
+        strPwd = Password->Text;
+        
+        hfcData->url = QYYCY_URL_LOGIN;
+        hfcData->login.name = strUser.c_str();
+        hfcData->login.pwd = strPwd.c_str();
+        hfcData->url_login_ok = QYYCY_URL_LOGIN_OK;
+    	m_bLogin = HFC_Login(hfcData);
+        if ( m_bLogin == true )
+        {
+            m_bLogin = true;
+
+            SaveConfig();
+
+            ModalResult = mrOk;
+        }
+    }
+
+    return m_bLogin;
 }
-//---------------------------------------------------------------------------
+
+bool __fastcall TLoginDlg::GetLoginStatus()
+{
+    return m_bLogin;
+}
+
+void __fastcall TLoginDlg::SetLoginStatus(bool status)
+{
+    m_bLogin = status;
+}
 
 AnsiString __fastcall TLoginDlg::GetUsername()
 {
@@ -91,4 +128,27 @@ AnsiString __fastcall TLoginDlg::GetPassword()
 {
     return m_strPassword;
 }
+
+void __fastcall TLoginDlg::OKBtnClick(TObject *Sender)
+{
+    AnsiString str;
+    
+    if ( !Login() )
+    {
+        str = "µÇÂ½Ê§°Ü£¡";
+    }
+    else
+    {
+        str = "µÇÂ½³É¹¦£¡";
+    }
+    
+    LoginResult->SetTextBuf(str.c_str());
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TLoginDlg::SpeedButton1Click(TObject *Sender)
+{
+    ServerDomain->Enabled = !ServerDomain->Enabled;    
+}
+//---------------------------------------------------------------------------
 

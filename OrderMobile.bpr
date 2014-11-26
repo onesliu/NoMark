@@ -12,13 +12,14 @@
       debug\ordermobile\BarcodeUnit.obj debug\ordermobile\OrderStatus.obj 
       debug\ordermobile\SoundPlay.obj debug\ordermobile\json_reader.obj 
       debug\ordermobile\json_value.obj debug\ordermobile\json_writer.obj 
-      debug\ordermobile\OrderInfoUnit.obj debug\ordermobile\ScaleInputUnit.obj"/>
+      debug\ordermobile\OrderInfoUnit.obj debug\ordermobile\ScaleInputUnit.obj 
+      debug\ordermobile\PwdVerify.obj"/>
     <RESFILES value="OrderMobile.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) MainOrderUnit.dfm OrderFrameUnit.dfm LoginDlgUnit.dfm 
-      CheckoutUnit.dfm OrderInfoUnit.dfm ScaleInputUnit.dfm"/>
+      CheckoutUnit.dfm OrderInfoUnit.dfm ScaleInputUnit.dfm PwdVerify.dfm"/>
     <LIBFILES value="lib\IniFile.lib debug\qyycy.lib"/>
     <LIBRARIES value=""/>
     <SPARELIBS value="vcl.lib rtl.lib"/>
@@ -39,15 +40,16 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="OrderMobile.cpp"/>
-    <INCLUDEPATH value="jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp\include"/>
-    <LIBPATH value="jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility"/>
+    <INCLUDEPATH value="&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp\include"/>
+    <LIBPATH value="&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Ijsoncpp\src\lib_json -IC:\Windows\system32 -ID:\Projects\NoMarkManager 
-      -I$(BCB)\include -I$(BCB)\include\vcl -Iutility -Ijsoncpp\include 
-      -src_suffix cpp -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; -Ijsoncpp\src\lib_json 
+      -IC:\Windows\system32 -ID:\Projects\NoMarkManager -I$(BCB)\include 
+      -I$(BCB)\include\vcl -Iutility -Ijsoncpp\include -src_suffix cpp -D_DEBUG 
+      -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
       -tW -tWM"/>
     <PFLAGS value="-N2.\debug\ordermobile -N0.\debug\ordermobile -$YD -$W -$O- -$A8 -v -JPHNE 
@@ -84,6 +86,7 @@
       <FILE FILENAME="jsoncpp\src\lib_json\json_writer.cpp" FORMNAME="" UNITNAME="json_writer.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="OrderInfoUnit.cpp" FORMNAME="OrderInfoForm" UNITNAME="OrderInfoUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ScaleInputUnit.cpp" FORMNAME="ScaleInputForm" UNITNAME="ScaleInputUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PwdVerify.cpp" FORMNAME="PasswordVerify" UNITNAME="PwdVerify" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="debug\qyycy.lib" FORMNAME="" UNITNAME="qyycy.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>

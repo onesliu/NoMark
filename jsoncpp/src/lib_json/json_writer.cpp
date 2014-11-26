@@ -14,7 +14,6 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
-#include <Windows.h>
 
 #if _MSC_VER >= 1400 // VC++ 8.0
 #pragma warning( disable : 4996 )   // disable warning about strdup being deprecated.
@@ -121,24 +120,16 @@ std::string valueToString( bool value )
 std::string valueToQuotedString( const char *value )
 {
    // Not sure how to handle unicode...
-   //if (strpbrk(value, "\"\\\b\f\n\r\t") == NULL && !containsControlCharacter( value ))
-   //   return std::string("\"") + value + "\"";
-
+   if (strpbrk(value, "\"\\\b\f\n\r\t") == NULL && !containsControlCharacter( value ))
+      return std::string("\"") + value + "\"";
    // We have to walk value and escape any special characters.
    // Appending to std::string is not efficient, but this should be rare.
    // (Note: forward slashes are *not* rare, but I am not escaping them.)
-   std::string::size_type maxsize = strlen(value) * 2 + 3; // allescaped+quotes+NULL
+   std::string::size_type maxsize = strlen(value)*2 + 3; // allescaped+quotes+NULL
    std::string result;
    result.reserve(maxsize); // to avoid lots of mallocs
    result += "\"";
-
-   // 为了正确检查Unicode字符，拷贝一份宽字符版本来遍历
-   int newLen = MultiByteToWideChar(CP_ACP, 0, value, -1, NULL, 0); 
-   LPWSTR wValue = (LPWSTR)calloc(newLen + 1, sizeof(WCHAR));
-   MultiByteToWideChar(CP_ACP, 0, value, -1, wValue, newLen);
-
-   const char* c = value;
-   for (const WCHAR* wc = wValue; *wc != 0; ++wc)
+   for (const char* c=value; *c != 0; ++c)
    {
       switch(*c)
       {
@@ -146,8 +137,8 @@ std::string valueToQuotedString( const char *value )
             result += "\\\"";
             break;
          case '\\':
-			result += "\\\\";
-			break;
+            result += "\\\\";
+            break;
          case '\b':
             result += "\\b";
             break;
@@ -180,23 +171,12 @@ std::string valueToQuotedString( const char *value )
             }
             else
             {
-				// 是否为Unicode字符
-				if (*wc > 127)
-				{
-					char chr[7] = "";
-					sprintf(chr, "\\u%4X", *wc);
-					result += chr;
-					++c;
-				}
-				else
-					result += *c;
+               result += *c;
             }
             break;
       }
-	  ++c;
    }
    result += "\"";
-   free(wValue);
    return result;
 }
 
@@ -610,8 +590,7 @@ StyledStreamWriter::writeValue( const Value &value )
       pushValue( valueToString( value.asDouble() ) );
       break;
    case stringValue:
-      //pushValue( valueToQuotedString( value.asCString() ) );
-	   pushValue(value.asCString());
+      pushValue( valueToQuotedString( value.asCString() ) );
       break;
    case booleanValue:
       pushValue( valueToString( value.asBool() ) );

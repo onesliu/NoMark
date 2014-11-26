@@ -3,7 +3,7 @@ object LoginDlg: TLoginDlg
   Top = 180
   BorderStyle = bsDialog
   Caption = #24080#25143#30331#24405
-  ClientHeight = 253
+  ClientHeight = 305
   ClientWidth = 313
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,12 +21,19 @@ object LoginDlg: TLoginDlg
     Left = 8
     Top = 8
     Width = 297
-    Height = 161
+    Height = 225
     Shape = bsFrame
   end
+  object SpeedButton1: TSpeedButton
+    Left = 248
+    Top = 40
+    Width = 41
+    Height = 41
+    OnClick = SpeedButton1Click
+  end
   object OKBtn: TButton
-    Left = 79
-    Top = 188
+    Left = 71
+    Top = 244
     Width = 75
     Height = 45
     Caption = #30331#24405
@@ -36,7 +43,7 @@ object LoginDlg: TLoginDlg
   end
   object CancelBtn: TButton
     Left = 159
-    Top = 188
+    Top = 244
     Width = 75
     Height = 45
     Cancel = True
@@ -46,7 +53,7 @@ object LoginDlg: TLoginDlg
   end
   object User: TLabeledEdit
     Left = 48
-    Top = 48
+    Top = 120
     Width = 225
     Height = 29
     EditLabel.Width = 48
@@ -58,7 +65,7 @@ object LoginDlg: TLoginDlg
   end
   object Password: TLabeledEdit
     Left = 48
-    Top = 112
+    Top = 184
     Width = 225
     Height = 29
     EditLabel.Width = 48
@@ -68,5 +75,18 @@ object LoginDlg: TLoginDlg
     LabelSpacing = 3
     PasswordChar = '*'
     TabOrder = 3
+  end
+  object ServerDomain: TLabeledEdit
+    Left = 48
+    Top = 48
+    Width = 201
+    Height = 29
+    EditLabel.Width = 96
+    EditLabel.Height = 21
+    EditLabel.Caption = #26381#21153#22120#22320#22336#65306
+    Enabled = False
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 4
   end
 end

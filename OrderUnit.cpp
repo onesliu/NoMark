@@ -1238,8 +1238,8 @@ void __fastcall TOrderForm::DownloadUpdatePricelist()
     if ( q->FieldByName("VAL")->AsInteger == 0 ) return; //总店版本不用下载
 
     HFC_DATA_S *hfcData = new HFC_DATA_S;
-    memset(hfcData, 0, sizeof(hfcData));
-    
+    memset(hfcData, 0, sizeof(HFC_DATA_S));
+
     hfcData->hdl = HFC_Init();
     hfcData->url = QYYCY_URL_LOGIN;
     res = HFC_CanWebsiteVisit(hfcData);
@@ -1274,7 +1274,7 @@ void __fastcall TOrderForm::DownloadUpdatePricelist()
 
     delete hfcData;
     hfcData = NULL;
-    
+
 	if ( res == false ) return;
 
     /* Write update price list from to local database */
@@ -1367,7 +1367,7 @@ void __fastcall TOrderForm::DownloadGoodsInfo()
     if ( q->FieldByName("VAL")->AsInteger == 0 ) return; //总店版本不用下载
 
     HFC_DATA_S *hfcData = new HFC_DATA_S;
-    memset(hfcData, 0, sizeof(hfcData));
+    memset(hfcData, 0, sizeof(HFC_DATA_S));
 
     hfcData->hdl = HFC_Init();
     hfcData->url = QYYCY_URL_LOGIN;

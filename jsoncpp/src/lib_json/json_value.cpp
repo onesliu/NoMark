@@ -15,7 +15,6 @@
 #include <stdexcept>
 #include <cstring>
 #include <cassert>
-#include <Windows.h>
 #ifdef JSON_USE_CPPTL
 # include <cpptl/conststring.h>
 #endif
@@ -341,7 +340,7 @@ Value::Value( const char *value )
    , itemIsUsed_( 0 )
 #endif
 {
-	value_.string_ = duplicateStringValue( value );
+   value_.string_ = duplicateStringValue( value );
 }
 
 

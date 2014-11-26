@@ -1,6 +1,6 @@
 object MainOrderForm: TMainOrderForm
-  Left = 281
-  Top = 82
+  Left = 347
+  Top = 125
   BorderStyle = bsSingle
   Caption = #38738#24736#24736#25509#21333#31995#32479
   ClientHeight = 462
@@ -23,10 +23,10 @@ object MainOrderForm: TMainOrderForm
     Top = 44
     Width = 788
     Height = 388
-    ActivePage = TabSheet2
+    ActivePage = TabSheet5
     Align = alClient
     Images = ImageList1
-    TabIndex = 1
+    TabIndex = 4
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #24453#31216#37325#35746#21333
