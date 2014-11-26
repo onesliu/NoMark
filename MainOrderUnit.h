@@ -54,9 +54,7 @@ __published:	// IDE-managed Components
 private:	// User declarations
     bool __fastcall GetOrders();
     bool __fastcall ParseOrders();
-    char* __fastcall UTF8toGBK(string str);
 public:		// User declarations
-    HFC_DATA_S *hfcData;
     __fastcall TMainOrderForm(TComponent* Owner);
     bool GetLoginStatus();
 };

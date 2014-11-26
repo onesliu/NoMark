@@ -2336,6 +2336,7 @@ object MainOrderForm: TMainOrderForm
       000000000000}
   end
   object MainTimer: TTimer
+    Enabled = False
     Interval = 10000
     OnTimer = MainTimerTimer
     Left = 600

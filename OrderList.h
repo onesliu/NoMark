@@ -81,12 +81,8 @@ public:
 			if (o_old == NULL) {
 				//有新订单，报警
 				new_orders.push_back(o_new);
-<<<<<<< HEAD
                 newlist->orders.erase(itr);
-				SoundPlayer.play(SoundPlay::SOUND_ORDER_NEW);
-=======
 				SoundPlayer->play(SoundPlay::SOUND_ORDER_NEW);
->>>>>>> 0951e475d63fa40989c29f3e55195432dcc1ab02
 			}
 			else if (o_old != NULL) {
 				if (o_old->order_status_orign != o_new->order_status_orign) {

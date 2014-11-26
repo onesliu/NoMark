@@ -10,8 +10,12 @@
 #include "qyycy.h"
 #include "PwdVerify.h"
 #include "MainOrderUnit.h"
+#include "UrlEncode.h"
 
-//--------------------------------------------------------------------- 
+#define URL_LOGIN       ("http://%s/admin/index.php?route=common/login&username=%s&password=%s&redirect=%s")
+#define URL_LOGIN_OK    ("http://%s/admin/index.php?route=qingyou/login_ok")
+
+//---------------------------------------------------------------------
 #pragma resource "*.dfm"
 TLoginDlg *LoginDlg;
 
@@ -46,8 +50,7 @@ void __fastcall TLoginDlg::ReadConfig()
         return;
     }
     User->Text = val;
-    m_strUsername = val;
-    
+
     memset(val, 0, sizeof(val));
     len = get_value(dom, "Login", "Password", val);
     if (len == -1) {
@@ -55,7 +58,14 @@ void __fastcall TLoginDlg::ReadConfig()
         return;
     }
     Password->Text = val;
-    m_strPassword = val;
+
+    memset(val, 0, sizeof(val));
+    len = get_value(dom, "Login", "Server", val);
+    if (len == -1) {
+        ShowError("¶ÁÈ¡ÅäÖÃÎÄ¼ş³ö´í");
+        return;
+    }
+    ServerDomain->Text = val;
 }
 //---------------------------------------------------------------------
 
@@ -64,12 +74,10 @@ void __fastcall TLoginDlg::SaveConfig()
     ini_dom_handle dom = get_dom(NULL);
     Janitor g_fp( free_dom, dom );
 
-    m_strUsername = User->Text;
-    m_strPassword = Password->Text;
-    
     add_section(dom, "Login");
     add_keypair(dom, "Login", "UserName", User->Text.c_str());
     add_keypair(dom, "Login", "Password", Password->Text.c_str());
+    add_keypair(dom, "Login", "Server", ServerDomain->Text.c_str());
     save_to(dom, INIFILE);
 }
 //---------------------------------------------------------------------
@@ -81,29 +89,15 @@ void __fastcall TLoginDlg::FormShow(TObject *Sender)
 //---------------------------------------------------------------------------
 bool __fastcall TLoginDlg::Login()
 {
-	AnsiString strUser, strPwd;
-    HFC_DATA_S * hfcData = MainOrderForm->hfcData;
-
-    hfcData->url = QYYCY_URL_LOGIN;
-    m_bLogin = HFC_CanWebsiteVisit(hfcData);
-    if ( m_bLogin == true )
+    if ( m_bLogin == false )
     {
-        strUser = User->Text;
-        strPwd = Password->Text;
-        
-        hfcData->url = QYYCY_URL_LOGIN;
-        hfcData->login.name = strUser.c_str();
-        hfcData->login.pwd = strPwd.c_str();
-        hfcData->url_login_ok = QYYCY_URL_LOGIN_OK;
-    	m_bLogin = HFC_Login(hfcData);
-        if ( m_bLogin == true )
-        {
-            m_bLogin = true;
+        AnsiString ulogin_ok, ulogin;
+        ulogin_ok.printf(URL_LOGIN_OK, ServerDomain->Text.c_str());
+        ulogin.printf(URL_LOGIN, ServerDomain->Text.c_str(), User->Text.c_str(),
+            Password->Text.c_str(), UrlEncode(ulogin_ok.c_str()).c_str());
 
-            SaveConfig();
+        AnsiString ret = http->Get(ulogin);
 
-            ModalResult = mrOk;
-        }
     }
 
     return m_bLogin;
@@ -121,34 +115,30 @@ void __fastcall TLoginDlg::SetLoginStatus(bool status)
 
 AnsiString __fastcall TLoginDlg::GetUsername()
 {
-    return m_strUsername;
+    return User->Text;
 }
 
 AnsiString __fastcall TLoginDlg::GetPassword()
 {
-    return m_strPassword;
+    return Password->Text;
 }
 
 void __fastcall TLoginDlg::OKBtnClick(TObject *Sender)
 {
-    AnsiString str;
-    
     if ( !Login() )
     {
-        str = "µÇÂ½Ê§°Ü£¡";
+        ShowError("µÇÂ½Ê§°Ü£¡");
     }
     else
     {
-        str = "µÇÂ½³É¹¦£¡";
+        ModalResult = mrOk;
     }
-    
-    LoginResult->SetTextBuf(str.c_str());
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TLoginDlg::SpeedButton1Click(TObject *Sender)
 {
-    ServerDomain->Enabled = !ServerDomain->Enabled;    
+    ServerDomain->Enabled = !ServerDomain->Enabled;
 }
 //---------------------------------------------------------------------------
 

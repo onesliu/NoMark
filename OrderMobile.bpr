@@ -13,7 +13,7 @@
       debug\ordermobile\SoundPlay.obj debug\ordermobile\json_reader.obj 
       debug\ordermobile\json_value.obj debug\ordermobile\json_writer.obj 
       debug\ordermobile\OrderInfoUnit.obj debug\ordermobile\ScaleInputUnit.obj 
-      debug\ordermobile\PwdVerify.obj"/>
+      debug\ordermobile\PwdVerify.obj debug\ordermobile\UrlEncode.obj"/>
     <RESFILES value="OrderMobile.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -22,7 +22,7 @@
       CheckoutUnit.dfm OrderInfoUnit.dfm ScaleInputUnit.dfm PwdVerify.dfm"/>
     <LIBFILES value="lib\IniFile.lib debug\qyycy.lib"/>
     <LIBRARIES value=""/>
-    <SPARELIBS value="vcl.lib rtl.lib"/>
+    <SPARELIBS value="vcl.lib rtl.lib indy.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi 
       visualclx.bpi visualdbclx.bpi dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi 
@@ -88,6 +88,7 @@
       <FILE FILENAME="ScaleInputUnit.cpp" FORMNAME="ScaleInputForm" UNITNAME="ScaleInputUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PwdVerify.cpp" FORMNAME="PasswordVerify" UNITNAME="PwdVerify" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="debug\qyycy.lib" FORMNAME="" UNITNAME="qyycy.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="utility\UrlEncode.cpp" FORMNAME="" UNITNAME="UrlEncode" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

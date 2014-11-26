@@ -12,6 +12,11 @@
 #include <vcl\Controls.hpp>
 #include <vcl\Buttons.hpp>
 #include <vcl\ExtCtrls.hpp>
+#include <IdBaseComponent.hpp>
+#include <IdComponent.hpp>
+#include <IdHTTP.hpp>
+#include <IdTCPClient.hpp>
+#include <IdTCPConnection.hpp>
 //----------------------------------------------------------------------------
 class TLoginDlg : public TForm
 {
@@ -23,13 +28,12 @@ __published:
     TLabeledEdit *Password;
     TLabeledEdit *ServerDomain;
     TSpeedButton *SpeedButton1;
+    TIdHTTP *http;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall OKBtnClick(TObject *Sender);
     void __fastcall SpeedButton1Click(TObject *Sender);
 private:
     bool m_bLogin;
-    AnsiString m_strUsername;
-    AnsiString m_strPassword;
 public:
     void __fastcall ReadConfig();
     void __fastcall SaveConfig();

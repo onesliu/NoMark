@@ -11,7 +11,7 @@
 #include "Order.h"
 #include "SoundPlay.h"
 #include "LoginDlgUnit.h"
-
+#include "CommonUnit.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "OrderFrameUnit"
@@ -26,9 +26,6 @@ SoundPlay   soundplay;
 __fastcall TMainOrderForm::TMainOrderForm(TComponent* Owner)
     : TForm(Owner)
 {
-    hfcData = new HFC_DATA_S;
-    memset(hfcData, 0, sizeof(HFC_DATA_S));
-    hfcData->hdl = HFC_Init();
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainOrderForm::CheckoutButtonClick(TObject *Sender)
@@ -73,31 +70,10 @@ void __fastcall TMainOrderForm::BtnQueryClick(TObject *Sender)
     OrderFrame5->FreshOrderList(querylist, 0);
 }
 
-char* __fastcall TMainOrderForm::UTF8toGBK(string str)
-{
-    int len = strlen(str.c_str())+1;
-
-    WCHAR * wChar = new WCHAR[len];
-    wChar[0] = 0;
-    MultiByteToWideChar(CP_UTF8, 0, str.c_str(), len, wChar, len);
-    WideCharToMultiByte(CP_ACP, 0, wChar, len, outch, len, 0, 0);
-    delete [] wChar;
-
-    char* pchar = (char*)outch;
-
-    return pchar;
-}
-
 bool __fastcall TMainOrderForm::GetOrders()
 {
     bool res = false;
     
-    hfcData->url = QYYCY_URL_DOWNLOAD_ORDERS;
-    hfcData->type = TYPES_DOWNLOAD_ORDER;
-    hfcData->data.filename = FILE_ORDER_QUERY;
-    hfcData->data.buf = NULL;
-    res = HFC_Download(hfcData);
-
     return res;
 }
 
@@ -110,8 +86,7 @@ bool __fastcall TMainOrderForm::ParseOrders()
     ifstream    ifs;
     AnsiString  productSubject;
 
-    ifs.open(FILE_ORDER_QUERY);
-    assert(ifs.is_open());
+    ifs.open("");
 
     Json::Reader reader;
     Json::Value order;
@@ -185,8 +160,8 @@ void __fastcall TMainOrderForm::MainTimerTimer(TObject *Sender)
 
     bool res = false;
     
-#if 1
-        hfcData->url = QYYCY_URL_LOGIN;
+#if 0
+        hfcData->url = "";
         res = HFC_CanWebsiteVisit(hfcData);
         if ( res == false )
         {
