@@ -74,14 +74,14 @@ public:
 		}
 
 		std::list<Order*> new_orders;
-		for(itr = newlist->orders.begin(); itr != newlist->orders.end(); ++itr) {
+		for(itr = newlist->orders.begin(); itr != newlist->orders.end(); ) {
 			Order * o_new = *itr;
 			Order * o_old = this->get(o_new->order_id);
 			
 			if (o_old == NULL) {
 				//有新订单，报警
 				new_orders.push_back(o_new);
-                newlist->orders.erase(itr);
+                itr = newlist->orders.erase(itr);
 				SoundPlayer->play(SoundPlay::SOUND_ORDER_NEW);
 			}
 			else if (o_old != NULL) {
@@ -90,7 +90,11 @@ public:
 					o_old->initStatus(o_new->order_status);
 					SoundPlayer->play(SoundPlay::SOUND_ORDER_MODIFY);
 				}
+                ++itr;
 			}
+            else {
+            	++itr;
+            }
 		}
 		
 		if (new_orders.size() > 0) {
@@ -100,11 +104,14 @@ public:
 	
 	void clearFinished() {
         std::list<Order*>::iterator itr;
-		for(itr = orders.begin(); itr != orders.end(); ++itr) {
+		for(itr = orders.begin(); itr != orders.end(); ) {
 			if ((*itr)->is_delete == true) {
                 if (*itr != NULL) delete *itr;
-				orders.erase(itr);
+				itr = orders.erase(itr);
 			}
+            else {
+            	++itr;
+            }
 		}
 	}
 	
@@ -116,7 +123,7 @@ public:
 	}
 
     void sortOrderByTime() {
-        orders.sort();
+        orders.sort(comporder());
     }
 
 };

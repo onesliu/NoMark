@@ -7,14 +7,17 @@
 #include "Janitor.h"
 #include "CommonUnit.h"
 #include "MessageBoxes.h"
-#include "qyycy.h"
 #include "PwdVerify.h"
 #include "MainOrderUnit.h"
 #include "UrlEncode.h"
+#include <strstream>
+#include "json/json.h"
 
-#define URL_LOGIN       ("http://%s/admin/index.php?route=common/login&username=%s&password=%s&redirect=%s")
+#define URL_LOGIN       ("http://%s/admin/index.php?route=common/login")
 #define URL_LOGIN_OK    ("http://%s/admin/index.php?route=qingyou/login_ok")
-
+#define URL_ORDER_QUERY ("http://%s/admin/index.php?route=qingyou/order_query")
+#define URL_ORDER_STATUS ("http://%s/admin/index.php?route=qingyou/order_query/status")
+#define URL_ORDER_DISTRICTS ("http://%s/admin/index.php?route=qingyou/order_query/districts")
 //---------------------------------------------------------------------
 #pragma resource "*.dfm"
 TLoginDlg *LoginDlg;
@@ -25,6 +28,7 @@ __fastcall TLoginDlg::TLoginDlg(TComponent* AOwner)
 	: TForm(AOwner)
 {
     m_bLogin = false;
+    http = new THttpAccess();
 }
 //---------------------------------------------------------------------
 
@@ -91,13 +95,42 @@ bool __fastcall TLoginDlg::Login()
 {
     if ( m_bLogin == false )
     {
-        AnsiString ulogin_ok, ulogin;
+        AnsiString ulogin_ok, ulogin, values;
+        WideString tu(User->Text);
+        UTF8String username = UTF8Encode(tu);
         ulogin_ok.printf(URL_LOGIN_OK, ServerDomain->Text.c_str());
-        ulogin.printf(URL_LOGIN, ServerDomain->Text.c_str(), User->Text.c_str(),
-            Password->Text.c_str(), UrlEncode(ulogin_ok.c_str()).c_str());
+        ulogin.printf(URL_LOGIN, ServerDomain->Text.c_str());
+        values.printf("username=%s&password=%s&redirect=%s", UrlEncode(username.c_str()).c_str(),
+            UrlEncode(Password->Text.c_str()).c_str(), UrlEncode(ulogin_ok.c_str()).c_str());
 
-        AnsiString ret = http->Get(ulogin);
+        try {
+        AnsiString ret = http->Post(ulogin, values);
+        if (ret.Length() > 0) {
+        	Json::Reader reader;
+		    Json::Value json;
 
+            istrstream istr(ret.c_str());
+            if (reader.parse(istr, json, false) == true) {
+              	int status = json["status"].asInt();
+                token = json["token"].asCString();
+                district_id = json["district_id"].asInt();
+                if (status == 0) {
+					m_bLogin = true;
+                }
+            }
+        }
+
+        // get order status
+        ret = GetStatus();
+        if (ret.Length() <= 0)
+        	m_bLogin = false;
+        else {
+        	if (OrderStatus::getInstance()->ParseStatus(ret) == false)
+            	m_bLogin = false;
+        }
+        
+        } catch(...) {
+        }
     }
 
     return m_bLogin;
@@ -125,6 +158,7 @@ AnsiString __fastcall TLoginDlg::GetPassword()
 
 void __fastcall TLoginDlg::OKBtnClick(TObject *Sender)
 {
+	SaveConfig();
     if ( !Login() )
     {
         ShowError("µÇÂ½Ê§°Ü£¡");
@@ -139,6 +173,51 @@ void __fastcall TLoginDlg::OKBtnClick(TObject *Sender)
 void __fastcall TLoginDlg::SpeedButton1Click(TObject *Sender)
 {
     ServerDomain->Enabled = !ServerDomain->Enabled;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TLoginDlg::FormDestroy(TObject *Sender)
+{
+	delete http;	
+}
+//---------------------------------------------------------------------------
+
+AnsiString __fastcall TLoginDlg::GetOrders()
+{
+	AnsiString url;
+    url.printf(URL_ORDER_QUERY, ServerDomain->Text.c_str());
+    url += "&token=" + token;
+    AnsiString ret = http->Get(url);
+    if (ret == "") {
+    	m_bLogin = false;
+    }
+    return ret;
+}
+//---------------------------------------------------------------------------
+
+AnsiString __fastcall TLoginDlg::GetStatus()
+{
+	AnsiString url;
+    url.printf(URL_ORDER_STATUS, ServerDomain->Text.c_str());
+    url += "&token=" + token;
+    AnsiString ret = http->Get(url);
+    if (ret == "") {
+    	m_bLogin = false;
+    }
+    return ret;
+}
+//---------------------------------------------------------------------------
+
+AnsiString __fastcall TLoginDlg::GetDistricts()
+{
+	AnsiString url;
+    url.printf(URL_ORDER_DISTRICTS, ServerDomain->Text.c_str());
+    url += "&token=" + token;
+    AnsiString ret = http->Get(url);
+    if (ret == "") {
+    	m_bLogin = false;
+    }
+    return ret;
 }
 //---------------------------------------------------------------------------
 

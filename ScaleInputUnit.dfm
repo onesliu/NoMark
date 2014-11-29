@@ -3,8 +3,8 @@ object ScaleInputForm: TScaleInputForm
   Top = 334
   BorderStyle = bsDialog
   Caption = #31216#37325#36755#20837
-  ClientHeight = 167
-  ClientWidth = 362
+  ClientHeight = 222
+  ClientWidth = 349
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,30 +13,67 @@ object ScaleInputForm: TScaleInputForm
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 21
   object Label1: TLabel
     Left = 40
     Top = 24
-    Width = 208
+    Width = 272
     Height = 21
-    Caption = #36755#20837#19968#20221#20135#21697#30340#37325#37327#65288#20811#65289#65306
+    Caption = #36755#20837#31216#37325#21518#30340#20215#26684#65292#25110#37325#37327#65288#20844#26020#65289#65306
   end
-  object Edit1: TEdit
+  object Label2: TLabel
     Left = 40
-    Top = 56
-    Width = 281
-    Height = 29
-    TabOrder = 0
-    Text = 'WeightInput'
+    Top = 115
+    Width = 48
+    Height = 21
+    Caption = #37325#37327#65306
   end
-  object Button1: TButton
-    Left = 136
+  object Label3: TLabel
+    Left = 40
+    Top = 67
+    Width = 48
+    Height = 21
+    Caption = #20215#26684#65306
+  end
+  object ScaleWeight: TEdit
+    Left = 88
     Top = 112
+    Width = 217
+    Height = 29
+    TabOrder = 1
+    Text = 'ScaleWeight'
+    OnChange = ScaleWeightChange
+    OnKeyPress = ScalePriceKeyPress
+  end
+  object OkBtn: TButton
+    Left = 88
+    Top = 168
     Width = 97
     Height = 33
     Caption = #30830#23450
     Default = True
-    TabOrder = 1
+    TabOrder = 2
+    OnClick = OkBtnClick
+  end
+  object ScalePrice: TEdit
+    Left = 88
+    Top = 64
+    Width = 217
+    Height = 29
+    TabOrder = 0
+    Text = 'ScalePrice'
+    OnChange = ScalePriceChange
+    OnKeyPress = ScalePriceKeyPress
+  end
+  object Button2: TButton
+    Left = 200
+    Top = 168
+    Width = 97
+    Height = 33
+    Caption = #21462#28040
+    ModalResult = 2
+    TabOrder = 3
   end
 end

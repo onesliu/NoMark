@@ -25,4 +25,5 @@ AnsiString MoneyStr( double m );
 AnsiString WeightStr( double m );
 int RoundToInt( double d );
 AnsiString UTF8toGBK(AnsiString str);
+AnsiString FormatCurrency(double val);
 #endif

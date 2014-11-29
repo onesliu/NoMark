@@ -13,8 +13,8 @@ object OrderFrame: TOrderFrame
     Align = alClient
     Columns = <
       item
-        Caption = #35746#21333#32534#21495
-        Width = 150
+        Caption = #19979#21333#26102#38388
+        Width = 170
       end
       item
         Caption = #19979#21333#21830#21697
@@ -22,15 +22,15 @@ object OrderFrame: TOrderFrame
       end
       item
         Caption = #29366#24577
-        Width = 70
+        Width = 90
       end
       item
         Caption = #23458#25143#22995#21517
         Width = 100
       end
       item
-        Caption = #30005#35805
-        Width = 100
+        Caption = #25910#36135#30005#35805
+        Width = 120
       end
       item
         Caption = #37197#36865#22320#22336
@@ -38,15 +38,19 @@ object OrderFrame: TOrderFrame
       end
       item
         Caption = #37197#36865#26102#38388
-        Width = 100
+        Width = 170
       end
       item
         Caption = #23458#25143#30041#35328
         Width = 100
       end>
+    GridLines = True
+    HideSelection = False
     ReadOnly = True
     RowSelect = True
     TabOrder = 0
     ViewStyle = vsReport
+    OnDblClick = OrderListViewDblClick
+    OnKeyPress = OrderListViewKeyPress
   end
 end

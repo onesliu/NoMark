@@ -14,6 +14,7 @@ object LoginDlg: TLoginDlg
   FormStyle = fsStayOnTop
   OldCreateOrder = True
   Position = poScreenCenter
+  OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 21
@@ -88,16 +89,5 @@ object LoginDlg: TLoginDlg
     LabelPosition = lpAbove
     LabelSpacing = 3
     TabOrder = 4
-  end
-  object http: TIdHTTP
-    SendBufferSize = 1000000
-    Request.Accept = 'text/html, */*'
-    Request.ContentLength = 0
-    Request.ContentRangeEnd = 0
-    Request.ContentRangeStart = 0
-    Request.ProxyPort = 0
-    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
-    Left = 264
-    Top = 256
   end
 end

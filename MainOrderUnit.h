@@ -52,8 +52,7 @@ __published:	// IDE-managed Components
     void __fastcall MainTimerTimer(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
-    bool __fastcall GetOrders();
-    bool __fastcall ParseOrders();
+    bool __fastcall ParseOrders(AnsiString str_order);
 public:		// User declarations
     __fastcall TMainOrderForm(TComponent* Owner);
     bool GetLoginStatus();

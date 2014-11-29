@@ -13,10 +13,8 @@
 class TPasswordVerify : public TForm
 {
 __published:	// IDE-managed Components
-    TLabel *Label1;
     TButton *BtnConfirm;
     TLabeledEdit *EditPwd;
-    TLabel *ConfirmResult;
     void __fastcall BtnConfirmClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations

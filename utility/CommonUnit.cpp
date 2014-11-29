@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
+#include <Math.hpp>
 #include <stdio.h>
 #include <stdarg.h>
 #include <nb30.h>
@@ -409,5 +410,10 @@ AnsiString UTF8toGBK(AnsiString str)
     delete [] outch;
 
     return ret;
+}
+
+AnsiString FormatCurrency(double val)
+{
+	return "гд" + FormatFloat("#,##0.00", SimpleRoundTo(val, -2));
 }
 

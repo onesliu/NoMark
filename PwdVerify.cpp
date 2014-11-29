@@ -5,6 +5,7 @@
 
 #include "PwdVerify.h"
 #include "LoginDlgUnit.h"
+#include "MessageBoxes.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -18,20 +19,13 @@ __fastcall TPasswordVerify::TPasswordVerify(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TPasswordVerify::BtnConfirmClick(TObject *Sender)
 {
-    AnsiString str;
-    
-    LoginDlg->ReadConfig();
-
     if ( EditPwd->Text == LoginDlg->GetPassword() )
     {
-        str = "校验成功！";
-        ConfirmResult->SetTextBuf(str.c_str());
         ModalResult = mrOk;
     }
     else
     {
-        str = "校验失败！";
-        ConfirmResult->SetTextBuf(str.c_str());
+        ShowError("密码错误");
     }
 }
 //---------------------------------------------------------------------------

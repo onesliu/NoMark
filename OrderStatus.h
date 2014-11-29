@@ -4,6 +4,8 @@
 #define OrderStatusH
 #include <vcl.h>
 #include <map>
+#include <strstream>
+#include "json/json.h"
 //---------------------------------------------------------------------------
 class OrderStatus {
 public:
@@ -57,6 +59,8 @@ public:
 	int getSize() {
 		return status.size();
 	}
+
+    bool ParseStatus(AnsiString str);
 };
 #endif
  

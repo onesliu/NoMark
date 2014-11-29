@@ -15,7 +15,10 @@ class TOrderFrame : public TFrame
 {
 __published:	// IDE-managed Components
     TListView *OrderListView;
+	void __fastcall OrderListViewDblClick(TObject *Sender);
+	void __fastcall OrderListViewKeyPress(TObject *Sender, char &Key);
 private:	// User declarations
+	OrderList * olist;
 public:		// User declarations
     __fastcall TOrderFrame(TComponent* Owner);
     void FreshOrderList(OrderList * olist, int order_status);

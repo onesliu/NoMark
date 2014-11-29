@@ -5,6 +5,7 @@
 
 #include "OrderFrameUnit.h"
 #include "OrderStatus.h"
+#include "OrderInfoUnit.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -19,6 +20,10 @@ __fastcall TOrderFrame::TOrderFrame(TComponent* Owner)
 
 void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
 {
+    this->olist = olist;
+
+	if (olist->orders.size() == 0) return;
+
     OrderListView->Items->BeginUpdate();
     OrderListView->Items->Clear();
 
@@ -26,35 +31,52 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
     TListItem * item;
     list<Order*>::iterator itr;
     OrderStatus * os = OrderStatus::getInstance();
-    AnsiString lastShippingtime = "";
+    AnsiString lastOrderdate = "";
 
     for(itr = olist->orders.begin(); itr != olist->orders.end(); ++itr) {
         if (order_status != 0 && (*itr)->order_status != order_status) continue;
-        if (lastShippingtime != "" && (*itr)->shipping_time != lastShippingtime) {
+        if (lastOrderdate != "" && (*itr)->order_date.DateString() != lastOrderdate) {
             item = OrderListView->Items->Add();
-            item->Caption = "----------------------------------------------------------";
-            item->SubItems->Add("----------------------------------------------------------");
-            item->SubItems->Add("----------------------------------------------------------");
-            item->SubItems->Add("----------------------------------------------------------");
-            item->SubItems->Add("----------------------------------------------------------");
-            item->SubItems->Add("----------------------------------------------------------");
-            item->SubItems->Add("----------------------------------------------------------");
-            item->SubItems->Add("----------------------------------------------------------");
+            item->Caption = "----------";
+            item->SubItems->Add("----------");
+            item->SubItems->Add("----------");
+            item->SubItems->Add("----------");
+            item->SubItems->Add("----------");
+            item->SubItems->Add("----------");
+            item->SubItems->Add("----------");
+            item->SubItems->Add("----------");
         }
         item = OrderListView->Items->Add();
-        item->Caption = (*itr)->order_id;
+        item->Caption = (*itr)->order_createtime;
         item->SubItems->Add((*itr)->productSubject);
         item->SubItems->Add(os->getStatus((*itr)->order_status));
         item->SubItems->Add((*itr)->customer_name);
-        item->SubItems->Add((*itr)->customer_phone);
+        item->SubItems->Add((*itr)->shipping_phone);
         item->SubItems->Add((*itr)->shipping_addr);
         item->SubItems->Add((*itr)->shipping_time);
         item->SubItems->Add("");
-        lastShippingtime = (*itr)->shipping_time;
+        item->Data = *itr;
+        lastOrderdate = (*itr)->order_date;
     }
-    
 
     OrderListView->Items->EndUpdate();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderFrame::OrderListViewDblClick(TObject *Sender)
+{
+    Order * order = (Order*)OrderListView->Selected->Data;
+    if (order) {
+      	OrderInfoForm->ShowOrder(order);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderFrame::OrderListViewKeyPress(TObject *Sender,
+      char &Key)
+{
+	if (Key == 0x0d)
+    	OrderListViewDblClick(Sender);
 }
 //---------------------------------------------------------------------------
 

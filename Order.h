@@ -16,15 +16,17 @@ public:
 	int customer_id;
 	AnsiString customer_name;
 	AnsiString shipping_name;
+    AnsiString shipping_phone;
 	AnsiString customer_phone;
 	AnsiString shipping_addr;
 	AnsiString shipping_time;
 	AnsiString comment;
-	
+
 	int order_type;
 	int order_status_orign;
 	AnsiString productSubject;
 	bool is_delete;
+    TDateTime order_date;
 
 	std::list<Product*> products;
 
@@ -141,12 +143,13 @@ public:
 		}
 		return total;	
 	}
-
 };
 
-bool operator<(const Order& o1, const Order& o2)
-{
-    return o1.shipping_time < o2.shipping_time;
-}
+struct comporder {
+	bool operator()(const Order * o1, const Order *o2) {
+		return o1->order_date < o2->order_date;
+    }
+};
+
 #endif
  

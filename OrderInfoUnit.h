@@ -9,6 +9,7 @@
 #include <Forms.hpp>
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
+#include "Order.h"
 //---------------------------------------------------------------------------
 class TOrderInfoForm : public TForm
 {
@@ -40,9 +41,18 @@ __published:	// IDE-managed Components
     TLabel *Total;
     TLabel *Label10;
     TLabel *RealTotal;
+	TLabel *Label11;
+	TLabel *ShippingPhone;
+	TLabel *Label12;
+	TLabel *Comment;
+	void __fastcall ProductListDblClick(TObject *Sender);
+	void __fastcall ProductListKeyPress(TObject *Sender, char &Key);
+	void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
+	Order * order;
 public:		// User declarations
     __fastcall TOrderInfoForm(TComponent* Owner);
+    void __fastcall ShowOrder(Order *order);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TOrderInfoForm *OrderInfoForm;
