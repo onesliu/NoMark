@@ -126,6 +126,7 @@ public:
         orders.sort(comporder());
     }
 
+    static OrderList * ParseOrders(AnsiString str_order);
 };
 
 #endif

@@ -22,8 +22,6 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
 {
     this->olist = olist;
 
-	if (olist->orders.size() == 0) return;
-
     OrderListView->Items->BeginUpdate();
     OrderListView->Items->Clear();
 
@@ -60,6 +58,8 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
     }
 
     OrderListView->Items->EndUpdate();
+    OrderListView->Columns->BeginUpdate();
+    OrderListView->Columns->EndUpdate();
 }
 //---------------------------------------------------------------------------
 

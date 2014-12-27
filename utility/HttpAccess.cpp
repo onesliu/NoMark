@@ -23,7 +23,7 @@ AnsiString __fastcall THttpAccess::Get(AnsiString url)
     }
 }
 
-AnsiString __fastcall THttpAccess::Post(AnsiString url, AnsiString values)
+AnsiString __fastcall THttpAccess::Post(AnsiString url, AnsiString values, int type)
 {
 	AnsiString ret;
     TStringStream * res = new TStringStream("");
@@ -33,7 +33,21 @@ AnsiString __fastcall THttpAccess::Post(AnsiString url, AnsiString values)
 
 	http->Request->AcceptEncoding = "gzip, deflate";
     http->Request->Connection = "Keep-Alive";
-    http->Request->ContentType = "application/x-www-form-urlencoded";
+    switch(type) {
+    case POST_URLENCODE:
+	    http->Request->ContentType = "application/x-www-form-urlencoded";
+        break;
+    case POST_FORMDATA:
+    	http->Request->ContentType = "multipart/form-data";
+        break;
+    case POST_JSON:
+    	http->Request->ContentType = "application/json";
+        break;
+    case POST_TEXT:
+    	http->Request->ContentType = "text/xml";
+        break;
+    }
+    
     SetCookies();
     val->Text = values;
     http->Post(url, val, (TStream*)res);
@@ -110,5 +124,4 @@ void __fastcall THttpAccess::SetCookies()
     	http->Request->ExtraHeaders->Values["Cookie"] = cookie;
 	}
 }
-
 

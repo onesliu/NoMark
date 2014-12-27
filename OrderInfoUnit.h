@@ -48,6 +48,8 @@ __published:	// IDE-managed Components
 	void __fastcall ProductListDblClick(TObject *Sender);
 	void __fastcall ProductListKeyPress(TObject *Sender, char &Key);
 	void __fastcall FormShow(TObject *Sender);
+	void __fastcall ConfirmBtnClick1(TObject *Sender);
+    void __fastcall ConfirmBtnClick2(TObject *Sender);
 private:	// User declarations
 	Order * order;
 public:		// User declarations

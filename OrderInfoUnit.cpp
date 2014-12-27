@@ -6,6 +6,8 @@
 #include "OrderInfoUnit.h"
 #include "ScaleInputUnit.h"
 #include "CommonUnit.h"
+#include "MessageBoxes.h"
+#include "MainOrderUnit.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -32,6 +34,27 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
     Total->Caption = FormatCurrency(order->getOrderTotal());
     RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
     Comment->Caption = order->comment;
+
+    switch(order->order_status) {
+    case OrderStatus::ORDER_STATUS_WAITING:
+    	ConfirmBtn->Enabled = true;
+    	ConfirmBtn->Caption = "称重完成";
+        ConfirmBtn->OnClick = ConfirmBtnClick1;
+        StoreSelect->Enabled = true;
+        ChangeStoreBtn->Enabled = true;
+        break;
+    case OrderStatus::ORDER_STATUS_SCALED:
+    	ConfirmBtn->Enabled = true;
+        ConfirmBtn->Caption = "配送完成";
+        ConfirmBtn->OnClick = ConfirmBtnClick2;
+        StoreSelect->Enabled = false;
+        ChangeStoreBtn->Enabled = false;
+        break;
+    default:
+    	ConfirmBtn->Enabled = false;
+        StoreSelect->Enabled = false;
+        ChangeStoreBtn->Enabled = false;
+    }
 
     ProductList->Items->BeginUpdate();
     ProductList->Items->Clear();
@@ -77,6 +100,35 @@ void __fastcall TOrderInfoForm::ProductListKeyPress(TObject *Sender,
 void __fastcall TOrderInfoForm::FormShow(TObject *Sender)
 {
 	ProductList->SetFocus();	
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::ConfirmBtnClick1(TObject *Sender)
+{
+	if (order->hasScanedOver() == false) {
+    	ShowError("还有商品没称重");
+        return;
+    }
+
+    if ( MainOrderForm->httpThread->CommitOrder(order, order->getScanedOver()) == false) {
+    	ShowError("提交到服务器失败");
+        return;
+    }
+
+    order->commit(order->getScanedOver());
+    ModalResult = mrOk;
+}
+//---------------------------------------------------------------------------
+   
+void __fastcall TOrderInfoForm::ConfirmBtnClick2(TObject *Sender)
+{
+    if ( MainOrderForm->httpThread->CommitOrder(order, order->getDelivered()) == false) {
+    	ShowError("提交到服务器失败");
+        return;
+    }
+
+    order->commit(order->getDelivered());
+    ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------
 

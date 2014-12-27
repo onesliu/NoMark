@@ -4,6 +4,12 @@ object OrderFrame: TOrderFrame
   Width = 443
   Height = 270
   Align = alClient
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = #26032#23435#20307
+  Font.Style = []
+  ParentFont = False
   TabOrder = 0
   object OrderListView: TListView
     Left = 0

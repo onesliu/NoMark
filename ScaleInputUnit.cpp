@@ -51,6 +51,7 @@ void __fastcall TScaleInputForm::OkBtnClick(TObject *Sender)
     	return;
     }
 
+    product->finishScan();
     ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------

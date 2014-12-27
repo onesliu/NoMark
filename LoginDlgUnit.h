@@ -17,7 +17,6 @@
 #include <IdHTTP.hpp>
 #include <IdTCPClient.hpp>
 #include <IdTCPConnection.hpp>
-#include "HttpAccess.h"
 //----------------------------------------------------------------------------
 class TLoginDlg : public TForm
 {
@@ -32,24 +31,13 @@ __published:
     void __fastcall FormShow(TObject *Sender);
     void __fastcall OKBtnClick(TObject *Sender);
     void __fastcall SpeedButton1Click(TObject *Sender);
-	void __fastcall FormDestroy(TObject *Sender);
 private:
-    bool m_bLogin;
-    AnsiString token;
-    int district_id;
-    THttpAccess * http;
 public:
     void __fastcall ReadConfig();
     void __fastcall SaveConfig();
 	virtual __fastcall TLoginDlg(TComponent* AOwner);
-    bool __fastcall Login();
-    bool __fastcall GetLoginStatus();
-    void __fastcall SetLoginStatus(bool status);
     AnsiString __fastcall GetUsername();
     AnsiString __fastcall GetPassword();
-    AnsiString __fastcall GetOrders();
-    AnsiString __fastcall GetStatus();
-    AnsiString __fastcall GetDistricts();
 };
 //----------------------------------------------------------------------------
 extern PACKAGE TLoginDlg *LoginDlg;

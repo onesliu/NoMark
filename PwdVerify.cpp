@@ -25,7 +25,7 @@ void __fastcall TPasswordVerify::BtnConfirmClick(TObject *Sender)
     }
     else
     {
-        ShowError("√‹¬Î¥ÌŒÛ");
+        ModalResult = mrCancel;
     }
 }
 //---------------------------------------------------------------------------

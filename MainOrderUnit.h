@@ -12,7 +12,7 @@
 #include <ImgList.hpp>
 #include "OrderFrameUnit.h"
 #include <ExtCtrls.hpp>
-
+#include "HttpThread.h"
 //---------------------------------------------------------------------------
 class TMainOrderForm : public TForm
 {
@@ -21,7 +21,6 @@ __published:	// IDE-managed Components
     TTabSheet *TabSheet1;
     TTabSheet *TabSheet2;
     TTabSheet *TabSheet3;
-    TTabSheet *TabSheet4;
     TCoolBar *CoolBar1;
     TToolBar *ToolBar1;
     TToolButton *LoginButton;
@@ -30,12 +29,10 @@ __published:	// IDE-managed Components
     TStatusBar *StatusBar1;
     TOrderFrame *OrderFrame1;
     TTabSheet *TabSheet5;
-    TTimer *MainTimer;
     TOrderFrame *OrderFrame2;
     TOrderFrame *OrderFrame3;
-    TOrderFrame *OrderFrame4;
     TLabel *Label1;
-    TDateTimePicker *DateTimePicker1;
+	TDateTimePicker *OrderDate;
     TButton *BtnQuery;
     TPanel *Panel1;
     TOrderFrame *OrderFrame5;
@@ -44,18 +41,16 @@ __published:	// IDE-managed Components
     void __fastcall TabSheet1Show(TObject *Sender);
     void __fastcall TabSheet2Show(TObject *Sender);
     void __fastcall TabSheet3Show(TObject *Sender);
-    void __fastcall TabSheet4Show(TObject *Sender);
     void __fastcall TabSheet5Show(TObject *Sender);
     void __fastcall BtnQueryClick(TObject *Sender);
     void __fastcall FormCreate(TObject *Sender);
     void __fastcall FormDestroy(TObject *Sender);
-    void __fastcall MainTimerTimer(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
+	void __fastcall OrderDateChange(TObject *Sender);
 private:	// User declarations
-    bool __fastcall ParseOrders(AnsiString str_order);
 public:		// User declarations
     __fastcall TMainOrderForm(TComponent* Owner);
-    bool GetLoginStatus();
+	THttpThread *httpThread;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainOrderForm *MainOrderForm;

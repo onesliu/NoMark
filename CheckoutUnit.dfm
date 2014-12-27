@@ -1,116 +1,108 @@
 object CheckoutForm: TCheckoutForm
-  Left = 310
-  Top = 130
-  Width = 468
-  Height = 344
+  Left = 362
+  Top = 249
+  BorderStyle = bsDialog
   Caption = #19978#32593#32467#31639
+  ClientHeight = 282
+  ClientWidth = 460
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -16
-  Font.Name = #24494#36719#38597#40657
+  Font.Name = #26032#23435#20307
   Font.Style = []
   OldCreateOrder = False
+  Position = poDesktopCenter
   PixelsPerInch = 96
-  TextHeight = 21
+  TextHeight = 16
   object Label1: TLabel
-    Left = 32
+    Left = 72
     Top = 88
-    Width = 144
-    Height = 21
-    Caption = #26399#38388#20869#26410#32467#31639#37329#39069#65306
+    Width = 96
+    Height = 16
+    Caption = #24453#32467#31639#37329#39069#65306
   end
   object Label2: TLabel
     Left = 32
-    Top = 152
-    Width = 80
-    Height = 21
-    Caption = #38144#21806#37325#37327#65306
-    Visible = False
-  end
-  object LabelBalanceWeight: TLabel
-    Left = 184
-    Top = 152
-    Width = 48
-    Height = 21
-    Caption = #37325#37327#20540
-    Visible = False
+    Top = 224
+    Width = 368
+    Height = 16
+    Caption = #27880#65306#22914#38656#26597#30475#35746#21333#35814#24773#65292#35831#20351#29992#8220#35746#21333#26597#35810#8221#21151#33021#12290
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clOlive
+    Font.Height = -16
+    Font.Name = #26032#23435#20307
+    Font.Style = []
+    ParentFont = False
   end
   object LabelBalanceMoney: TLabel
     Left = 184
     Top = 88
     Width = 5
     Height = 21
-  end
-  object Label3: TLabel
-    Left = 32
-    Top = 184
-    Width = 80
-    Height = 21
-    Caption = #38144#21806#31181#31867#65306
-    Visible = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -16
+    Font.Name = #24494#36719#38597#40657
+    Font.Style = []
+    ParentFont = False
   end
   object Label4: TLabel
-    Left = 32
+    Left = 88
     Top = 56
-    Width = 112
-    Height = 21
-    Caption = #26412#27425#32467#31639#26085#26399#65306
+    Width = 80
+    Height = 16
+    Caption = #24403#21069#26102#38388#65306
   end
   object LabelBalanceDateCurr: TLabel
     Left = 184
     Top = 56
-    Width = 5
-    Height = 21
+    Width = 8
+    Height = 16
   end
   object Label6: TLabel
-    Left = 32
+    Left = 56
     Top = 120
-    Width = 144
-    Height = 21
-    Caption = #26399#38388#20869#23436#25104#35746#21333#25968#65306
+    Width = 112
+    Height = 16
+    Caption = #24453#32467#31639#35746#21333#25968#65306
   end
   object LabelBalanceOrderNumber: TLabel
     Left = 184
     Top = 120
-    Width = 5
-    Height = 21
-  end
-  object LabelBalanceKinds: TLabel
-    Left = 184
-    Top = 184
-    Width = 48
-    Height = 21
-    Caption = #31181#31867#20540
-    Visible = False
-  end
-  object BalanceResult: TLabel
-    Left = 184
-    Top = 232
-    Width = 5
-    Height = 21
+    Width = 8
+    Height = 16
   end
   object Label5: TLabel
-    Left = 32
+    Left = 56
     Top = 24
     Width = 112
-    Height = 21
-    Caption = #19978#27425#32467#31639#26085#26399#65306
+    Height = 16
+    Caption = #19978#27425#32467#31639#26102#38388#65306
   end
   object LabelBalanceDateLast: TLabel
     Left = 184
     Top = 24
-    Width = 5
-    Height = 21
+    Width = 8
+    Height = 16
   end
   object BtnBalance: TButton
     Left = 32
-    Top = 224
-    Width = 121
+    Top = 160
+    Width = 289
     Height = 49
-    Caption = #32467#31639
-    Default = True
-    TabOrder = 0
+    Caption = #25910#21040#26412#20844#21496#30340#24080#27454#21518#65292#35831#28857#20987#27492#22788
+    TabOrder = 1
     OnClick = BtnBalanceClick
+  end
+  object Button1: TButton
+    Left = 336
+    Top = 160
+    Width = 89
+    Height = 49
+    Caption = #21462#28040
+    Default = True
+    ModalResult = 2
+    TabOrder = 0
   end
 end

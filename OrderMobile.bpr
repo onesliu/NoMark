@@ -14,7 +14,8 @@
       debug\ordermobile\json_value.obj debug\ordermobile\json_writer.obj 
       debug\ordermobile\OrderInfoUnit.obj debug\ordermobile\ScaleInputUnit.obj 
       debug\ordermobile\PwdVerify.obj debug\ordermobile\UrlEncode.obj 
-      debug\ordermobile\HttpAccess.obj"/>
+      debug\ordermobile\HttpAccess.obj debug\ordermobile\HttpThread.obj 
+      debug\ordermobile\Balance.obj"/>
     <RESFILES value="OrderMobile.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -22,7 +23,7 @@
     <RESDEPEN value="$(RESFILES) MainOrderUnit.dfm OrderFrameUnit.dfm LoginDlgUnit.dfm 
       CheckoutUnit.dfm OrderInfoUnit.dfm ScaleInputUnit.dfm PwdVerify.dfm"/>
     <LIBFILES value="lib\IniFile.lib"/>
-    <LIBRARIES value=""/>
+    <LIBRARIES value="indy.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib indy.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi 
@@ -39,7 +40,7 @@
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
     <USERDEFINES value="_DEBUG"/>
-    <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
+    <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="OrderMobile.cpp"/>
     <INCLUDEPATH value="D:\Borland\CBuilder6\Projects;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp\include"/>
     <LIBPATH value="D:\Borland\CBuilder6\Projects;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility"/>
@@ -62,9 +63,9 @@
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0w32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLOBJ value="c0w32.obj sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
@@ -91,6 +92,8 @@
       <FILE FILENAME="PwdVerify.cpp" FORMNAME="PasswordVerify" UNITNAME="PwdVerify" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="utility\UrlEncode.cpp" FORMNAME="" UNITNAME="UrlEncode" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="utility\HttpAccess.cpp" FORMNAME="" UNITNAME="HttpAccess" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="HttpThread.cpp" FORMNAME="" UNITNAME="HttpThread" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Balance.cpp" FORMNAME="" UNITNAME="Balance" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -125,20 +128,24 @@ Comments=
 
 [Excluded Packages]
 d:\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
-d:\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
 d:\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
+d:\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
+c:\program files\borland\cbuilder6\bin\dclClxIBXtras60.bpl=Borland InterBase Express Extras (Clx)
+c:\program files\borland\cbuilder6\Bin\dclIBXtras60.bpl=Borland InterBase Express Extras
 
 [HistoryLists\hlIncludePath]
-Count=4
-Item0=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp\include
-Item1=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp
-Item2=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility
-Item3=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl
+Count=5
+Item0=D:\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Projects;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp\include
+Item1=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp\include
+Item2=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp
+Item3=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility
+Item4=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=2
-Item0=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility
-Item1=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib
+Count=3
+Item0=D:\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Projects;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility
+Item1=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility
+Item2=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1

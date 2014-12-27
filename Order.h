@@ -93,37 +93,49 @@ public:
 	void resetStatus() {
 		order_status = order_status_orign;
 	}
-	
+
 	bool hasChanged() {
 		if (order_status != order_status_orign)
 			return true;
 		return false;
 	}
-	
-	void commit() {
+
+	void commit(int order_status = 0) {
+    	if (order_status != 0)
+	    	this->order_status = order_status;
 		order_status_orign = order_status;
 	}
-	
+
 	bool hasScanedOver() {
-		if (order_status >= OrderStatus::ORDER_STATUS_FINISHED)
+		if (order_status > OrderStatus::ORDER_STATUS_WAITING)
 			return true;
-		
+
 		std::list<Product*>::iterator itr;
 		for(itr = products.begin(); itr != products.end(); ++itr) {
 			if ((*itr)->hasScanned() == false)
 				return false;
 		}
 
-		if (order_type == 0)
-			order_status = OrderStatus::ORDER_STATUS_SCALED;
-		else
-			order_status = OrderStatus::ORDER_STATUS_PAYING;
-
 		return true;
 	}
-	
-	void setDelivered() {
-		order_status = OrderStatus::ORDER_STATUS_FINISHED;
+
+    int getScanedOver() {
+    	if (order_status == OrderStatus::ORDER_STATUS_WAITING) {
+	   		if (order_type == 0)
+				return OrderStatus::ORDER_STATUS_SCALED;
+			else
+				return OrderStatus::ORDER_STATUS_PAYING;
+        }
+        else
+        	return order_status;
+    }
+
+	int getDelivered() {
+    	if (order_status == OrderStatus::ORDER_STATUS_SCALED) {
+			return OrderStatus::ORDER_STATUS_FINISHED;
+        }
+        else
+        	return order_status;
 	}
 	
 	double getOrderTotal() {

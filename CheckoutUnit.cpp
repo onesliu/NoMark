@@ -5,8 +5,9 @@
 
 #include "CheckoutUnit.h"
 #include "PwdVerify.h"
-#include "LoginDlgUnit.h"
+#include "MainOrderUnit.h"
 #include "MessageBoxes.h"
+#include "CommonUnit.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -20,32 +21,47 @@ __fastcall TCheckoutForm::TCheckoutForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TCheckoutForm::BtnBalanceClick(TObject *Sender)
 {
-    if ( LoginDlg->GetLoginStatus() == false )
-    {
-        ShowWarning("请首先登陆！");
-        return;
-    }
-
     if ( PasswordVerify->ShowModal() != mrOk )
     {
+    	ShowError("密码错误");
         return;
     }
 
-	bool res = false;
-    if ( res == true )
-    {
-        // Parse file and show them on window
-        AnsiString r0, r1, sql;
-        TStringList *list = new TStringList();
-        TStringList *goods_info_list = new TStringList();
-    
-        //list->LoadFromFile(FILE_ORDER_BALANCE);
-
-        LabelBalanceDateLast->SetTextBuf(list->Strings[0].c_str());
-        LabelBalanceDateCurr->SetTextBuf(list->Strings[1].c_str());
-        LabelBalanceMoney->SetTextBuf(list->Strings[2].c_str());
-        LabelBalanceOrderNumber->SetTextBuf(list->Strings[3].c_str());
+    AnsiString ret = MainOrderForm->httpThread->SetBalance();
+    if (ret == "") {
+    	ShowError("结算出错");
+        return;
     }
+
+    if (balance->SetBalance(ret) == false) {
+    	ShowError("结算出错");
+    }
+    else {
+    	ShowInfo("结算成功");
+        ModalResult = mrOk;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TCheckoutForm::ShowBalance(Balance * balance)
+{
+	this->balance = balance;
+
+    if (balance->last_balance_date == "0") {
+		LabelBalanceDateLast->Caption = "尚未进行第一次结算";
+    }
+    else {
+	    LabelBalanceDateLast->Caption = balance->last_balance_date;
+    }
+    LabelBalanceDateCurr->Caption = balance->current_date;
+    LabelBalanceMoney->Caption = FormatCurrency(balance->total);
+    LabelBalanceOrderNumber->Caption = balance->count;
+    if (balance->count <= 0)
+    	BtnBalance->Enabled = false;
+    else
+    	BtnBalance->Enabled = true;
+
+    ShowModal();
 }
 //---------------------------------------------------------------------------
 

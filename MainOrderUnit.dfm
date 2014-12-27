@@ -1,6 +1,6 @@
 object MainOrderForm: TMainOrderForm
-  Left = 347
-  Top = 125
+  Left = 341
+  Top = 201
   BorderStyle = bsSingle
   Caption = #38738#24736#24736#25509#21333#31995#32479
   ClientHeight = 462
@@ -9,7 +9,7 @@ object MainOrderForm: TMainOrderForm
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -16
-  Font.Name = #24494#36719#38597#40657
+  Font.Name = #26032#23435#20307
   Font.Style = []
   OldCreateOrder = False
   WindowState = wsMaximized
@@ -17,16 +17,16 @@ object MainOrderForm: TMainOrderForm
   OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 21
+  TextHeight = 16
   object PageControl1: TPageControl
     Left = 0
     Top = 44
     Width = 788
     Height = 388
-    ActivePage = TabSheet1
+    ActivePage = TabSheet5
     Align = alClient
     Images = ImageList1
-    TabIndex = 0
+    TabIndex = 3
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #24453#31216#37325#35746#21333
@@ -38,6 +38,12 @@ object MainOrderForm: TMainOrderForm
         Width = 780
         Height = 343
         Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #26032#23435#20307
+        Font.Style = []
+        ParentFont = False
         TabOrder = 0
         inherited OrderListView: TListView
           Width = 780
@@ -55,6 +61,12 @@ object MainOrderForm: TMainOrderForm
         Width = 780
         Height = 343
         Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #26032#23435#20307
+        Font.Style = []
+        ParentFont = False
         TabOrder = 0
         inherited OrderListView: TListView
           Width = 780
@@ -72,23 +84,12 @@ object MainOrderForm: TMainOrderForm
         Width = 780
         Height = 343
         Align = alClient
-        TabOrder = 0
-        inherited OrderListView: TListView
-          Width = 780
-          Height = 343
-        end
-      end
-    end
-    object TabSheet4: TTabSheet
-      Caption = #24050#23436#25104#35746#21333
-      ImageIndex = 3
-      OnShow = TabSheet4Show
-      inline OrderFrame4: TOrderFrame
-        Left = 0
-        Top = 0
-        Width = 780
-        Height = 343
-        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #26032#23435#20307
+        Font.Style = []
+        ParentFont = False
         TabOrder = 0
         inherited OrderListView: TListView
           Width = 780
@@ -112,7 +113,7 @@ object MainOrderForm: TMainOrderForm
           Left = 16
           Top = 16
           Width = 80
-          Height = 21
+          Height = 16
           Caption = #35746#21333#26085#26399#65306
         end
         object BtnQuery: TButton
@@ -124,19 +125,21 @@ object MainOrderForm: TMainOrderForm
           TabOrder = 0
           OnClick = BtnQueryClick
         end
-        object DateTimePicker1: TDateTimePicker
+        object OrderDate: TDateTimePicker
           Left = 104
           Top = 12
           Width = 186
-          Height = 29
+          Height = 24
           CalAlignment = dtaLeft
-          Date = 41936.4876940394
-          Time = 41936.4876940394
+          Date = 0.487694039402413
+          Format = 'yyyy-MM-dd'
+          Time = 0.487694039402413
           DateFormat = dfShort
           DateMode = dmComboBox
           Kind = dtkDate
           ParseInput = False
           TabOrder = 1
+          OnChange = OrderDateChange
         end
       end
       inline OrderFrame5: TOrderFrame
@@ -145,6 +148,12 @@ object MainOrderForm: TMainOrderForm
         Width = 780
         Height = 286
         Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #26032#23435#20307
+        Font.Style = []
+        ParentFont = False
         TabOrder = 1
         inherited OrderListView: TListView
           Width = 780
@@ -2334,12 +2343,5 @@ object MainOrderForm: TMainOrderForm
       FFFE7FFFFFFFC1FFFFFFE3FFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
-  end
-  object MainTimer: TTimer
-    Enabled = False
-    Interval = 10000
-    OnTimer = MainTimerTimer
-    Left = 600
-    Top = 8
   end
 end

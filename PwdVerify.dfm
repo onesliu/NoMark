@@ -1,18 +1,20 @@
 object PasswordVerify: TPasswordVerify
-  Left = 622
-  Top = 312
-  Width = 346
-  Height = 187
+  Left = 420
+  Top = 277
+  BorderStyle = bsDialog
   Caption = #23494#30721#39564#35777
+  ClientHeight = 147
+  ClientWidth = 338
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -16
-  Font.Name = #24494#36719#38597#40657
+  Font.Name = #26032#23435#20307
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   PixelsPerInch = 96
-  TextHeight = 21
+  TextHeight = 16
   object BtnConfirm: TButton
     Left = 112
     Top = 88
@@ -27,9 +29,9 @@ object PasswordVerify: TPasswordVerify
     Left = 16
     Top = 40
     Width = 305
-    Height = 29
+    Height = 24
     EditLabel.Width = 160
-    EditLabel.Height = 21
+    EditLabel.Height = 16
     EditLabel.Caption = #35831#20877#27425#36755#20837#30331#24405#23494#30721#65306
     LabelPosition = lpAbove
     LabelSpacing = 3
