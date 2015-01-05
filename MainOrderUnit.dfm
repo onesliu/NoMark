@@ -141,6 +141,15 @@ object MainOrderForm: TMainOrderForm
           TabOrder = 1
           OnChange = OrderDateChange
         end
+        object Button1: TButton
+          Left = 496
+          Top = 8
+          Width = 89
+          Height = 25
+          Caption = 'Button1'
+          TabOrder = 2
+          OnClick = Button1Click
+        end
       end
       inline OrderFrame5: TOrderFrame
         Left = 0

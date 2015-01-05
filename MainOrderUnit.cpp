@@ -134,3 +134,10 @@ void __fastcall TMainOrderForm::OrderDateChange(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TMainOrderForm::Button1Click(TObject *Sender)
+{
+    PlaySound("complete.wav", NULL, SND_FILENAME|SND_ASYNC);     
+}
+//---------------------------------------------------------------------------
+

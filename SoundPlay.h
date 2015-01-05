@@ -2,6 +2,9 @@
 
 #ifndef SoundPlayH
 #define SoundPlayH
+
+#include <windows.h>
+#include<mmsystem.h>
 //---------------------------------------------------------------------------
 class SoundPlay {
 public:
@@ -13,7 +16,20 @@ public:
     SoundPlay() {
     }
 
-    void play(int id) {
+    void play(int id)
+    {
+        if ( id == SOUND_ORDER_NEW )
+        {
+            PlaySound("neworder.wav", NULL, SND_FILENAME|SND_ASYNC);
+        }
+        else if ( id == SOUND_ORDER_MODIFY )
+        {
+            PlaySound("modify.wav", NULL, SND_FILENAME|SND_ASYNC);
+        }
+        else if ( id == SOUND_ORDER_FINISH )
+        {
+            PlaySound("complete.wav", NULL, SND_FILENAME|SND_ASYNC);
+        }
     }
 };
 #endif

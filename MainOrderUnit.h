@@ -36,6 +36,7 @@ __published:	// IDE-managed Components
     TButton *BtnQuery;
     TPanel *Panel1;
     TOrderFrame *OrderFrame5;
+    TButton *Button1;
     void __fastcall CheckoutButtonClick(TObject *Sender);
     void __fastcall LoginButtonClick(TObject *Sender);
     void __fastcall TabSheet1Show(TObject *Sender);
@@ -47,6 +48,7 @@ __published:	// IDE-managed Components
     void __fastcall FormDestroy(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
 	void __fastcall OrderDateChange(TObject *Sender);
+    void __fastcall Button1Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
     __fastcall TMainOrderForm(TComponent* Owner);

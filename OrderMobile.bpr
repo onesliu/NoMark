@@ -43,7 +43,7 @@
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="OrderMobile.cpp"/>
     <INCLUDEPATH value="D:\Borland\CBuilder6\Projects;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl;utility;jsoncpp\include"/>
-    <LIBPATH value="D:\Borland\CBuilder6\Projects;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility"/>
+    <LIBPATH value="D:\Borland\CBuilder6\Projects;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility;$(BCB)\lib\Psdk"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
@@ -127,11 +127,10 @@ ProductVersion=1.0.0.0
 Comments=
 
 [Excluded Packages]
-d:\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
-d:\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
-d:\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
-c:\program files\borland\cbuilder6\bin\dclClxIBXtras60.bpl=Borland InterBase Express Extras (Clx)
-c:\program files\borland\cbuilder6\Bin\dclIBXtras60.bpl=Borland InterBase Express Extras
+c:\program files\borland\cbuilder6\Bin\dclite60.bpl=Borland Integrated Translation Environment
+c:\program files\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
+c:\program files\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
+c:\program files\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
 
 [HistoryLists\hlIncludePath]
 Count=5
@@ -142,10 +141,11 @@ Item3=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\includ
 Item4=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=3
-Item0=D:\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Projects;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility
-Item1=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility
-Item2=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib
+Count=4
+Item0=D:\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Projects;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility;$(BCB)\lib\Psdk
+Item1=D:\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Projects;jsoncpp\src\lib_json;C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility
+Item2=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib;utility
+Item3=C:\Windows\system32;D:\Projects\NoMarkManager;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
@@ -187,10 +187,5 @@ LinkCGLIB=0
 AddServerUnit=1
 AddClientUnit=1
 PrecompiledHeaders=1
-
-[Language]
-ActiveLang=
-ProjectLang=
-RootDir=
   </IDEOPTIONS>
 </PROJECT>
