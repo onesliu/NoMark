@@ -52,6 +52,8 @@ __published:	// IDE-managed Components
     void __fastcall ConfirmBtnClick2(TObject *Sender);
 private:	// User declarations
 	Order * order;
+    AnsiString m_strKeyInput;
+    bool __fastcall ScanningGun(char &Key);
 public:		// User declarations
     __fastcall TOrderInfoForm(TComponent* Owner);
     void __fastcall ShowOrder(Order *order);
