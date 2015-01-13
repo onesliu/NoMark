@@ -84,6 +84,8 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
 
 void __fastcall TOrderInfoForm::ProductListDblClick(TObject *Sender)
 {
+    if ( ProductList->Selected == NULL ) return;
+    
 	Product * p = (Product*)ProductList->Selected->Data;
 	ScaleInputForm->ShowScale(p);
 	ProductList->Selected->SubItems->Strings[3] = AnsiString(p->realweight) + "¿Ë";
