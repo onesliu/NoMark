@@ -248,6 +248,10 @@ object OrderInfoForm: TOrderInfoForm
         Width = 80
       end
       item
+        Caption = #37325#37327#21333#20301
+        Width = 70
+      end
+      item
         Caption = #35746#36141#25968#37327
         Width = 100
       end

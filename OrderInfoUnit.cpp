@@ -69,7 +69,8 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         	prefix = "约";
         TListItem * item = ProductList->Items->Add();
         item->Caption = p->product_name;
-        item->SubItems->Add(p->price);
+        item->SubItems->Add(FormatCurrency(p->price));
+        item->SubItems->Add(p->unit);
         item->SubItems->Add(AnsiString(p->quantity) + p->perunit);
         item->SubItems->Add(prefix + (p->perweight * p->quantity) + "克");
         item->SubItems->Add(AnsiString(p->realweight) + "克");
@@ -88,8 +89,8 @@ void __fastcall TOrderInfoForm::ProductListDblClick(TObject *Sender)
     
 	Product * p = (Product*)ProductList->Selected->Data;
 	ScaleInputForm->ShowScale(p);
-	ProductList->Selected->SubItems->Strings[3] = AnsiString(p->realweight) + "克";
-	ProductList->Selected->SubItems->Strings[4] = AnsiString(FormatCurrency(p->realtotal));
+	ProductList->Selected->SubItems->Strings[4] = AnsiString(p->realweight) + "克";
+	ProductList->Selected->SubItems->Strings[5] = AnsiString(FormatCurrency(p->realtotal));
     RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
 }
 //---------------------------------------------------------------------------
@@ -120,8 +121,8 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
                 p->realtotal = RoundTo(p->realweight * p->price, -2);
                 p->realweight = Floor(p->realweight * 500);
                 
-                ProductList->Items->Item[i]->SubItems->Strings[3] = AnsiString(p->realweight) + "克";
-                ProductList->Items->Item[i]->SubItems->Strings[4] = AnsiString(FormatCurrency(p->realtotal));
+                ProductList->Items->Item[i]->SubItems->Strings[4] = AnsiString(p->realweight) + "克";
+                ProductList->Items->Item[i]->SubItems->Strings[5] = AnsiString(FormatCurrency(p->realtotal));
                 
                 RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
             }
