@@ -65,6 +65,7 @@ OrderList * OrderList::ParseOrders(AnsiString str_order)
             pProduct->product_name = UTF8toGBK(product[j]["product_name"].asCString());
             pProduct->product_type = UTF8toGBK(product[j]["product_type"].asCString()).ToInt();
             pProduct->ean = UTF8toGBK(product[j]["ean"].asCString());
+            pProduct->unit = UTF8toGBK(product[j]["unit"].asCString());
             pProduct->price = UTF8toGBK(product[j]["price"].asCString()).ToDouble();
             pProduct->perprice = UTF8toGBK(product[j]["perprice"].asCString()).ToDouble();
             pProduct->perweight = UTF8toGBK(product[j]["perweight"].asCString()).ToDouble();

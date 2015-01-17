@@ -65,6 +65,8 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
 
 void __fastcall TOrderFrame::OrderListViewDblClick(TObject *Sender)
 {
+    if (OrderListView->Selected == NULL ) return;
+
     Order * order = (Order*)OrderListView->Selected->Data;
     if (order) {
       	OrderInfoForm->ShowOrder(order);

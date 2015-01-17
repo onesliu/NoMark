@@ -1,6 +1,6 @@
 object ScaleInputForm: TScaleInputForm
-  Left = 466
-  Top = 337
+  Left = 350
+  Top = 280
   BorderStyle = bsDialog
   Caption = #31216#37325#36755#20837
   ClientHeight = 222

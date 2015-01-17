@@ -11,6 +11,7 @@ public:
 	AnsiString product_name;
 	int product_type;
 	AnsiString ean;
+    AnsiString unit;
     AnsiString perunit;
     double perweight;
     double perprice;

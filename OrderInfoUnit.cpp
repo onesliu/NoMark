@@ -8,6 +8,8 @@
 #include "CommonUnit.h"
 #include "MessageBoxes.h"
 #include "MainOrderUnit.h"
+#include "BarcodeUnit.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -67,7 +69,8 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         	prefix = "约";
         TListItem * item = ProductList->Items->Add();
         item->Caption = p->product_name;
-        item->SubItems->Add(p->price);
+        item->SubItems->Add(FormatCurrency(p->price));
+        item->SubItems->Add(p->unit);
         item->SubItems->Add(AnsiString(p->quantity) + p->perunit);
         item->SubItems->Add(prefix + (p->perweight * p->quantity) + "克");
         item->SubItems->Add(AnsiString(p->realweight) + "克");
@@ -82,24 +85,75 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
 
 void __fastcall TOrderInfoForm::ProductListDblClick(TObject *Sender)
 {
+    if ( ProductList->Selected == NULL ) return;
+    
 	Product * p = (Product*)ProductList->Selected->Data;
 	ScaleInputForm->ShowScale(p);
-	ProductList->Selected->SubItems->Strings[3] = AnsiString(p->realweight) + "克";
-	ProductList->Selected->SubItems->Strings[4] = AnsiString(FormatCurrency(p->realtotal));
+	ProductList->Selected->SubItems->Strings[4] = AnsiString(p->realweight) + "克";
+	ProductList->Selected->SubItems->Strings[5] = AnsiString(FormatCurrency(p->realtotal));
     RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
 }
 //---------------------------------------------------------------------------
+/*
+ * Used for scanning gun
+ */
+bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
+{
+    if ( Key != 0x0D )
+    {
+        m_strKeyInput += Key;
+    }
+    else
+    {
+        IBarcode barcode_scan, barcode_ean;
+        for ( int i=0; i<ProductList->Items->Count; i++ )
+        {
+            Product *p = (Product*)ProductList->Items->Item[i]->Data;
+            
+            if ( barcode_scan.parseCode(m_strKeyInput) == false ) return false;
+            if ( barcode_ean.parseCode(p->ean) == false ) return false;
+            
+            if ( barcode_scan.code != barcode_ean.code )
+                continue;
+            else
+            {
+                p->realweight = barcode_scan.weight * 2;
+                p->realtotal = RoundTo(p->realweight * p->price, -2);
+                p->realweight = Floor(p->realweight * 500);
+                
+                ProductList->Items->Item[i]->SubItems->Strings[4] = AnsiString(p->realweight) + "克";
+                ProductList->Items->Item[i]->SubItems->Strings[5] = AnsiString(FormatCurrency(p->realtotal));
+                
+                RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
+            }
+        }
+
+        m_strKeyInput = "";
+    }
+
+    return true;
+}
 
 void __fastcall TOrderInfoForm::ProductListKeyPress(TObject *Sender,
       char &Key)
 {
-	if (Key == 0x0d) ProductListDblClick(Sender);
+    if ( (Key == 0x0D) && ( m_strKeyInput == "") )
+    {  
+        ProductListDblClick(Sender);
+    }
+    else
+    {
+        if ( (Key >= '0') && (Key <= '9') || (Key == 0x0D) )
+        {
+            ScanningGun(Key);
+        }
+    }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TOrderInfoForm::FormShow(TObject *Sender)
 {
-	ProductList->SetFocus();	
+	ProductList->SetFocus();
 }
 //---------------------------------------------------------------------------
 
@@ -131,4 +185,3 @@ void __fastcall TOrderInfoForm::ConfirmBtnClick2(TObject *Sender)
     ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------
-

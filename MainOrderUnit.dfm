@@ -26,6 +26,7 @@ object MainOrderForm: TMainOrderForm
     ActivePage = TabSheet5
     Align = alClient
     Images = ImageList1
+    Style = tsButtons
     TabIndex = 3
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -36,7 +37,7 @@ object MainOrderForm: TMainOrderForm
         Left = 0
         Top = 0
         Width = 780
-        Height = 343
+        Height = 340
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -47,7 +48,7 @@ object MainOrderForm: TMainOrderForm
         TabOrder = 0
         inherited OrderListView: TListView
           Width = 780
-          Height = 343
+          Height = 340
         end
       end
     end
@@ -59,7 +60,7 @@ object MainOrderForm: TMainOrderForm
         Left = 0
         Top = 0
         Width = 780
-        Height = 343
+        Height = 340
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -70,7 +71,7 @@ object MainOrderForm: TMainOrderForm
         TabOrder = 0
         inherited OrderListView: TListView
           Width = 780
-          Height = 343
+          Height = 340
         end
       end
     end
@@ -82,7 +83,7 @@ object MainOrderForm: TMainOrderForm
         Left = 0
         Top = 0
         Width = 780
-        Height = 343
+        Height = 340
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -93,7 +94,7 @@ object MainOrderForm: TMainOrderForm
         TabOrder = 0
         inherited OrderListView: TListView
           Width = 780
-          Height = 343
+          Height = 340
         end
       end
     end
@@ -123,6 +124,7 @@ object MainOrderForm: TMainOrderForm
           Height = 33
           Caption = #26597#35810
           TabOrder = 0
+          Visible = False
           OnClick = BtnQueryClick
         end
         object OrderDate: TDateTimePicker
@@ -148,6 +150,7 @@ object MainOrderForm: TMainOrderForm
           Height = 25
           Caption = 'Button1'
           TabOrder = 2
+          Visible = False
           OnClick = Button1Click
         end
       end
@@ -155,7 +158,7 @@ object MainOrderForm: TMainOrderForm
         Left = 0
         Top = 57
         Width = 780
-        Height = 286
+        Height = 283
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -166,7 +169,7 @@ object MainOrderForm: TMainOrderForm
         TabOrder = 1
         inherited OrderListView: TListView
           Width = 780
-          Height = 286
+          Height = 283
         end
       end
     end

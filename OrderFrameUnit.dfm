@@ -1,7 +1,7 @@
 object OrderFrame: TOrderFrame
   Left = 0
   Top = 0
-  Width = 443
+  Width = 813
   Height = 270
   Align = alClient
   Font.Charset = DEFAULT_CHARSET
@@ -14,7 +14,7 @@ object OrderFrame: TOrderFrame
   object OrderListView: TListView
     Left = 0
     Top = 0
-    Width = 443
+    Width = 813
     Height = 270
     Align = alClient
     Columns = <
