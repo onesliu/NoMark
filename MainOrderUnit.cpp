@@ -141,3 +141,8 @@ void __fastcall TMainOrderForm::Button1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TMainOrderForm::UpdateScalerBar(TMessage &msg)
+{
+    TScale s;
+    s.SendScale();    
+}

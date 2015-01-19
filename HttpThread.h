@@ -30,6 +30,8 @@ public:
     AnsiString __fastcall GetDistricts();
     AnsiString __fastcall GetBalance();
     AnsiString __fastcall SetBalance();
+    AnsiString __fastcall GetProductInfo();
+    bool       __fastcall ParseProductInfo(AnsiString str);
     bool __fastcall CommitOrder(Order *order, int order_status);
 
     AnsiString user;
