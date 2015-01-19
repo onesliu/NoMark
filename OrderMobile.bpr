@@ -15,14 +15,14 @@
       debug\ordermobile\OrderInfoUnit.obj debug\ordermobile\ScaleInputUnit.obj 
       debug\ordermobile\PwdVerify.obj debug\ordermobile\UrlEncode.obj 
       debug\ordermobile\HttpAccess.obj debug\ordermobile\HttpThread.obj 
-      debug\ordermobile\Balance.obj"/>
+      debug\ordermobile\Balance.obj debug\ordermobile\Scale.obj"/>
     <RESFILES value="OrderMobile.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) MainOrderUnit.dfm OrderFrameUnit.dfm LoginDlgUnit.dfm 
       CheckoutUnit.dfm OrderInfoUnit.dfm ScaleInputUnit.dfm PwdVerify.dfm"/>
-    <LIBFILES value="lib\IniFile.lib"/>
+    <LIBFILES value="lib\IniFile.lib lib\DhScalePluNet.lib"/>
     <LIBRARIES value="indy.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib indy.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
@@ -94,6 +94,9 @@
       <FILE FILENAME="utility\HttpAccess.cpp" FORMNAME="" UNITNAME="HttpAccess" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="HttpThread.cpp" FORMNAME="" UNITNAME="HttpThread" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Balance.cpp" FORMNAME="" UNITNAME="Balance" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Scale.cpp" FORMNAME="" UNITNAME="Scale" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Scale.h" FORMNAME="" UNITNAME="Scale.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\DhScalePluNet.lib" FORMNAME="" UNITNAME="DhScalePluNet.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

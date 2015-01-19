@@ -14,6 +14,7 @@
 #include "CommonUnit.h"
 #include "Janitor.h"
 #include "MessageBoxes.h"
+#include "Scale.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -141,3 +142,8 @@ void __fastcall TMainOrderForm::Button1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TMainOrderForm::UpdateScalerBar(TMessage &msg)
+{
+    TScale s;
+    s.SendScale();    
+}

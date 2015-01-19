@@ -9,6 +9,7 @@ class Product {
 public:
 	int product_id;
 	AnsiString product_name;
+    int plu_serial_no;
 	int product_type;
 	AnsiString ean;
     AnsiString unit;

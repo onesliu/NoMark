@@ -13,6 +13,9 @@
 #include "OrderFrameUnit.h"
 #include <ExtCtrls.hpp>
 #include "HttpThread.h"
+
+#define WM_UPDATESCALERBAR WM_USER+1
+
 //---------------------------------------------------------------------------
 class TMainOrderForm : public TForm
 {
@@ -53,6 +56,12 @@ private:	// User declarations
 public:		// User declarations
     __fastcall TMainOrderForm(TComponent* Owner);
 	THttpThread *httpThread;
+
+    void __fastcall UpdateScalerBar(TMessage &msg);
+        
+    BEGIN_MESSAGE_MAP
+        VCL_MESSAGE_HANDLER(WM_UPDATESCALERBAR, TMessage, UpdateScalerBar)
+    END_MESSAGE_MAP(TForm);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainOrderForm *MainOrderForm;

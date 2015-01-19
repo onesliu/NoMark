@@ -54,7 +54,7 @@ bool TScale::SendScale()
     
     int iRet = dhSendPluDefault();
 
-    ShowInfo(strMsg[iRet*(-1)].c_str());
+//    ShowInfo(strMsg[iRet*(-1)].c_str());
     
     return true;
 }
@@ -73,7 +73,7 @@ bool TScale::RecvScale()
     
     int iRet = dhRcvRdDefault();
 
-    ShowInfo(strMsg[iRet*(-1)].c_str());
+//    ShowInfo(strMsg[iRet*(-1)].c_str());
     
     return true;
 }
