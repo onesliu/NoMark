@@ -14,6 +14,7 @@
 #include "CommonUnit.h"
 #include "Janitor.h"
 #include "MessageBoxes.h"
+#include "Scale.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
