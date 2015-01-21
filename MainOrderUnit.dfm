@@ -23,11 +23,11 @@ object MainOrderForm: TMainOrderForm
     Top = 44
     Width = 788
     Height = 388
-    ActivePage = TabSheet5
+    ActivePage = TabSheet1
     Align = alClient
     Images = ImageList1
     Style = tsButtons
-    TabIndex = 3
+    TabIndex = 0
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #24453#31216#37325#35746#21333
@@ -124,7 +124,6 @@ object MainOrderForm: TMainOrderForm
           Height = 33
           Caption = #26597#35810
           TabOrder = 0
-          Visible = False
           OnClick = BtnQueryClick
         end
         object OrderDate: TDateTimePicker
@@ -194,7 +193,7 @@ object MainOrderForm: TMainOrderForm
       Height = 40
       AutoSize = True
       ButtonHeight = 38
-      ButtonWidth = 107
+      ButtonWidth = 123
       Caption = 'ToolBar1'
       Flat = True
       Images = ImageList1
@@ -209,15 +208,30 @@ object MainOrderForm: TMainOrderForm
         OnClick = LoginButtonClick
       end
       object CheckoutButton: TToolButton
-        Left = 107
+        Left = 123
         Top = 0
         Caption = #19978#32593#32467#31639
         ImageIndex = 9
         OnClick = CheckoutButtonClick
       end
+      object ToolButton2: TToolButton
+        Left = 246
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton2'
+        ImageIndex = 4
+        Style = tbsSeparator
+      end
+      object UpdateScale: TToolButton
+        Left = 254
+        Top = 0
+        Caption = #21047#26032#26465#30721#31216
+        ImageIndex = 3
+        OnClick = UpdateScaleClick
+      end
     end
   end
-  object StatusBar1: TStatusBar
+  object StatusBar: TStatusBar
     Left = 0
     Top = 432
     Width = 788

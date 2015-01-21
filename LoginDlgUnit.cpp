@@ -32,7 +32,7 @@ void __fastcall TLoginDlg::ReadConfig()
     }
 
     if (load_from(dom, INIFILE) != 0) {
-        ShowError("读取配置文件出错");
+        ShowError(Handle, "读取配置文件出错");
         return;
     }
 
@@ -40,7 +40,7 @@ void __fastcall TLoginDlg::ReadConfig()
     memset(val, 0, sizeof(val));
     int len = get_value(dom, "Login", "UserName", val);
     if (len == -1) {
-        ShowError("读取配置文件出错");
+        ShowError(Handle, "读取配置文件出错");
         return;
     }
     User->Text = val;
@@ -49,7 +49,7 @@ void __fastcall TLoginDlg::ReadConfig()
     memset(val, 0, sizeof(val));
     len = get_value(dom, "Login", "Password", val);
     if (len == -1) {
-        ShowError("读取配置文件出错");
+        ShowError(Handle, "读取配置文件出错");
         return;
     }
     Password->Text = val;
@@ -58,7 +58,7 @@ void __fastcall TLoginDlg::ReadConfig()
     memset(val, 0, sizeof(val));
     len = get_value(dom, "Login", "Server", val);
     if (len == -1) {
-        ShowError("读取配置文件出错");
+        ShowError(Handle, "读取配置文件出错");
         return;
     }
     ServerDomain->Text = val;
@@ -100,7 +100,7 @@ void __fastcall TLoginDlg::OKBtnClick(TObject *Sender)
 	SaveConfig();
     if ( !MainOrderForm->httpThread->Login() )
     {
-        ShowError("登陆失败！");
+        ShowError(Handle, "登陆失败！");
     }
     else
     {

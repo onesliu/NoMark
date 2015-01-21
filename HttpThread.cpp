@@ -33,13 +33,22 @@ extern SoundPlay soundplay;
 #define URL_ORDER_BALANCE       ("http://%s/admin/index.php?route=qingyou/order_query/balance")
 #define URL_ORDER_SETBALANCE    ("http://%s/admin/index.php?route=qingyou/order_query/setbalance")
 #define URL_GET_PRODUCT_INFO    ("http://%s/admin/index.php?route=qingyou/cq_product_info")
+#define URL_GET_ALL_PRODUCT_INFO    ("http://%s/admin/index.php?route=qingyou/cq_product_info/all")
 
 void __fastcall THttpThread::Execute()
 {
 	while(Terminated == false) {
+		st1 = "订单更新中...";
+        Synchronize(FreshStatus);
+    	st1 = st2 = "";
+
 	    if ( m_bLogin == false ) {
-	    	if (Login() == false)
+	    	if (Login() == false) {
+            	st1 = "登录失败";
+                st2 = "停止数据线程，等待重新登录";
+            	Synchronize(FreshStatus);
 	        	return;
+            }
 	    }
 	
 	    AnsiString sorder = GetOrders();
@@ -47,12 +56,17 @@ void __fastcall THttpThread::Execute()
         	OrderList * newlist = OrderList::ParseOrders(sorder);
             if (newlist == NULL) {
 	        	m_bLogin = false;
+                st1 = "解析订单数据出错";
+                Synchronize(FreshStatus);
 	            return;
 	        }
 
             orderlist->mergeOrderList(newlist, &soundplay);
 	        Synchronize(FreshOrders);
 	    }
+        else {
+        	st1 = "读取远程订单失败";
+        }
 
         /* Get product info */
         AnsiString strProductInfo = GetProductInfo();
@@ -63,13 +77,29 @@ void __fastcall THttpThread::Execute()
                 // Write product info to scaler bar
                 PostMessage(MainOrderForm->Handle, WM_UPDATESCALERBAR, 0, 0);
             }
+            /*else {
+            	st2 = "不需要更新条码称";
+            }*/
+        }
+        else {
+            st2 = "读取远程产品价格失败";
         }
 
-        for(int i = 0; i < 10; i++) {
+        Synchronize(FreshStatus);
+
+        for(int i = 0; i < 60; i++) {
         	if (Terminated == true) break;
+            if (st1 == "" && st2 == "") {
+            	st1 = "状态正常";
+                Synchronize(FreshStatus);
+            }
 	        Sleep(1000);
         }
     }
+
+    st1 = "";
+    st2 = "停止数据线程，等待重新登录";
+    Synchronize(FreshStatus);
 }
 
 void __fastcall THttpThread::FreshOrders(void)
@@ -77,6 +107,12 @@ void __fastcall THttpThread::FreshOrders(void)
     MainOrderForm->OrderFrame1->FreshOrderList(orderlist, OrderStatus::ORDER_STATUS_WAITING);
     MainOrderForm->OrderFrame2->FreshOrderList(orderlist, OrderStatus::ORDER_STATUS_PAYING);
     MainOrderForm->OrderFrame3->FreshOrderList(orderlist, OrderStatus::ORDER_STATUS_SCALED);
+}
+
+void __fastcall THttpThread::FreshStatus()
+{
+	MainOrderForm->StatusBar->Panels->Items[0]->Text = st1;
+	MainOrderForm->StatusBar->Panels->Items[1]->Text = st2;
 }
 
 bool __fastcall THttpThread::Login()
@@ -284,10 +320,13 @@ bool __fastcall THttpThread::CommitOrder(Order *order, int order_status)
 }
 //---------------------------------------------------------------------------
 
-AnsiString __fastcall THttpThread::GetProductInfo()
+AnsiString __fastcall THttpThread::GetProductInfo(bool all)
 {
 	AnsiString url;
-    url.printf(URL_GET_PRODUCT_INFO, server.c_str());
+    if (all)
+    	url.printf(URL_GET_ALL_PRODUCT_INFO, server.c_str());
+    else
+	    url.printf(URL_GET_PRODUCT_INFO, server.c_str());
     url += "&token=" + token;
     lock->Acquire();
     AnsiString ret = http->Get(url);
@@ -309,6 +348,7 @@ bool __fastcall THttpThread::ParseProductInfo(AnsiString str)
 
     Json::Reader reader;
     Json::Value  productInfo;
+    scale_count = 0;
 
     if ( !reader.parse(istr, productInfo, false) )
     {
@@ -373,6 +413,7 @@ bool __fastcall THttpThread::ParseProductInfo(AnsiString str)
                  ""; 	            // 为商品名2	（最多12汉字）
 
         list->Add(strPLU);
+        scale_count++;
     }
 
     if ( !DirectoryExists(".\\scale") )

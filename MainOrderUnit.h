@@ -29,7 +29,7 @@ __published:	// IDE-managed Components
     TToolButton *LoginButton;
     TImageList *ImageList1;
     TToolButton *CheckoutButton;
-    TStatusBar *StatusBar1;
+	TStatusBar *StatusBar;
     TOrderFrame *OrderFrame1;
     TTabSheet *TabSheet5;
     TOrderFrame *OrderFrame2;
@@ -40,6 +40,8 @@ __published:	// IDE-managed Components
     TPanel *Panel1;
     TOrderFrame *OrderFrame5;
     TButton *Button1;
+	TToolButton *UpdateScale;
+	TToolButton *ToolButton2;
     void __fastcall CheckoutButtonClick(TObject *Sender);
     void __fastcall LoginButtonClick(TObject *Sender);
     void __fastcall TabSheet1Show(TObject *Sender);
@@ -52,6 +54,7 @@ __published:	// IDE-managed Components
     void __fastcall FormShow(TObject *Sender);
 	void __fastcall OrderDateChange(TObject *Sender);
     void __fastcall Button1Click(TObject *Sender);
+	void __fastcall UpdateScaleClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
     __fastcall TMainOrderForm(TComponent* Owner);

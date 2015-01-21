@@ -8,6 +8,7 @@
 //---------------------------------------------------------------------------
 
 extern void ShowError( const char *fmt, ... );
+void ShowError( HWND handle, const char *fmt, ...);
 extern void ShowInfo( const char *fmt, ... );
 extern void ShowWarning( const char *fmt, ... );
 //return: true--Ok; false--Cancel

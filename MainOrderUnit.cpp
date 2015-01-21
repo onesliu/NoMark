@@ -144,6 +144,38 @@ void __fastcall TMainOrderForm::Button1Click(TObject *Sender)
 
 void __fastcall TMainOrderForm::UpdateScalerBar(TMessage &msg)
 {
-    TScale s;
-    s.SendScale();    
+	try {
+	    TScale s;
+    	if (s.SendScale() == true)
+		    MainOrderForm->StatusBar->Panels->Items[1]->Text = "刷新条码称成功：" + AnsiString(httpThread->scale_count) + "条记录";
+        else {
+            MainOrderForm->StatusBar->Panels->Items[1]->Text = "刷新条码称出错：" + s.errmsg;
+        }
+    } catch(...) {
+    	MainOrderForm->StatusBar->Panels->Items[1]->Text = "刷新条码称出错：未知异常";
+    }
 }
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainOrderForm::UpdateScaleClick(TObject *Sender)
+{
+        /* Get product info */
+        AnsiString strProductInfo = httpThread->GetProductInfo(true);
+        if ( strProductInfo != "" )
+        {
+            if ( httpThread->ParseProductInfo(strProductInfo) )
+            {
+                TMessage msg;
+                UpdateScalerBar(msg);
+            }
+            else {
+               	MainOrderForm->StatusBar->Panels->Items[1]->Text = "解析条码称数据出错";
+            }
+        }
+        else {
+    	    MainOrderForm->StatusBar->Panels->Items[1]->Text = "读取远程产品价格失败";
+        }
+}
+//---------------------------------------------------------------------------
+
