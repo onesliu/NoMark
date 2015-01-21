@@ -45,7 +45,7 @@ void __fastcall THttpThread::Execute()
 	    if ( m_bLogin == false ) {
 	    	if (Login() == false) {
             	st1 = "登录失败";
-                st2 = "停止数据线程，等待重新登录";
+                st2 = "停止数据线程，等待自动重新登录";
             	Synchronize(FreshStatus);
 	        	return;
             }
@@ -56,7 +56,7 @@ void __fastcall THttpThread::Execute()
         	OrderList * newlist = OrderList::ParseOrders(sorder);
             if (newlist == NULL) {
 	        	m_bLogin = false;
-                st1 = "解析订单数据出错";
+                st1 = "解析订单数据出错，停止数据线程，等待自动重新登录";
                 Synchronize(FreshStatus);
 	            return;
 	        }
@@ -98,7 +98,7 @@ void __fastcall THttpThread::Execute()
     }
 
     st1 = "";
-    st2 = "停止数据线程，等待重新登录";
+    st2 = "停止数据线程，等待手工重新登录";
     Synchronize(FreshStatus);
 }
 
