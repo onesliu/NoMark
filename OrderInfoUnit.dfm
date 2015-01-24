@@ -163,15 +163,15 @@ object OrderInfoForm: TOrderInfoForm
   end
   object Total: TLabel
     Left = 96
-    Top = 232
-    Width = 30
-    Height = 12
+    Top = 228
+    Width = 45
+    Height = 16
     Caption = 'Total'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
-    Font.Height = -12
+    Font.Height = -16
     Font.Name = #26032#23435#20307
-    Font.Style = []
+    Font.Style = [fsBold]
     ParentFont = False
   end
   object Label10: TLabel
@@ -183,15 +183,15 @@ object OrderInfoForm: TOrderInfoForm
   end
   object RealTotal: TLabel
     Left = 432
-    Top = 232
-    Width = 54
-    Height = 12
+    Top = 228
+    Width = 81
+    Height = 16
     Caption = 'RealTotal'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
-    Font.Height = -12
+    Font.Height = -16
     Font.Name = #26032#23435#20307
-    Font.Style = []
+    Font.Style = [fsBold]
     ParentFont = False
   end
   object Label11: TLabel
@@ -246,10 +246,6 @@ object OrderInfoForm: TOrderInfoForm
       item
         Caption = #21333#20215
         Width = 80
-      end
-      item
-        Caption = #37325#37327#21333#20301
-        Width = 70
       end
       item
         Caption = #35746#36141#25968#37327

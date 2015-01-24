@@ -68,22 +68,18 @@ void __fastcall THttpThread::Execute()
         	st1 = "读取远程订单失败";
         }
 
-        /* Get product info */
+        /* Get product info
         AnsiString strProductInfo = GetProductInfo();
         if ( strProductInfo != "" )
         {
             if ( ParseProductInfo(strProductInfo) )
             {
-                // Write product info to scaler bar
                 PostMessage(MainOrderForm->Handle, WM_UPDATESCALERBAR, 0, 0);
             }
-            /*else {
-            	st2 = "不需要更新条码称";
-            }*/
         }
         else {
             st2 = "读取远程产品价格失败";
-        }
+        }   */
 
         Synchronize(FreshStatus);
 

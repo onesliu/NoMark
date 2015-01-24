@@ -14,6 +14,7 @@ public:
 	AnsiString ean;
     AnsiString unit;
     AnsiString perunit;
+    AnsiString weightunit;
     double perweight;
     double perprice;
 	double price;

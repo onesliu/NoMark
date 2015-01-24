@@ -70,6 +70,7 @@ OrderList * OrderList::ParseOrders(AnsiString str_order)
             pProduct->perprice = UTF8toGBK(product[j]["perprice"].asCString()).ToDouble();
             pProduct->perweight = UTF8toGBK(product[j]["perweight"].asCString()).ToDouble();
             pProduct->perunit = UTF8toGBK(product[j]["perunit"].asCString());
+            pProduct->weightunit = UTF8toGBK(product[j]["weightunit"].asCString());
             pProduct->quantity = UTF8toGBK(product[j]["quantity"].asCString()).ToInt();
             pProduct->total = UTF8toGBK(product[j]["total"].asCString()).ToDouble();
             pProduct->realweight = UTF8toGBK(product[j]["realweight"].asCString()).ToDouble();
@@ -77,6 +78,12 @@ OrderList * OrderList::ParseOrders(AnsiString str_order)
 
             if ( pOrder->order_status > OrderStatus::ORDER_STATUS_WAITING )
 			    pProduct->finishScan();
+
+            if (pProduct->product_type == 0) {
+	            pProduct->realweight = pProduct->perweight * pProduct->quantity;
+    	        pProduct->realtotal = pProduct->perprice * pProduct->quantity;
+                pProduct->finishScan();
+            }
 
             ordertype += pProduct->product_type;
             pOrder->add_product(pProduct);

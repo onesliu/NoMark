@@ -60,7 +60,7 @@ public:
 		
 		//删除上次完成的订单
 		clearFinished();
-		
+
         std::list<Order*>::iterator itr;
 		for(itr = orders.begin(); itr != orders.end(); ++itr) {
 			Order * o_old = *itr;
@@ -77,7 +77,7 @@ public:
 		for(itr = newlist->orders.begin(); itr != newlist->orders.end(); ) {
 			Order * o_new = *itr;
 			Order * o_old = this->get(o_new->order_id);
-			
+
 			if (o_old == NULL) {
 				//有新订单，报警
 				new_orders.push_back(o_new);
@@ -96,12 +96,15 @@ public:
             	++itr;
             }
 		}
-		
+
 		if (new_orders.size() > 0) {
 			orders.merge(new_orders);
 		}
+
+		//删除完成的订单
+		clearFinished();
 	}
-	
+
 	void clearFinished() {
         std::list<Order*>::iterator itr;
 		for(itr = orders.begin(); itr != orders.end(); ) {
