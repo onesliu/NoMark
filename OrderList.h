@@ -37,6 +37,14 @@ public:
 		}
 		return NULL;
 	}
+
+    void remove(__int64 orderid) {
+    	std::list<Order*>::iterator itr;
+		for(itr = orders.begin(); itr != orders.end(); ++itr) {
+			if ((*itr)->order_id == orderid)
+				itr = orders.erase(itr);
+		}
+	}
 	
 	void add(Order * order) {
 		orders.push_back(order);
@@ -87,7 +95,10 @@ public:
 			else if (o_old != NULL) {
 				if (o_old->order_status_orign != o_new->order_status_orign) {
 					//有修改订单，报警
-					o_old->initStatus(o_new->order_status);
+					new_orders.push_back(o_new);
+                    itr = newlist->orders.erase(itr);
+                    remove(o_old->order_id);
+                    delete o_old;
 					SoundPlayer->play(SoundPlay::SOUND_ORDER_MODIFY);
 				}
                 ++itr;

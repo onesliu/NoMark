@@ -241,23 +241,26 @@ object OrderInfoForm: TOrderInfoForm
     Columns = <
       item
         Caption = #21830#21697#21517
-        Width = 150
+        Width = 100
       end
       item
         Caption = #21333#20215
         Width = 80
       end
       item
-        Caption = #35746#36141#25968#37327
-        Width = 100
+        Caption = #25968#37327
       end
       item
-        Caption = #35746#36141#37325#37327
-        Width = 100
+        Caption = #27599#20221#20272#37325
+        Width = 80
+      end
+      item
+        Caption = #39044#20272#24635#37325
+        Width = 80
       end
       item
         Caption = #31216#21518#37325#37327
-        Width = 100
+        Width = 80
       end
       item
         Caption = #23454#38469#24212#20184
@@ -273,7 +276,7 @@ object OrderInfoForm: TOrderInfoForm
     OnKeyPress = ProductListKeyPress
   end
   object ConfirmBtn: TButton
-    Left = 336
+    Left = 280
     Top = 448
     Width = 193
     Height = 65
@@ -289,12 +292,21 @@ object OrderInfoForm: TOrderInfoForm
     TabOrder = 3
   end
   object Cancel: TButton
-    Left = 592
+    Left = 608
     Top = 448
-    Width = 105
+    Width = 89
     Height = 65
     Caption = #20851#38381
     ModalResult = 2
     TabOrder = 4
+  end
+  object PrintBtn: TButton
+    Left = 496
+    Top = 448
+    Width = 89
+    Height = 65
+    Caption = #25171#21360#23567#31080
+    TabOrder = 5
+    OnClick = PrintBtnClick
   end
 end

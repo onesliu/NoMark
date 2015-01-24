@@ -853,7 +853,7 @@ void __fastcall TOrderForm::PrintSellList1(AnsiString selltime)
         goto end;
     }
 
-    printer->PrintLogo();
+    printer->PrintLogo(sPrintLogo);
     int col[4];
     col[0] = 11;
     col[1] = 6;
@@ -884,7 +884,7 @@ void __fastcall TOrderForm::PrintSellList1(AnsiString selltime)
     printer->PrintItem( "合计金额", MoneyStr(CheckOut->Text.ToDouble()) );
     printer->PrintItem( "收取现金", MoneyStr(GetMoney->Text.ToDouble()) );
     printer->PrintItem( "找    零", MoneyStr(GiveChange->Caption.ToDouble()) );
-    printer->PrintTail();
+    printer->PrintTail(sPrintTail);
 
     printer->KickOut();
 end:

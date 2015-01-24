@@ -17,12 +17,12 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     {
          Application->Initialize();
          Application->CreateForm(__classid(TMainOrderForm), &MainOrderForm);
-         Application->CreateForm(__classid(TLoginDlg), &LoginDlg);
-         Application->CreateForm(__classid(TCheckoutForm), &CheckoutForm);
-         Application->CreateForm(__classid(TOrderInfoForm), &OrderInfoForm);
-         Application->CreateForm(__classid(TScaleInputForm), &ScaleInputForm);
-         Application->CreateForm(__classid(TPasswordVerify), &PasswordVerify);
-         Application->Run();
+		Application->CreateForm(__classid(TLoginDlg), &LoginDlg);
+		Application->CreateForm(__classid(TCheckoutForm), &CheckoutForm);
+		Application->CreateForm(__classid(TOrderInfoForm), &OrderInfoForm);
+		Application->CreateForm(__classid(TScaleInputForm), &ScaleInputForm);
+		Application->CreateForm(__classid(TPasswordVerify), &PasswordVerify);
+		Application->Run();
     }
     catch (Exception &exception)
     {

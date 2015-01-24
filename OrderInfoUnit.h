@@ -45,15 +45,18 @@ __published:	// IDE-managed Components
 	TLabel *ShippingPhone;
 	TLabel *Label12;
 	TLabel *Comment;
+	TButton *PrintBtn;
 	void __fastcall ProductListDblClick(TObject *Sender);
 	void __fastcall ProductListKeyPress(TObject *Sender, char &Key);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall ConfirmBtnClick1(TObject *Sender);
     void __fastcall ConfirmBtnClick2(TObject *Sender);
+	void __fastcall PrintBtnClick(TObject *Sender);
 private:	// User declarations
 	Order * order;
     AnsiString m_strKeyInput;
     bool __fastcall ScanningGun(char &Key);
+    void __fastcall PrintSell();
 public:		// User declarations
     __fastcall TOrderInfoForm(TComponent* Owner);
     void __fastcall ShowOrder(Order *order);

@@ -62,6 +62,7 @@ void __fastcall THttpThread::Execute()
 	        }
 
             orderlist->mergeOrderList(newlist, &soundplay);
+            delete newlist;
 	        Synchronize(FreshOrders);
 	    }
         else {

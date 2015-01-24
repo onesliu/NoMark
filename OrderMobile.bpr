@@ -15,7 +15,8 @@
       debug\ordermobile\OrderInfoUnit.obj debug\ordermobile\ScaleInputUnit.obj 
       debug\ordermobile\PwdVerify.obj debug\ordermobile\UrlEncode.obj 
       debug\ordermobile\HttpAccess.obj debug\ordermobile\HttpThread.obj 
-      debug\ordermobile\Balance.obj debug\ordermobile\Scale.obj"/>
+      debug\ordermobile\Balance.obj debug\ordermobile\Scale.obj 
+      debug\ordermobile\GPrinterUnit.obj"/>
     <RESFILES value="OrderMobile.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -97,6 +98,7 @@
       <FILE FILENAME="Scale.cpp" FORMNAME="" UNITNAME="Scale" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Scale.h" FORMNAME="" UNITNAME="Scale.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\DhScalePluNet.lib" FORMNAME="" UNITNAME="DhScalePluNet.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="utility\GPrinterUnit.cpp" FORMNAME="" UNITNAME="GPrinterUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

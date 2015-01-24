@@ -53,10 +53,12 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
         item->Caption = (*itr)->order_createtime;
         item->SubItems->Add((*itr)->productSubject);
         item->SubItems->Add(FormatCurrency((*itr)->getOrderTotal()));
+        item->SubItems->Add(FormatCurrency((*itr)->getOrderRealTotal()));
         item->SubItems->Add(os->getStatus((*itr)->order_status));
         item->SubItems->Add((*itr)->customer_name);
-        item->SubItems->Add((*itr)->shipping_phone);
+        item->SubItems->Add((*itr)->shipping_name);
         item->SubItems->Add((*itr)->shipping_time);
+        item->SubItems->Add((*itr)->shipping_phone);
         item->SubItems->Add((*itr)->shipping_addr);
         item->SubItems->Add("");
         item->Data = *itr;
