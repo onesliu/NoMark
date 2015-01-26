@@ -9,6 +9,7 @@
 #include "MessageBoxes.h"
 #include "MainOrderUnit.h"
 #include "BarcodeUnit.h"
+#include "GPrinterUnit.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -28,7 +29,7 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
 	OrderNo->Caption = order->order_id;
     OrderTime->Caption = order->order_createtime;
     Status->Caption = os->getStatus(order->order_status);
-    Customer->Caption = order->customer_name;
+    Customer->Caption = order->shipping_name;
     Address->Caption = order->shipping_addr;
     Telephone->Caption = order->customer_phone;
     ShippingPhone->Caption = order->shipping_phone;
@@ -45,6 +46,7 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         StoreSelect->Enabled = true;
         ChangeStoreBtn->Enabled = true;
         ProductList->Enabled = true;
+        PrintBtn->Enabled = false;
         break;
     case OrderStatus::ORDER_STATUS_SCALED:
     	ConfirmBtn->Enabled = true;
@@ -53,12 +55,14 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         StoreSelect->Enabled = false;
         ChangeStoreBtn->Enabled = false;
         ProductList->Enabled = false;
+        PrintBtn->Enabled = true;
         break;
     default:
     	ConfirmBtn->Enabled = false;
         StoreSelect->Enabled = false;
         ChangeStoreBtn->Enabled = false;
         ProductList->Enabled = false;
+        PrintBtn->Enabled = true;
     }
 
     ProductList->Items->BeginUpdate();
@@ -74,6 +78,7 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         item->Caption = p->product_name;
         item->SubItems->Add(FormatCurrency(p->price) + "/" + p->unit);
         item->SubItems->Add(AnsiString(p->quantity) + p->perunit);
+        item->SubItems->Add(prefix + p->perweight + p->weightunit);
         item->SubItems->Add(prefix + (p->perweight * p->quantity) + p->weightunit);
         item->SubItems->Add(AnsiString(p->realweight) + p->weightunit);
         item->SubItems->Add(FormatCurrency(p->realtotal));
@@ -91,8 +96,8 @@ void __fastcall TOrderInfoForm::ProductListDblClick(TObject *Sender)
     
 	Product * p = (Product*)ProductList->Selected->Data;
 	ScaleInputForm->ShowScale(p);
-	ProductList->Selected->SubItems->Strings[3] = AnsiString(p->realweight) + p->weightunit;
-	ProductList->Selected->SubItems->Strings[4] = AnsiString(FormatCurrency(p->realtotal));
+	ProductList->Selected->SubItems->Strings[4] = AnsiString(p->realweight) + p->weightunit;
+	ProductList->Selected->SubItems->Strings[5] = AnsiString(FormatCurrency(p->realtotal));
     RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
 }
 //---------------------------------------------------------------------------
@@ -127,8 +132,8 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
                 p->realtotal = RoundTo(p->realweight * p->price, -2);
                 p->realweight = Floor(p->realweight * 500);
                 
-                ProductList->Items->Item[i]->SubItems->Strings[3] = AnsiString(p->realweight) + p->weightunit;
-                ProductList->Items->Item[i]->SubItems->Strings[4] = AnsiString(FormatCurrency(p->realtotal));
+                ProductList->Items->Item[i]->SubItems->Strings[4] = AnsiString(p->realweight) + p->weightunit;
+                ProductList->Items->Item[i]->SubItems->Strings[5] = AnsiString(FormatCurrency(p->realtotal));
                 
                 RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
                 
@@ -181,6 +186,7 @@ void __fastcall TOrderInfoForm::ConfirmBtnClick1(TObject *Sender)
     }
 
     order->commit(order->getScanedOver());
+    PrintSell();
     ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------
@@ -194,6 +200,66 @@ void __fastcall TOrderInfoForm::ConfirmBtnClick2(TObject *Sender)
 
     order->commit(order->getDelivered());
     ModalResult = mrOk;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::PrintSell()
+{
+    IPrinter * printer = new GiChengPrinter();
+
+    if (printer->OpenPrinter() == false) {
+        return;
+    }
+
+    printer->ResetPrinter();
+
+    printer->PrintLogo("菜鸽子");
+    int col[4];
+    col[0] = 11;
+    col[1] = 6;
+    col[2] = 6;
+    col[3] = 6;
+
+    printer->PrintStr("商品品名", col[0]);
+    printer->PrintBin(' ');
+    printer->PrintStr("单价", col[1], IPrinter::ALIGN_RIGHT);
+    printer->PrintBin(' ');
+    printer->PrintStr("数量", col[2], IPrinter::ALIGN_RIGHT);
+    printer->PrintBin(' ');
+    printer->PrintStr("小计", col[3], IPrinter::ALIGN_RIGHT);
+    printer->PrintReturn();
+
+    std::list<Product*>::iterator itr;
+    for(itr = order->products.begin(); itr != order->products.end(); ++itr) {
+    	Product *p = *itr;
+        if (p == NULL) continue;
+        printer->PrintStr(p->product_name, col[0]);
+        printer->PrintBin(' ');
+        printer->PrintStr(FormatCurrency(p->price) + "/" + p->unit, col[1], IPrinter::ALIGN_RIGHT);
+        printer->PrintBin(' ');
+        printer->PrintStr(AnsiString(p->realweight) + p->weightunit, col[2], IPrinter::ALIGN_RIGHT);
+        printer->PrintBin(' ');
+        printer->PrintStr(FormatCurrency(p->realtotal), col[3], IPrinter::ALIGN_RIGHT);
+        printer->PrintReturn();
+    }
+    printer->PrintReturn();
+    printer->PrintItem( "合计金额", FormatCurrency(order->getOrderRealTotal()) );
+    printer->PrintCharLine( '-' );
+    printer->PrintLine("客户：" + Customer->Caption);
+    printer->PrintLine("电话：" + ShippingPhone->Caption);
+    printer->PrintLine("地址：" + Address->Caption);
+    printer->PrintTail("成都青悠悠电子商务有限公司");
+
+    //printer->KickOut();
+end:
+    printer->ClosePrinter();
+    delete printer;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::PrintBtnClick(TObject *Sender)
+{
+ 	PrintSell();
 }
 //---------------------------------------------------------------------------
 

@@ -11,8 +11,6 @@
 
 #pragma package(smart_init)
 
-const int linewidth = 32;
-
 bool IPrinter::OpenPrinter()
 {
     if ( gp >= 0 ) return true;
@@ -36,7 +34,18 @@ void IPrinter::PrintBin( char c )
 void IPrinter::PrintLine( AnsiString str )
 {
     if ( gp < 0 ) return;
-    FileWrite( gp, str.c_str(), str.Length() );
+
+    unsigned char * p = str.c_str();
+    int j = 0;
+    for (int i = 0; i < str.Length(); j++) {
+    	if (j > 0 && j%linewidth == 0)
+        	PrintReturn();
+        j = j%linewidth;
+    	if ((p[i] > 0x80) && ((j+1)%linewidth == 0))
+            continue;
+        PrintBin(p[i]);
+        i++;
+    }
     PrintReturn();
 }
 
@@ -131,15 +140,23 @@ void IPrinter::PrintItem( AnsiString name, AnsiString value )
     PrintLine( name + black + value );
 }
 
-void IPrinter::PrintLogo()
+void IPrinter::PrintLogo(AnsiString sPrintLogo)
 {
-    PrintLine( sPrintLogo );
+	if (sPrintLogo.Length() > linewidth)
+    	PrintLine( sPrintLogo );
+    else {
+		int black = (linewidth-sPrintLogo.Length())/2;
+    	for(int i = 0; i < black; i++)
+    		PrintBin(' ');
+        PrintStr(sPrintLogo);
+        PrintReturn();
+    }
 
     PrintCharLine( '-' );
     PrintReturn();
 }
 
-void IPrinter::PrintTail()
+void IPrinter::PrintTail(AnsiString sPrintTail)
 {
     PrintCharLine( '-' );
     PrintLine( sPrintTail );

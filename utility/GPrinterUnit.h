@@ -7,7 +7,7 @@ class IPrinter {
 public:
     enum { ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT };
 
-    IPrinter() : gp(-1) {}
+    IPrinter() : gp(-1), linewidth(32) {}
 
     virtual bool OpenPrinter();
     virtual void ClosePrinter();
@@ -24,8 +24,8 @@ public:
     virtual void SetAlign(int align);
     virtual void SetColumn(int col[], int num);
 
-	virtual void PrintLogo();
-	virtual void PrintTail();
+	virtual void PrintLogo(AnsiString sPrintLogo);
+	virtual void PrintTail(AnsiString sPrintTail);
     virtual void KickOut();
 
 	virtual void SetBigWord() {}
@@ -33,6 +33,7 @@ public:
 
 protected:
 	int gp;
+    int linewidth;
 };
 
 class GPrinter : public IPrinter {

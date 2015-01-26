@@ -20,31 +20,39 @@ object OrderFrame: TOrderFrame
     Columns = <
       item
         Caption = #19979#21333#26102#38388
-        Width = 170
+        Width = 150
       end
       item
         Caption = #19979#21333#21830#21697
         Width = 200
       end
       item
-        Caption = #24635#20215'/'#39044#20272#24635#20215
-        Width = 100
+        Caption = #20272#20215
+        Width = 60
+      end
+      item
+        Caption = #24635#20215
+        Width = 60
       end
       item
         Caption = #29366#24577
-        Width = 90
+        Width = 60
       end
       item
-        Caption = #23458#25143#22995#21517
-        Width = 100
+        Caption = #19979#21333#23458#25143
+        Width = 80
       end
       item
-        Caption = #25910#36135#30005#35805
-        Width = 120
+        Caption = #25910#36135#20154
+        Width = 80
       end
       item
         Caption = #37197#36865#26102#38388
-        Width = 170
+        Width = 150
+      end
+      item
+        Caption = #25910#36135#30005#35805
+        Width = 100
       end
       item
         Caption = #37197#36865#22320#22336
