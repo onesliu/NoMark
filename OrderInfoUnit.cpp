@@ -103,7 +103,9 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
 {
     if ( Key != 0x0D )
     {
-        m_strKeyInput += Key;
+        AnsiString str;
+        str.printf("%c", Key);
+        m_strKeyInput += str;
     }
     else
     {
@@ -116,7 +118,9 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
             if ( barcode_ean.parseCode(p->ean) == false ) return false;
             
             if ( barcode_scan.code != barcode_ean.code )
+            {
                 continue;
+            }
             else
             {
                 p->realweight = barcode_scan.weight * 2;
@@ -127,6 +131,10 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
                 ProductList->Items->Item[i]->SubItems->Strings[4] = AnsiString(FormatCurrency(p->realtotal));
                 
                 RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
+                
+                m_strKeyInput = "";
+                
+                break;
             }
         }
 
@@ -145,7 +153,7 @@ void __fastcall TOrderInfoForm::ProductListKeyPress(TObject *Sender,
     }
     else
     {
-        if ( (Key >= '0') && (Key <= '9') || (Key == 0x0D) )
+        if ( ((Key >= '0') && (Key <= '9')) || (Key == 0x0D) )
         {
             ScanningGun(Key);
         }
