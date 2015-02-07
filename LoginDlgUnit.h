@@ -33,7 +33,7 @@ __published:
     void __fastcall SpeedButton1Click(TObject *Sender);
 private:
 public:
-    void __fastcall ReadConfig();
+    bool __fastcall ReadConfig();
     void __fastcall SaveConfig();
 	virtual __fastcall TLoginDlg(TComponent* AOwner);
     AnsiString __fastcall GetUsername();

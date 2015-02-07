@@ -37,36 +37,41 @@ extern SoundPlay soundplay;
 
 void __fastcall THttpThread::Execute()
 {
+	AnsiString sorder;
+    const int TIMEOUT = 20;
+
 	while(Terminated == false) {
 		st1 = "订单更新中...";
+        st2 = "";
         Synchronize(FreshStatus);
     	st1 = st2 = "";
 
 	    if ( m_bLogin == false ) {
 	    	if (Login() == false) {
             	st1 = "登录失败";
-                st2 = "停止数据线程，等待自动重新登录";
-            	Synchronize(FreshStatus);
-	        	return;
+                st2 = "等待自动重新登录";
+	        	goto wait;
             }
 	    }
 	
-	    AnsiString sorder = GetOrders();
+	    sorder = GetOrders();
 	    if (sorder != "") {
         	OrderList * newlist = OrderList::ParseOrders(sorder);
             if (newlist == NULL) {
 	        	m_bLogin = false;
-                st1 = "解析订单数据出错，停止数据线程，等待自动重新登录";
-                Synchronize(FreshStatus);
-	            return;
+                st1 = "解析订单数据出错";
+                st2 = "等待自动重新登录";
 	        }
-
-            orderlist->mergeOrderList(newlist, &soundplay);
-            delete newlist;
-	        Synchronize(FreshOrders);
+            else {
+	            orderlist->mergeOrderList(newlist, &soundplay);
+    	        delete newlist;
+	    	    Synchronize(FreshOrders);
+            }
 	    }
         else {
+        	m_bLogin = false;
         	st1 = "读取远程订单失败";
+            st2 = "等待自动重新登录";
         }
 
         /* Get product info
@@ -81,13 +86,14 @@ void __fastcall THttpThread::Execute()
         else {
             st2 = "读取远程产品价格失败";
         }   */
-
+wait:
         Synchronize(FreshStatus);
 
-        for(int i = 0; i < 60; i++) {
+        for(int i = 0; i < TIMEOUT; i++) {
         	if (Terminated == true) break;
-            if (st1 == "" && st2 == "") {
+            if (st1 == "" && st2 == "" || st1 == "状态正常") {
             	st1 = "状态正常";
+                st2 = "倒计时秒数：" + AnsiString(TIMEOUT - i);
                 Synchronize(FreshStatus);
             }
 	        Sleep(1000);

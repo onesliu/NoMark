@@ -13,6 +13,7 @@ object OrderInfoForm: TOrderInfoForm
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnKeyPress = ProductListKeyPress
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
@@ -256,6 +257,10 @@ object OrderInfoForm: TOrderInfoForm
       end
       item
         Caption = #39044#20272#24635#37325
+        Width = 80
+      end
+      item
+        Caption = #39044#20272#24635#20215
         Width = 80
       end
       item

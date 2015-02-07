@@ -120,12 +120,13 @@ void __fastcall TMainOrderForm::FormDestroy(TObject *Sender)
 
 void __fastcall TMainOrderForm::FormShow(TObject *Sender)
 {
-    if (LoginDlg->ShowModal() != mrOk)
-    	Close();
-    else {
-        PageControl1->ActivePageIndex = 0;
-    	httpThread->Resume();
+	if (LoginDlg->ReadConfig() == false) {
+	    if (LoginDlg->ShowModal() != mrOk)
+    		Close();
     }
+
+    PageControl1->ActivePageIndex = 0;
+  	httpThread->Resume();
 }
 //---------------------------------------------------------------------------
 

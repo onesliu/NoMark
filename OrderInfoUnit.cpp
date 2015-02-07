@@ -80,6 +80,7 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         item->SubItems->Add(AnsiString(p->quantity) + p->perunit);
         item->SubItems->Add(prefix + p->perweight + p->weightunit);
         item->SubItems->Add(prefix + (p->perweight * p->quantity) + p->weightunit);
+        item->SubItems->Add(FormatCurrency(p->total));
         item->SubItems->Add(AnsiString(p->realweight) + p->weightunit);
         item->SubItems->Add(FormatCurrency(p->realtotal));
         item->Data = p;
@@ -96,8 +97,8 @@ void __fastcall TOrderInfoForm::ProductListDblClick(TObject *Sender)
     
 	Product * p = (Product*)ProductList->Selected->Data;
 	ScaleInputForm->ShowScale(p);
-	ProductList->Selected->SubItems->Strings[4] = AnsiString(p->realweight) + p->weightunit;
-	ProductList->Selected->SubItems->Strings[5] = AnsiString(FormatCurrency(p->realtotal));
+	ProductList->Selected->SubItems->Strings[5] = AnsiString(p->realweight) + p->weightunit;
+	ProductList->Selected->SubItems->Strings[6] = AnsiString(FormatCurrency(p->realtotal));
     RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
 }
 //---------------------------------------------------------------------------
@@ -132,12 +133,14 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
                 p->realtotal = RoundTo(p->realweight * p->price, -2);
                 p->realweight = Floor(p->realweight * 500);
                 
-                ProductList->Items->Item[i]->SubItems->Strings[4] = AnsiString(p->realweight) + p->weightunit;
-                ProductList->Items->Item[i]->SubItems->Strings[5] = AnsiString(FormatCurrency(p->realtotal));
+                ProductList->Items->Item[i]->SubItems->Strings[5] = AnsiString(p->realweight) + p->weightunit;
+                ProductList->Items->Item[i]->SubItems->Strings[6] = AnsiString(FormatCurrency(p->realtotal));
                 
                 RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
                 
                 m_strKeyInput = "";
+
+                p->finishScan();
                 
                 break;
             }

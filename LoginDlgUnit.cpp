@@ -22,26 +22,24 @@ __fastcall TLoginDlg::TLoginDlg(TComponent* AOwner)
 }
 //---------------------------------------------------------------------
 
-void __fastcall TLoginDlg::ReadConfig()
+bool __fastcall TLoginDlg::ReadConfig()
 {
     ini_dom_handle dom = get_dom(0);
     Janitor g_fp( free_dom, dom );
 
     if (FileExists(INIFILE) == false) {
-        return;
+        return false;
     }
 
     if (load_from(dom, INIFILE) != 0) {
-        ShowError(Handle, "读取配置文件出错");
-        return;
+        return false;
     }
 
     char val[256];
     memset(val, 0, sizeof(val));
     int len = get_value(dom, "Login", "UserName", val);
     if (len == -1) {
-        ShowError(Handle, "读取配置文件出错");
-        return;
+        return false;
     }
     User->Text = val;
     MainOrderForm->httpThread->user = val;
@@ -49,8 +47,7 @@ void __fastcall TLoginDlg::ReadConfig()
     memset(val, 0, sizeof(val));
     len = get_value(dom, "Login", "Password", val);
     if (len == -1) {
-        ShowError(Handle, "读取配置文件出错");
-        return;
+        return false;
     }
     Password->Text = val;
     MainOrderForm->httpThread->password = val;
@@ -58,11 +55,12 @@ void __fastcall TLoginDlg::ReadConfig()
     memset(val, 0, sizeof(val));
     len = get_value(dom, "Login", "Server", val);
     if (len == -1) {
-        ShowError(Handle, "读取配置文件出错");
-        return;
+        return false;
     }
     ServerDomain->Text = val;
     MainOrderForm->httpThread->server = val;
+
+    return true;
 }
 //---------------------------------------------------------------------
 
