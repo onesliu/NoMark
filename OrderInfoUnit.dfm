@@ -4,7 +4,7 @@ object OrderInfoForm: TOrderInfoForm
   BorderStyle = bsDialog
   Caption = #35746#21333#26126#32454
   ClientHeight = 539
-  ClientWidth = 728
+  ClientWidth = 840
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

@@ -132,12 +132,21 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
     else
     {
         IBarcode barcode_scan, barcode_ean;
+
         for ( int i=0; i<ProductList->Items->Count; i++ )
         {
             Product *p = (Product*)ProductList->Items->Item[i]->Data;
             
-            if ( barcode_scan.parseCode(m_strKeyInput) == false ) return false;
-            if ( barcode_ean.parseCode(p->ean) == false ) return false;
+            if ( barcode_scan.parseCode(m_strKeyInput) == false )
+            {
+                m_strKeyInput = "";
+                return false;
+            }
+            if ( barcode_ean.parseCode(p->ean) == false )
+            {
+                m_strKeyInput = "";
+                return false;
+            }
             
             if ( barcode_scan.code != barcode_ean.code )
             {
@@ -153,18 +162,16 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
                 ProductList->Items->Item[i]->SubItems->Strings[6] = AnsiString(FormatCurrency(p->realtotal));
                 
                 RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
-                
-                m_strKeyInput = "";
 
                 p->finishScan();
-                
+
                 break;
             }
         }
-
+        
         m_strKeyInput = "";
     }
-
+    
     return true;
 }
 
@@ -301,4 +308,5 @@ void __fastcall TOrderInfoForm::CancelOrderClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
 
