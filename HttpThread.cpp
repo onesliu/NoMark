@@ -270,7 +270,7 @@ AnsiString __fastcall THttpThread::SetBalance()
 }
 //---------------------------------------------------------------------------
 
-bool __fastcall THttpThread::CommitOrder(Order *order, int order_status)
+bool __fastcall THttpThread::CommitOrder(Order *order, int order_status, int iscash)
 {
 	AnsiString url;
     url.printf(URL_ORDER_COMMIT, server.c_str());
@@ -283,6 +283,7 @@ bool __fastcall THttpThread::CommitOrder(Order *order, int order_status)
 
     jo["order_id"] = order->order_id;
     jo["order_status"] = order_status;
+    jo["iscash"] = iscash;
 	jo["total"] = order->getOrderTotal();
     jo["realtotal"] = order->getOrderRealTotal();
     jo["order_type"] = order->order_type;
@@ -338,6 +339,39 @@ AnsiString __fastcall THttpThread::GetProductInfo(bool all)
     	m_bLogin = false;
     }
     return ret;
+}
+//---------------------------------------------------------------------------
+
+bool __fastcall THttpThread::CancelOrder(Order * order)
+{
+	if (order == 0) return false;
+	if (ShowYesNo("要取消该订单吗？") == false)
+    	return false;
+
+    if ( CommitOrder(order, OrderStatus::ORDER_STATUS_CANCEL) == false) {
+    	ShowError("提交到服务器失败");
+        return false;
+    }
+
+    order->commit(OrderStatus::ORDER_STATUS_CANCEL);
+    return true;
+}
+//---------------------------------------------------------------------------
+
+bool __fastcall THttpThread::CashPay(Order * order)
+{
+	if (order == 0) return false;
+	if (ShowYesNo("要改为货到付款吗？") == false)
+    	return false;
+
+    if ( CommitOrder(order, OrderStatus::ORDER_STATUS_SCALED, 1) == false) {
+    	ShowError("提交到服务器失败");
+        return false;
+    }
+
+    order->iscash = 1;
+    order->commit(OrderStatus::ORDER_STATUS_SCALED);
+    return true;
 }
 //---------------------------------------------------------------------------
 

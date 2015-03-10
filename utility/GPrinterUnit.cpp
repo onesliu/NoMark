@@ -37,12 +37,21 @@ void IPrinter::PrintLine( AnsiString str )
 
     unsigned char * p = str.c_str();
     int j = 0;
+    int firstchar = 0;
     for (int i = 0; i < str.Length(); j++) {
+    	if (firstchar > 0) {
+        	firstchar = 0;   //当前字符为汉字第二个字符
+        }
+        else {
+	    	if (p[i] > 0x80)
+    	    	firstchar = 1;   //当前字符为汉字第一个字符
+        }
+
     	if (j > 0 && j%linewidth == 0)
         	PrintReturn();
         j = j%linewidth;
-    	if ((p[i] > 0x80) && ((j+1)%linewidth == 0))
-            continue;
+    	if ((firstchar > 0) && ((j+1)%linewidth == 0))
+            continue;         //边界最后一个字符为汉字第一个字符，不打印，先换行
         PrintBin(p[i]);
         i++;
     }

@@ -46,12 +46,16 @@ __published:	// IDE-managed Components
 	TLabel *Label12;
 	TLabel *Comment;
 	TButton *PrintBtn;
+	TButton *CancelOrder;
+	TButton *CashPay;
 	void __fastcall ProductListDblClick(TObject *Sender);
 	void __fastcall ProductListKeyPress(TObject *Sender, char &Key);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall ConfirmBtnClick1(TObject *Sender);
     void __fastcall ConfirmBtnClick2(TObject *Sender);
 	void __fastcall PrintBtnClick(TObject *Sender);
+	void __fastcall CashPayClick(TObject *Sender);
+	void __fastcall CancelOrderClick(TObject *Sender);
 private:	// User declarations
 	Order * order;
     AnsiString m_strKeyInput;

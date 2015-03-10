@@ -47,7 +47,18 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         ChangeStoreBtn->Enabled = true;
         ProductList->Enabled = true;
         PrintBtn->Enabled = false;
+        CancelOrder->Enabled = true;
+        CashPay->Enabled = false;
         break;
+    case OrderStatus::ORDER_STATUS_PAYING:
+    	ConfirmBtn->Enabled = false;
+        StoreSelect->Enabled = false;
+        ChangeStoreBtn->Enabled = false;
+        ProductList->Enabled = false;
+        PrintBtn->Enabled = true;
+        CancelOrder->Enabled = true;
+        CashPay->Enabled = true;
+    	break;
     case OrderStatus::ORDER_STATUS_SCALED:
     	ConfirmBtn->Enabled = true;
         ConfirmBtn->Caption = "ÅäËÍÍê³É";
@@ -56,6 +67,9 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         ChangeStoreBtn->Enabled = false;
         ProductList->Enabled = false;
         PrintBtn->Enabled = true;
+        if (order->iscash > 0)
+	        CancelOrder->Enabled = true;
+        CashPay->Enabled = false;
         break;
     default:
     	ConfirmBtn->Enabled = false;
@@ -63,6 +77,8 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         ChangeStoreBtn->Enabled = false;
         ProductList->Enabled = false;
         PrintBtn->Enabled = true;
+        CancelOrder->Enabled = false;
+        CashPay->Enabled = false;
     }
 
     ProductList->Items->BeginUpdate();
@@ -263,6 +279,26 @@ end:
 void __fastcall TOrderInfoForm::PrintBtnClick(TObject *Sender)
 {
  	PrintSell();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::CashPayClick(TObject *Sender)
+{
+    if (order == 0) return;
+
+    if (MainOrderForm->httpThread->CashPay(order) == true) {
+        ModalResult = mrOk;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::CancelOrderClick(TObject *Sender)
+{
+    if (order == 0) return;
+
+    if (MainOrderForm->httpThread->CancelOrder(order) == true) {
+        ModalResult = mrOk;
+    }
 }
 //---------------------------------------------------------------------------
 

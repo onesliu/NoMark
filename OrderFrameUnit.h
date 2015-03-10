@@ -19,10 +19,13 @@ __published:	// IDE-managed Components
 	TPopupMenu *PopupMenu1;
 	TMenuItem *CancelOrder;
 	TMenuItem *RefundOrder;
+	TMenuItem *N1;
+	TMenuItem *CashPay;
 	void __fastcall OrderListViewDblClick(TObject *Sender);
 	void __fastcall OrderListViewKeyPress(TObject *Sender, char &Key);
 	void __fastcall PopupMenu1Popup(TObject *Sender);
 	void __fastcall CancelOrderClick(TObject *Sender);
+	void __fastcall CashPayClick(TObject *Sender);
 private:	// User declarations
 	OrderList * olist;
     int ostatus;

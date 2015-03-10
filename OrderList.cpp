@@ -51,6 +51,7 @@ OrderList * OrderList::ParseOrders(AnsiString str_order)
         pOrder->shipping_addr = UTF8toGBK(order[i]["shipping_addr"].asCString());
         pOrder->shipping_time = UTF8toGBK(order[i]["shipping_time"].asCString());
         pOrder->comment = UTF8toGBK(order[i]["comment"].asCString());
+        pOrder->iscash = UTF8toGBK(order[i]["iscash"].asCString()).ToInt();
         pOrder->order_status_orign = pOrder->order_status;
 
         productSubject = "";

@@ -36,7 +36,7 @@ object OrderFrame: TOrderFrame
       end
       item
         Caption = #29366#24577
-        Width = 60
+        Width = 100
       end
       item
         Caption = #19979#21333#23458#25143
@@ -72,6 +72,13 @@ object OrderFrame: TOrderFrame
     OnPopup = PopupMenu1Popup
     Left = 208
     Top = 56
+    object CashPay: TMenuItem
+      Caption = #36135#21040#20184#27454
+      OnClick = CashPayClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
     object CancelOrder: TMenuItem
       Caption = #21462#28040#35746#21333
       OnClick = CancelOrderClick

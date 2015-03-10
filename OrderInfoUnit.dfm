@@ -283,7 +283,7 @@ object OrderInfoForm: TOrderInfoForm
   object ConfirmBtn: TButton
     Left = 280
     Top = 448
-    Width = 193
+    Width = 113
     Height = 65
     Caption = #37197#36865#23436#25104#30830#35748
     TabOrder = 2
@@ -306,12 +306,30 @@ object OrderInfoForm: TOrderInfoForm
     TabOrder = 4
   end
   object PrintBtn: TButton
-    Left = 496
+    Left = 504
     Top = 448
     Width = 89
     Height = 65
     Caption = #25171#21360#23567#31080
     TabOrder = 5
     OnClick = PrintBtnClick
+  end
+  object CancelOrder: TButton
+    Left = 408
+    Top = 488
+    Width = 89
+    Height = 25
+    Caption = #21462#28040#35746#21333
+    TabOrder = 6
+    OnClick = CancelOrderClick
+  end
+  object CashPay: TButton
+    Left = 408
+    Top = 448
+    Width = 89
+    Height = 25
+    Caption = #36135#21040#20184#27454
+    TabOrder = 7
+    OnClick = CashPayClick
   end
 end

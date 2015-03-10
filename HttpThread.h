@@ -32,7 +32,9 @@ public:
     AnsiString __fastcall SetBalance();
     AnsiString __fastcall GetProductInfo(bool all = false);
     bool       __fastcall ParseProductInfo(AnsiString str);
-    bool __fastcall CommitOrder(Order *order, int order_status);
+    bool __fastcall CommitOrder(Order *order, int order_status, int iscash = 0);
+    bool __fastcall CancelOrder(Order * order);
+    bool __fastcall CashPay(Order * order);
 
     AnsiString user;
     AnsiString password;

@@ -54,7 +54,9 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
         item->SubItems->Add((*itr)->productSubject);
         item->SubItems->Add(FormatCurrency((*itr)->getOrderTotal()));
         item->SubItems->Add(FormatCurrency((*itr)->getOrderRealTotal()));
-        item->SubItems->Add(os->getStatus((*itr)->order_status));
+        AnsiString cashpay = "";
+        if ((*itr)->iscash > 0) cashpay = "（到付）";
+        item->SubItems->Add(os->getStatus((*itr)->order_status) + cashpay);
         item->SubItems->Add((*itr)->customer_name);
         item->SubItems->Add((*itr)->shipping_name);
         item->SubItems->Add((*itr)->shipping_time);
@@ -96,6 +98,7 @@ void __fastcall TOrderFrame::PopupMenu1Popup(TObject *Sender)
     if (OrderListView->Selected == NULL ) {
     	CancelOrder->Enabled = false;
         RefundOrder->Enabled = false;
+        CashPay->Enabled = false;
         return;
     }
 
@@ -103,36 +106,47 @@ void __fastcall TOrderFrame::PopupMenu1Popup(TObject *Sender)
     if (order == NULL) {
     	CancelOrder->Enabled = false;
         RefundOrder->Enabled = false;
+        CashPay->Enabled = false;
     }
 	else if (order->order_status_orign <= OrderStatus::ORDER_STATUS_PAYING) {
     	CancelOrder->Enabled = true;
         RefundOrder->Enabled = false;
+        CashPay->Enabled = true;
     }
     else if (order->order_status_orign > OrderStatus::ORDER_STATUS_PAYING && order->order_status_orign < OrderStatus::ORDER_STATUS_REFUND) {
-    	CancelOrder->Enabled = false;
-        RefundOrder->Enabled = true;
+    	if (order->iscash > 0) {
+        	CancelOrder->Enabled = true;
+	        RefundOrder->Enabled = false;
+        }
+        else {
+	    	CancelOrder->Enabled = false;
+    	    RefundOrder->Enabled = true;
+        }
+        CashPay->Enabled = false;
     }
     else {
     	CancelOrder->Enabled = false;
         RefundOrder->Enabled = false;
+        CashPay->Enabled = false;
     }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TOrderFrame::CancelOrderClick(TObject *Sender)
 {
-	if (ShowYesNo("要取消该订单吗？") == false)
-    	return;
-
     Order * order = (Order*)OrderListView->Selected->Data;
 
-    if ( MainOrderForm->httpThread->CommitOrder(order, OrderStatus::ORDER_STATUS_CANCEL) == false) {
-    	ShowError("提交到服务器失败");
-        return;
-    }
+    if (MainOrderForm->httpThread->CancelOrder(order) == true)
+	    FreshOrderList(olist, ostatus);
+}
+//---------------------------------------------------------------------------
 
-    order->commit(OrderStatus::ORDER_STATUS_CANCEL);
-    FreshOrderList(olist, ostatus);
+void __fastcall TOrderFrame::CashPayClick(TObject *Sender)
+{
+    Order * order = (Order*)OrderListView->Selected->Data;
+
+    if (MainOrderForm->httpThread->CashPay(order) == true)
+	    FreshOrderList(olist, ostatus);
 }
 //---------------------------------------------------------------------------
 
