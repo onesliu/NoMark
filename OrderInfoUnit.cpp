@@ -24,9 +24,9 @@ __fastcall TOrderInfoForm::TOrderInfoForm(TComponent* Owner)
 
 void __fastcall TOrderInfoForm::ShowOrder(Order *order)
 {
-	this->order = order;
-	OrderStatus * os = OrderStatus::getInstance();
-	OrderNo->Caption = order->order_id;
+    this->order = order;
+    OrderStatus * os = OrderStatus::getInstance();
+    OrderNo->Caption = order->order_id;
     OrderTime->Caption = order->order_createtime;
     Status->Caption = os->getStatus(order->order_status);
     Customer->Caption = order->shipping_name;
@@ -40,8 +40,8 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
 
     switch(order->order_status) {
     case OrderStatus::ORDER_STATUS_WAITING:
-    	ConfirmBtn->Enabled = true;
-    	ConfirmBtn->Caption = "称重完成";
+        ConfirmBtn->Enabled = true;
+        ConfirmBtn->Caption = "称重完成";
         ConfirmBtn->OnClick = ConfirmBtnClick1;
         StoreSelect->Enabled = true;
         ChangeStoreBtn->Enabled = true;
@@ -51,16 +51,16 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         CashPay->Enabled = false;
         break;
     case OrderStatus::ORDER_STATUS_PAYING:
-    	ConfirmBtn->Enabled = false;
+        ConfirmBtn->Enabled = false;
         StoreSelect->Enabled = false;
         ChangeStoreBtn->Enabled = false;
         ProductList->Enabled = false;
         PrintBtn->Enabled = true;
         CancelOrder->Enabled = true;
         CashPay->Enabled = true;
-    	break;
+        break;
     case OrderStatus::ORDER_STATUS_SCALED:
-    	ConfirmBtn->Enabled = true;
+        ConfirmBtn->Enabled = true;
         ConfirmBtn->Caption = "配送完成";
         ConfirmBtn->OnClick = ConfirmBtnClick2;
         StoreSelect->Enabled = false;
@@ -68,11 +68,11 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         ProductList->Enabled = false;
         PrintBtn->Enabled = true;
         if (order->iscash > 0)
-	        CancelOrder->Enabled = true;
+            CancelOrder->Enabled = true;
         CashPay->Enabled = false;
         break;
     default:
-    	ConfirmBtn->Enabled = false;
+        ConfirmBtn->Enabled = false;
         StoreSelect->Enabled = false;
         ChangeStoreBtn->Enabled = false;
         ProductList->Enabled = false;
@@ -85,11 +85,11 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
     ProductList->Items->Clear();
     std::list<Product*>::iterator itr;
     for(itr = order->products.begin(); itr != order->products.end(); ++itr) {
-    	Product *p = *itr;
+        Product *p = *itr;
         if (p == NULL) continue;
         AnsiString prefix = "";
         if (p->product_type > 0)
-        	prefix = "约";
+            prefix = "约";
         TListItem * item = ProductList->Items->Add();
         item->Caption = p->product_name;
         item->SubItems->Add(FormatCurrency(p->price) + "/" + p->unit);
@@ -110,11 +110,11 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
 void __fastcall TOrderInfoForm::ProductListDblClick(TObject *Sender)
 {
     if ( ProductList->Selected == NULL ) return;
-    
-	Product * p = (Product*)ProductList->Selected->Data;
-	ScaleInputForm->ShowScale(p);
-	ProductList->Selected->SubItems->Strings[5] = AnsiString(p->realweight) + p->weightunit;
-	ProductList->Selected->SubItems->Strings[6] = AnsiString(FormatCurrency(p->realtotal));
+
+    Product * p = (Product*)ProductList->Selected->Data;
+    ScaleInputForm->ShowScale(p);
+    ProductList->Selected->SubItems->Strings[5] = AnsiString(p->realweight) + p->weightunit;
+    ProductList->Selected->SubItems->Strings[6] = AnsiString(FormatCurrency(p->realtotal));
     RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
 }
 //---------------------------------------------------------------------------
@@ -136,18 +136,18 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
         for ( int i=0; i<ProductList->Items->Count; i++ )
         {
             Product *p = (Product*)ProductList->Items->Item[i]->Data;
-            
+
             if ( barcode_scan.parseCode(m_strKeyInput) == false )
             {
                 m_strKeyInput = "";
-                return false;
+                continue;
             }
             if ( barcode_ean.parseCode(p->ean) == false )
             {
                 m_strKeyInput = "";
-                return false;
+                continue;
             }
-            
+
             if ( barcode_scan.code != barcode_ean.code )
             {
                 continue;
@@ -157,10 +157,10 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
                 p->realweight = barcode_scan.weight * 2;
                 p->realtotal = RoundTo(p->realweight * p->price, -2);
                 p->realweight = Floor(p->realweight * 500);
-                
+
                 ProductList->Items->Item[i]->SubItems->Strings[5] = AnsiString(p->realweight) + p->weightunit;
                 ProductList->Items->Item[i]->SubItems->Strings[6] = AnsiString(FormatCurrency(p->realtotal));
-                
+
                 RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
 
                 p->finishScan();
@@ -168,10 +168,10 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
                 break;
             }
         }
-        
+
         m_strKeyInput = "";
     }
-    
+
     return true;
 }
 
@@ -179,7 +179,7 @@ void __fastcall TOrderInfoForm::ProductListKeyPress(TObject *Sender,
       char &Key)
 {
     if ( (Key == 0x0D) && ( m_strKeyInput == "") )
-    {  
+    {
         ProductListDblClick(Sender);
     }
     else
@@ -194,20 +194,20 @@ void __fastcall TOrderInfoForm::ProductListKeyPress(TObject *Sender,
 
 void __fastcall TOrderInfoForm::FormShow(TObject *Sender)
 {
-	if (order->order_status == OrderStatus::ORDER_STATUS_WAITING)
-		ProductList->SetFocus();
+    if (order->order_status == OrderStatus::ORDER_STATUS_WAITING)
+        ProductList->SetFocus();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TOrderInfoForm::ConfirmBtnClick1(TObject *Sender)
 {
-	if (order->hasScanedOver() == false) {
-    	ShowError("还有商品没称重");
+    if (order->hasScanedOver() == false) {
+        ShowError("还有商品没称重");
         return;
     }
 
     if ( MainOrderForm->httpThread->CommitOrder(order, order->getScanedOver()) == false) {
-    	ShowError("提交到服务器失败");
+        ShowError("提交到服务器失败");
         return;
     }
 
@@ -216,11 +216,11 @@ void __fastcall TOrderInfoForm::ConfirmBtnClick1(TObject *Sender)
     ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------
-   
+
 void __fastcall TOrderInfoForm::ConfirmBtnClick2(TObject *Sender)
 {
     if ( MainOrderForm->httpThread->CommitOrder(order, order->getDelivered()) == false) {
-    	ShowError("提交到服务器失败");
+        ShowError("提交到服务器失败");
         return;
     }
 
@@ -257,7 +257,7 @@ void __fastcall TOrderInfoForm::PrintSell()
 
     std::list<Product*>::iterator itr;
     for(itr = order->products.begin(); itr != order->products.end(); ++itr) {
-    	Product *p = *itr;
+        Product *p = *itr;
         if (p == NULL) continue;
         printer->PrintStr(p->product_name, col[0]);
         printer->PrintBin(' ');
@@ -285,7 +285,7 @@ end:
 
 void __fastcall TOrderInfoForm::PrintBtnClick(TObject *Sender)
 {
- 	PrintSell();
+    PrintSell();
 }
 //---------------------------------------------------------------------------
 
@@ -308,5 +308,6 @@ void __fastcall TOrderInfoForm::CancelOrderClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
 
 
