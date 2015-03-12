@@ -16,13 +16,14 @@
       debug\ordermobile\PwdVerify.obj debug\ordermobile\UrlEncode.obj 
       debug\ordermobile\HttpAccess.obj debug\ordermobile\HttpThread.obj 
       debug\ordermobile\Balance.obj debug\ordermobile\Scale.obj 
-      debug\ordermobile\GPrinterUnit.obj"/>
+      debug\ordermobile\GPrinterUnit.obj debug\ordermobile\CashInputUnit.obj"/>
     <RESFILES value="OrderMobile.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) MainOrderUnit.dfm OrderFrameUnit.dfm LoginDlgUnit.dfm 
-      CheckoutUnit.dfm OrderInfoUnit.dfm ScaleInputUnit.dfm PwdVerify.dfm"/>
+      CheckoutUnit.dfm OrderInfoUnit.dfm ScaleInputUnit.dfm PwdVerify.dfm 
+      CashInputUnit.dfm"/>
     <LIBFILES value="lib\IniFile.lib lib\DhScalePluNet.lib"/>
     <LIBRARIES value="indy.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib indy.lib"/>
@@ -99,6 +100,7 @@
       <FILE FILENAME="Scale.h" FORMNAME="" UNITNAME="Scale.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\DhScalePluNet.lib" FORMNAME="" UNITNAME="DhScalePluNet.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="utility\GPrinterUnit.cpp" FORMNAME="" UNITNAME="GPrinterUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="CashInputUnit.cpp" FORMNAME="CashInputForm" UNITNAME="CashInputUnit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

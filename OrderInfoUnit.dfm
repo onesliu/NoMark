@@ -4,7 +4,7 @@ object OrderInfoForm: TOrderInfoForm
   BorderStyle = bsDialog
   Caption = #35746#21333#26126#32454
   ClientHeight = 539
-  ClientWidth = 840
+  ClientWidth = 731
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -298,18 +298,18 @@ object OrderInfoForm: TOrderInfoForm
   end
   object Cancel: TButton
     Left = 608
-    Top = 448
+    Top = 488
     Width = 89
-    Height = 65
+    Height = 25
     Caption = #20851#38381
     ModalResult = 2
     TabOrder = 4
   end
   object PrintBtn: TButton
     Left = 504
-    Top = 448
+    Top = 488
     Width = 89
-    Height = 65
+    Height = 25
     Caption = #25171#21360#23567#31080
     TabOrder = 5
     OnClick = PrintBtnClick
@@ -331,5 +331,23 @@ object OrderInfoForm: TOrderInfoForm
     Caption = #36135#21040#20184#27454
     TabOrder = 7
     OnClick = CashPayClick
+  end
+  object CostPayBtn: TButton
+    Left = 504
+    Top = 448
+    Width = 89
+    Height = 25
+    Caption = #37319#36141#25903#20986
+    TabOrder = 8
+    OnClick = CostPayBtnClick
+  end
+  object CashPayBtn: TButton
+    Left = 608
+    Top = 448
+    Width = 89
+    Height = 25
+    Caption = #21040#20184#37329#39069
+    TabOrder = 9
+    OnClick = CashPayBtnClick
   end
 end

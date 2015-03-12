@@ -1,0 +1,49 @@
+object CashInputForm: TCashInputForm
+  Left = 408
+  Top = 340
+  BorderStyle = bsDialog
+  Caption = #35831#36755#20837#37329#39069
+  ClientHeight = 154
+  ClientWidth = 313
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = #26032#23435#20307
+  Font.Style = []
+  OldCreateOrder = True
+  Position = poScreenCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 12
+  object Bevel1: TBevel
+    Left = 8
+    Top = 8
+    Width = 297
+    Height = 97
+    Shape = bsFrame
+  end
+  object OKBtn: TButton
+    Left = 127
+    Top = 116
+    Width = 75
+    Height = 25
+    Caption = #30830#23450
+    Default = True
+    TabOrder = 0
+    OnClick = OKBtnClick
+  end
+  object CashEdit: TLabeledEdit
+    Left = 40
+    Top = 48
+    Width = 233
+    Height = 20
+    EditLabel.Width = 48
+    EditLabel.Height = 12
+    EditLabel.Caption = 'CashEdit'
+    LabelPosition = lpAbove
+    LabelSpacing = 3
+    TabOrder = 1
+    OnKeyPress = CashEditKeyPress
+  end
+end

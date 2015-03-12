@@ -22,6 +22,8 @@ public:
 	AnsiString shipping_time;
 	AnsiString comment;
     int iscash;
+    double costpay;
+    double cashpay;
 
 	int order_type;
 	int order_status_orign;
@@ -31,7 +33,7 @@ public:
 
 	std::list<Product*> products;
 
-	Order() : is_delete(false), iscash(0) {
+	Order() : is_delete(false), iscash(0), costpay(0), cashpay(0) {
 	}
 
     virtual ~Order() {

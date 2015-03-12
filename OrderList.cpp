@@ -53,6 +53,8 @@ OrderList * OrderList::ParseOrders(AnsiString str_order)
         pOrder->comment = UTF8toGBK(order[i]["comment"].asCString());
         pOrder->iscash = UTF8toGBK(order[i]["iscash"].asCString()).ToInt();
         pOrder->order_status_orign = pOrder->order_status;
+        pOrder->costpay = UTF8toGBK(order[i]["costpay"].asCString()).ToDouble();
+        pOrder->cashpay = UTF8toGBK(order[i]["cashpay"].asCString()).ToDouble();
 
         productSubject = "";
         int ordertype = 0;

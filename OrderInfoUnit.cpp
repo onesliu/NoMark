@@ -10,6 +10,7 @@
 #include "MainOrderUnit.h"
 #include "BarcodeUnit.h"
 #include "GPrinterUnit.h"
+#include "CashInputUnit.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -49,6 +50,8 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         PrintBtn->Enabled = false;
         CancelOrder->Enabled = true;
         CashPay->Enabled = false;
+        CashPayBtn->Enabled = false;
+        CostPayBtn->Enabled = true;
         break;
     case OrderStatus::ORDER_STATUS_PAYING:
         ConfirmBtn->Enabled = false;
@@ -58,6 +61,7 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         PrintBtn->Enabled = true;
         CancelOrder->Enabled = true;
         CashPay->Enabled = true;
+        CostPayBtn->Enabled = true;
         break;
     case OrderStatus::ORDER_STATUS_SCALED:
         ConfirmBtn->Enabled = true;
@@ -67,9 +71,16 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         ChangeStoreBtn->Enabled = false;
         ProductList->Enabled = false;
         PrintBtn->Enabled = true;
-        if (order->iscash > 0)
+        if (order->iscash > 0) {
             CancelOrder->Enabled = true;
+            CashPayBtn->Enabled = true;
+        }
+        else {
+            CancelOrder->Enabled = false;
+            CashPayBtn->Enabled = false;
+        }
         CashPay->Enabled = false;
+        CostPayBtn->Enabled = true;
         break;
     default:
         ConfirmBtn->Enabled = false;
@@ -79,6 +90,8 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         PrintBtn->Enabled = true;
         CancelOrder->Enabled = false;
         CashPay->Enabled = false;
+        CostPayBtn->Enabled = false;
+        CashPayBtn->Enabled = false;
     }
 
     ProductList->Items->BeginUpdate();
@@ -206,6 +219,8 @@ void __fastcall TOrderInfoForm::ConfirmBtnClick1(TObject *Sender)
         return;
     }
 
+    ShowCostPay();
+
     if ( MainOrderForm->httpThread->CommitOrder(order, order->getScanedOver()) == false) {
         ShowError("提交到服务器失败");
         return;
@@ -219,6 +234,21 @@ void __fastcall TOrderInfoForm::ConfirmBtnClick1(TObject *Sender)
 
 void __fastcall TOrderInfoForm::ConfirmBtnClick2(TObject *Sender)
 {
+	if (order->iscash > 0) {
+	    ShowCashPay();
+
+	    if (order->cashpay <= 0) {
+    	    ShowError("到付订单必须要输入实际收款金额");
+        	return;
+	    }
+
+        double offset = order->cashpay - order->getOrderRealTotal();
+        if (abs(offset) > 1) {
+        	if (ShowYesNo("实收金额与订单金额差距%s，继续吗？", FormatCurrency(abs(offset))) == false)
+            	return;
+        }
+    }
+
     if ( MainOrderForm->httpThread->CommitOrder(order, order->getDelivered()) == false) {
         ShowError("提交到服务器失败");
         return;
@@ -309,5 +339,28 @@ void __fastcall TOrderInfoForm::CancelOrderClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TOrderInfoForm::ShowCostPay()
+{
+	order->costpay = CashInputForm->ShowCashInput("如果该订单有零星采购，请输入采购金额：", order->costpay);
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TOrderInfoForm::ShowCashPay()
+{
+	order->cashpay = CashInputForm->ShowCashInput("请输入到付订单实收金额：", order->cashpay);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::CostPayBtnClick(TObject *Sender)
+{
+	ShowCostPay();	
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::CashPayBtnClick(TObject *Sender)
+{
+	if (order->iscash > 0)
+	    ShowCashPay();
+}
+//---------------------------------------------------------------------------
 

@@ -48,6 +48,8 @@ __published:	// IDE-managed Components
 	TButton *PrintBtn;
 	TButton *CancelOrder;
 	TButton *CashPay;
+	TButton *CostPayBtn;
+	TButton *CashPayBtn;
 	void __fastcall ProductListDblClick(TObject *Sender);
 	void __fastcall ProductListKeyPress(TObject *Sender, char &Key);
 	void __fastcall FormShow(TObject *Sender);
@@ -56,11 +58,15 @@ __published:	// IDE-managed Components
 	void __fastcall PrintBtnClick(TObject *Sender);
 	void __fastcall CashPayClick(TObject *Sender);
 	void __fastcall CancelOrderClick(TObject *Sender);
+	void __fastcall CostPayBtnClick(TObject *Sender);
+	void __fastcall CashPayBtnClick(TObject *Sender);
 private:	// User declarations
 	Order * order;
     AnsiString m_strKeyInput;
     bool __fastcall ScanningGun(char &Key);
     void __fastcall PrintSell();
+    void __fastcall ShowCostPay();
+    void __fastcall ShowCashPay();
 public:		// User declarations
     __fastcall TOrderInfoForm(TComponent* Owner);
     void __fastcall ShowOrder(Order *order);
