@@ -176,14 +176,14 @@ object OrderInfoForm: TOrderInfoForm
     ParentFont = False
   end
   object Label10: TLabel
-    Left = 344
+    Left = 208
     Top = 232
     Width = 84
     Height = 12
     Caption = #23454#38469#24212#20184#21512#35745#65306
   end
   object RealTotal: TLabel
-    Left = 432
+    Left = 296
     Top = 228
     Width = 81
     Height = 16
@@ -224,6 +224,34 @@ object OrderInfoForm: TOrderInfoForm
     AutoSize = False
     Caption = 'Comment'
     WordWrap = True
+  end
+  object Label13: TLabel
+    Left = 568
+    Top = 232
+    Width = 60
+    Height = 12
+    Caption = #37319#36141#25903#20986#65306
+  end
+  object CostPayLabel: TLabel
+    Left = 626
+    Top = 232
+    Width = 72
+    Height = 12
+    Caption = 'CostPayLabel'
+  end
+  object Label15: TLabel
+    Left = 416
+    Top = 232
+    Width = 60
+    Height = 12
+    Caption = #21040#20184#37329#39069#65306
+  end
+  object CashPayLabel: TLabel
+    Left = 474
+    Top = 232
+    Width = 72
+    Height = 12
+    Caption = 'CashPayLabel'
   end
   object StoreSelect: TComboBox
     Left = 32

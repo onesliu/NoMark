@@ -50,6 +50,10 @@ __published:	// IDE-managed Components
 	TButton *CashPay;
 	TButton *CostPayBtn;
 	TButton *CashPayBtn;
+	TLabel *Label13;
+	TLabel *CostPayLabel;
+	TLabel *Label15;
+	TLabel *CashPayLabel;
 	void __fastcall ProductListDblClick(TObject *Sender);
 	void __fastcall ProductListKeyPress(TObject *Sender, char &Key);
 	void __fastcall FormShow(TObject *Sender);

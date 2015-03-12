@@ -37,6 +37,8 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
     ShippingTime->Caption = order->shipping_time;
     Total->Caption = FormatCurrency(order->getOrderTotal());
     RealTotal->Caption = FormatCurrency(order->getOrderRealTotal());
+    CostPayLabel->Caption = FormatCurrency(order->costpay);
+    CashPayLabel->Caption = FormatCurrency(order->cashpay);
     Comment->Caption = order->comment;
 
     switch(order->order_status) {
