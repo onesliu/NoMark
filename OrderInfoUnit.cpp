@@ -154,12 +154,10 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
 
             if ( barcode_scan.parseCode(m_strKeyInput) == false )
             {
-                m_strKeyInput = "";
                 continue;
             }
             if ( barcode_ean.parseCode(p->ean) == false )
             {
-                m_strKeyInput = "";
                 continue;
             }
 
@@ -365,4 +363,6 @@ void __fastcall TOrderInfoForm::CashPayBtnClick(TObject *Sender)
 	    ShowCashPay();
 }
 //---------------------------------------------------------------------------
+
+
 
