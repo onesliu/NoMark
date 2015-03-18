@@ -410,7 +410,7 @@ bool __fastcall THttpThread::ParseProductInfo(AnsiString str)
 {
     Product *   pProduct = NULL;
     TStringList *list = new TStringList();
-    AnsiString  strPLU, strPLUSerialNo, strProductCode, strPrice, strShopNo, strProductName;
+    AnsiString  strPLU, strPLUSerialNo, strProductCode, strPrice, strShopNo, strProductName, strProductType;
     
     istrstream istr(str.c_str());
 
@@ -436,10 +436,22 @@ bool __fastcall THttpThread::ParseProductInfo(AnsiString str)
         pProduct->product_name  = UTF8toGBK(productInfo[i]["name"].asCString());
         pProduct->ean           = UTF8toGBK(productInfo[i]["ean"].asCString());
         pProduct->price         = UTF8toGBK(productInfo[i]["price"].asCString()).ToDouble();
+        pProduct->product_type  = UTF8toGBK(productInfo[i]["product_type"].asCString()).ToInt();
 
+        if      (pProduct->product_type == 0 )
+        {
+            pProduct->product_type = 1;
+            strPrice.sprintf("%06d", (int)(pProduct->price * 100));
+        }
+        else if (pProduct->product_type == 1 )
+        {
+            pProduct->product_type = 0;
+            strPrice.sprintf("%06d", (int)((pProduct->price * 2) * 100));
+        }
+        strProductType.sprintf("%d", pProduct->product_type);
         strPLUSerialNo.sprintf("%04d", pProduct->plu_serial_no);
         strProductCode.sprintf("00%s", (pProduct->ean).SubString(3, 5));
-        strPrice.sprintf("%06d", (int)((pProduct->price * 2) * 100));
+
         strShopNo = (pProduct->ean).SubString(1, 2);
         strProductName = pProduct->product_name;
         // 大华条码包装秤(TMA07)PLU
@@ -448,7 +460,7 @@ bool __fastcall THttpThread::ParseProductInfo(AnsiString str)
                  "A" +              // 为分隔符
                  strProductCode +   // 为商品代码	（7位）
                  strPrice +         // 为单价		（6位）	单位为:	分/kg
-                 "0" +              // 为称重方式	（1位）	0：称重		1：计件		2：定重
+                 strProductType +   // 为称重方式	（1位）	0：称重		1：计件		2：定重
                  "00" +             // 为特殊信息1	（2位）
                  "00" +             // 为特殊信息2	（2位）
                  "00" +             // 为特殊信息3	（2位）

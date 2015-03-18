@@ -156,14 +156,16 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
         {
             Product *p = (Product*)ProductList->Items->Item[i]->Data;
 
+            if ( p->product_type == 0 ) // 计件商品
+            {
+                continue;
+            }
             if ( barcode_scan.parseCode(m_strKeyInput) == false )
             {
-                m_strKeyInput = "";
                 continue;
             }
             if ( barcode_ean.parseCode(p->ean) == false )
             {
-                m_strKeyInput = "";
                 continue;
             }
 
