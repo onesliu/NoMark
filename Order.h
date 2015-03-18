@@ -154,6 +154,8 @@ public:
 		std::list<Product*>::iterator itr;
 		double total = 0.0;
 		for(itr = products.begin(); itr != products.end(); ++itr) {
+            Product p = *(*itr);
+            double realprice = p.realtotal;
 			total += (*itr)->realtotal;
 		}
 		return total;	

@@ -5,6 +5,7 @@
 
 #include "ScaleInputUnit.h"
 #include "MessageBoxes.h"
+#include "CashInputUnit.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -81,6 +82,9 @@ void __fastcall TScaleInputForm::ScaleWeightChange(TObject *Sender)
 
 void __fastcall TScaleInputForm::FormShow(TObject *Sender)
 {
+	if (product->price == 0) {
+    	product->price = CashInputForm->ShowCashInput("请输入商品价格：", 1);
+    }
     ScalePrice->SetFocus();
 }
 //---------------------------------------------------------------------------

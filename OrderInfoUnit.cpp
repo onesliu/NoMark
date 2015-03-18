@@ -48,22 +48,24 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         ConfirmBtn->OnClick = ConfirmBtnClick1;
         StoreSelect->Enabled = true;
         ChangeStoreBtn->Enabled = true;
-        ProductList->Enabled = true;
+        EnableProductList(true);
         PrintBtn->Enabled = false;
         CancelOrder->Enabled = true;
         CashPay->Enabled = false;
         CashPayBtn->Enabled = false;
         CostPayBtn->Enabled = true;
+        SendAlert->Enabled = false;
         break;
     case OrderStatus::ORDER_STATUS_PAYING:
         ConfirmBtn->Enabled = false;
         StoreSelect->Enabled = false;
         ChangeStoreBtn->Enabled = false;
-        ProductList->Enabled = false;
+        EnableProductList(false);
         PrintBtn->Enabled = true;
         CancelOrder->Enabled = true;
         CashPay->Enabled = true;
         CostPayBtn->Enabled = true;
+        SendAlert->Enabled = true;
         break;
     case OrderStatus::ORDER_STATUS_SCALED:
         ConfirmBtn->Enabled = true;
@@ -71,7 +73,7 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         ConfirmBtn->OnClick = ConfirmBtnClick2;
         StoreSelect->Enabled = false;
         ChangeStoreBtn->Enabled = false;
-        ProductList->Enabled = false;
+        EnableProductList(false);
         PrintBtn->Enabled = true;
         if (order->iscash > 0) {
             CancelOrder->Enabled = true;
@@ -83,17 +85,19 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         }
         CashPay->Enabled = false;
         CostPayBtn->Enabled = true;
+        SendAlert->Enabled = false;
         break;
     default:
         ConfirmBtn->Enabled = false;
         StoreSelect->Enabled = false;
         ChangeStoreBtn->Enabled = false;
-        ProductList->Enabled = false;
+        EnableProductList(false);
         PrintBtn->Enabled = true;
         CancelOrder->Enabled = false;
         CashPay->Enabled = false;
         CostPayBtn->Enabled = false;
         CashPayBtn->Enabled = false;
+        SendAlert->Enabled = false;
     }
 
     ProductList->Items->BeginUpdate();
@@ -203,6 +207,18 @@ void __fastcall TOrderInfoForm::ProductListKeyPress(TObject *Sender,
         {
             ScanningGun(Key);
         }
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::EnableProductList(bool enable) {
+	if (enable) {
+    	ProductList->OnDblClick = ProductListDblClick;
+        ProductList->OnKeyPress = ProductListKeyPress;
+    }
+    else {
+        ProductList->OnDblClick = NULL;
+        ProductList->OnKeyPress = NULL;
     }
 }
 //---------------------------------------------------------------------------
@@ -363,6 +379,20 @@ void __fastcall TOrderInfoForm::CashPayBtnClick(TObject *Sender)
 {
 	if (order->iscash > 0)
 	    ShowCashPay();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::SendAlertClick(TObject *Sender)
+{
+	if (ShowYesNo("要发送提醒消息吗？") == false)
+    	return;
+
+    if (MainOrderForm->httpThread->OrderAlert(order) == true) {
+        ShowInfo("付款提醒消息发送成功！");
+    }
+    else {
+    	ShowInfo("付款提醒消息发送失败！");
+    }
 }
 //---------------------------------------------------------------------------
 

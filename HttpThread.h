@@ -35,6 +35,7 @@ public:
     bool __fastcall CommitOrder(Order *order, int order_status);
     bool __fastcall CancelOrder(Order * order);
     bool __fastcall CashPay(Order * order);
+    bool __fastcall OrderAlert(Order * order);
 
     AnsiString user;
     AnsiString password;

@@ -256,7 +256,7 @@ object OrderInfoForm: TOrderInfoForm
   object StoreSelect: TComboBox
     Left = 32
     Top = 448
-    Width = 233
+    Width = 153
     Height = 27
     Style = csOwnerDrawFixed
     ItemHeight = 21
@@ -309,7 +309,7 @@ object OrderInfoForm: TOrderInfoForm
     OnKeyPress = ProductListKeyPress
   end
   object ConfirmBtn: TButton
-    Left = 280
+    Left = 200
     Top = 448
     Width = 113
     Height = 65
@@ -319,23 +319,23 @@ object OrderInfoForm: TOrderInfoForm
   object ChangeStoreBtn: TButton
     Left = 32
     Top = 480
-    Width = 233
+    Width = 153
     Height = 33
     Caption = #35746#21333#36716#32473#20854#23427#37197#36865#28857
     TabOrder = 3
   end
   object Cancel: TButton
     Left = 608
-    Top = 488
+    Top = 448
     Width = 89
-    Height = 25
+    Height = 65
     Caption = #20851#38381
     ModalResult = 2
     TabOrder = 4
   end
   object PrintBtn: TButton
-    Left = 504
-    Top = 488
+    Left = 416
+    Top = 448
     Width = 89
     Height = 25
     Caption = #25171#21360#23567#31080
@@ -343,7 +343,7 @@ object OrderInfoForm: TOrderInfoForm
     OnClick = PrintBtnClick
   end
   object CancelOrder: TButton
-    Left = 408
+    Left = 416
     Top = 488
     Width = 89
     Height = 25
@@ -352,16 +352,16 @@ object OrderInfoForm: TOrderInfoForm
     OnClick = CancelOrderClick
   end
   object CashPay: TButton
-    Left = 408
-    Top = 448
+    Left = 320
+    Top = 488
     Width = 89
     Height = 25
-    Caption = #36135#21040#20184#27454
+    Caption = #25913#36135#21040#20184#27454
     TabOrder = 7
     OnClick = CashPayClick
   end
   object CostPayBtn: TButton
-    Left = 504
+    Left = 512
     Top = 448
     Width = 89
     Height = 25
@@ -370,12 +370,21 @@ object OrderInfoForm: TOrderInfoForm
     OnClick = CostPayBtnClick
   end
   object CashPayBtn: TButton
-    Left = 608
-    Top = 448
+    Left = 512
+    Top = 488
     Width = 89
     Height = 25
     Caption = #21040#20184#37329#39069
     TabOrder = 9
     OnClick = CashPayBtnClick
+  end
+  object SendAlert: TButton
+    Left = 320
+    Top = 448
+    Width = 89
+    Height = 25
+    Caption = #21457#36865#20184#27454#25552#37266
+    TabOrder = 10
+    OnClick = SendAlertClick
   end
 end
