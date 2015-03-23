@@ -24,6 +24,7 @@ public:
     int iscash;
     double costpay;
     double cashpay;
+    int ismodify;
 
 	int order_type;
 	int order_status_orign;
@@ -33,7 +34,7 @@ public:
 
 	std::list<Product*> products;
 
-	Order() : is_delete(false), iscash(0), costpay(0), cashpay(0) {
+	Order() : is_delete(false), iscash(0), costpay(0), cashpay(0), ismodify(0) {
 	}
 
     virtual ~Order() {
@@ -107,6 +108,7 @@ public:
     	if (order_status != 0)
 	    	this->order_status = order_status;
 		order_status_orign = order_status;
+        ismodify = 1;
 	}
 
 	bool hasScanedOver() {

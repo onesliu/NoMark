@@ -356,7 +356,7 @@ object OrderInfoForm: TOrderInfoForm
     Top = 488
     Width = 89
     Height = 25
-    Caption = #25913#36135#21040#20184#27454
+    Caption = #36135#21040#20184#27454
     TabOrder = 7
     OnClick = CashPayClick
   end

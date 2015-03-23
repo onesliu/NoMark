@@ -26,6 +26,8 @@ __published:	// IDE-managed Components
 	void __fastcall PopupMenu1Popup(TObject *Sender);
 	void __fastcall CancelOrderClick(TObject *Sender);
 	void __fastcall CashPayClick(TObject *Sender);
+	void __fastcall OrderListViewCustomDrawItem(TCustomListView *Sender,
+          TListItem *Item, TCustomDrawState State, bool &DefaultDraw);
 private:	// User declarations
 	OrderList * olist;
     int ostatus;

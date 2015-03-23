@@ -150,3 +150,15 @@ void __fastcall TOrderFrame::CashPayClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TOrderFrame::OrderListViewCustomDrawItem(
+      TCustomListView *Sender, TListItem *Item, TCustomDrawState State,
+      bool &DefaultDraw)
+{
+	Order * order = (Order*)Item->Data;
+    if (order->ismodify <= 0)
+		((TCustomListView*)Sender)->Canvas->Font->Color = clBlue;
+    DefaultDraw = true;
+}
+//---------------------------------------------------------------------------
+

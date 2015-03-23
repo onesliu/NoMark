@@ -65,6 +65,7 @@ object OrderFrame: TOrderFrame
     PopupMenu = PopupMenu1
     TabOrder = 0
     ViewStyle = vsReport
+    OnCustomDrawItem = OrderListViewCustomDrawItem
     OnDblClick = OrderListViewDblClick
     OnKeyPress = OrderListViewKeyPress
   end

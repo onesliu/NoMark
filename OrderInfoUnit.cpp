@@ -29,7 +29,9 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
     OrderStatus * os = OrderStatus::getInstance();
     OrderNo->Caption = order->order_id;
     OrderTime->Caption = order->order_createtime;
-    Status->Caption = os->getStatus(order->order_status);
+    AnsiString cashpay = "";
+    if (order->iscash > 0) cashpay = "（到付）";
+    Status->Caption = os->getStatus(order->order_status) + cashpay;
     Customer->Caption = order->shipping_name;
     Address->Caption = order->shipping_addr;
     Telephone->Caption = order->customer_phone;
@@ -254,6 +256,9 @@ void __fastcall TOrderInfoForm::ConfirmBtnClick1(TObject *Sender)
 
 void __fastcall TOrderInfoForm::ConfirmBtnClick2(TObject *Sender)
 {
+	if (order->costpay <= 0)
+		ShowCostPay();
+    
 	if (order->iscash > 0) {
 	    ShowCashPay();
 
@@ -321,6 +326,7 @@ void __fastcall TOrderInfoForm::PrintSell()
     printer->PrintReturn();
     printer->PrintItem( "合计金额", FormatCurrency(order->getOrderRealTotal()) );
     printer->PrintCharLine( '-' );
+    //printer->PrintLine("状态：" + Status->Caption);
     printer->PrintLine("客户：" + Customer->Caption);
     printer->PrintLine("电话：" + ShippingPhone->Caption);
     printer->PrintLine("地址：" + Address->Caption);

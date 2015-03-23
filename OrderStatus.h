@@ -60,6 +60,12 @@ public:
 		return status.size();
 	}
 
+    bool hasFinished(int status) {
+    	if (status >= ORDER_STATUS_FINISHED)
+        	return true;
+        return false;
+    }
+
     bool ParseStatus(AnsiString str);
 };
 #endif
