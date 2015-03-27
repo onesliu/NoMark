@@ -15,6 +15,7 @@ AnsiString __fastcall THttpAccess::Get(AnsiString url)
 	try {
 	http->Request->AcceptEncoding = "gzip, deflate";
     http->Request->Connection = "Keep-Alive";
+    http->Request->AcceptEncoding = "identity";
     SetCookies();
     return http->Get(url);
 
@@ -33,6 +34,7 @@ AnsiString __fastcall THttpAccess::Post(AnsiString url, AnsiString values, int t
 
 	http->Request->AcceptEncoding = "gzip, deflate";
     http->Request->Connection = "Keep-Alive";
+    http->Request->AcceptEncoding = "identity";
     switch(type) {
     case POST_URLENCODE:
 	    http->Request->ContentType = "application/x-www-form-urlencoded";
@@ -74,6 +76,7 @@ void __fastcall THttpAccess::OnRedirect(TObject *Sender, AnsiString &dest,
 
 	http->Request->AcceptEncoding = "gzip, deflate";
     http->Request->Connection = "Keep-Alive";
+    http->Request->AcceptEncoding = "identity";
     SetCookies();
     http->Get(dest);
 
