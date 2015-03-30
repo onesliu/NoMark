@@ -82,10 +82,14 @@ OrderList * OrderList::ParseOrders(AnsiString str_order)
 
             if ( pOrder->order_status > OrderStatus::ORDER_STATUS_WAITING )
 			    pProduct->finishScan();
-
-            if (pProduct->product_type == 0) {
-	            pProduct->realweight = pProduct->perweight * pProduct->quantity;
-    	        pProduct->realtotal = pProduct->perprice * pProduct->quantity;
+            else if (pProduct->product_type == 0) {
+            	if (pProduct->ean == AnsiString("1")) {
+					pProduct->realweight = 0;
+                    pProduct->realtotal = 0;
+                } else {
+		            pProduct->realweight = pProduct->perweight * pProduct->quantity;
+    		        pProduct->realtotal = pProduct->perprice * pProduct->quantity;
+                }
                 pProduct->finishScan();
             }
 

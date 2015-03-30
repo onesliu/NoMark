@@ -36,7 +36,11 @@ void __fastcall TScaleInputForm::OkBtnClick(TObject *Sender)
         }
         else if (ScalePrice->Text.Length() > 0 && ScaleWeight->Text.Length() == 0) {
         	product->realtotal = RoundTo(ScalePrice->Text.ToDouble(), -2);
-        	product->realweight = Floor(ScalePrice->Text.ToDouble()/product->price * 500);
+        	if (product->ean == AnsiString("1")) {
+            	product->realweight = 0;
+            } else {
+	        	product->realweight = Floor(ScalePrice->Text.ToDouble()/product->price * 500);
+            }
         }
         else if (ScalePrice->Text.Length() == 0 && ScaleWeight->Text.Length() > 0) {
             product->realweight = ScaleWeight->Text.ToDouble() * 2;

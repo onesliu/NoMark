@@ -156,6 +156,7 @@ void __fastcall TOrderFrame::OrderListViewCustomDrawItem(
       bool &DefaultDraw)
 {
 	Order * order = (Order*)Item->Data;
+    if (order == NULL) return;
     if (order->ismodify <= 0)
 		((TCustomListView*)Sender)->Canvas->Font->Color = clBlue;
     DefaultDraw = true;

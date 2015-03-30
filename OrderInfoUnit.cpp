@@ -379,14 +379,17 @@ void __fastcall TOrderInfoForm::ShowCashPay()
 
 void __fastcall TOrderInfoForm::CostPayBtnClick(TObject *Sender)
 {
-	ShowCostPay();	
+	ShowCostPay();
+    CostPayLabel->Caption = FormatCurrency(order->costpay);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TOrderInfoForm::CashPayBtnClick(TObject *Sender)
 {
-	if (order->iscash > 0)
+	if (order->iscash > 0) {
 	    ShowCashPay();
+        CashPayLabel->Caption = FormatCurrency(order->cashpay);
+    }
 }
 //---------------------------------------------------------------------------
 
