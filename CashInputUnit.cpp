@@ -32,6 +32,7 @@ void __fastcall TCashInputForm::CashEditKeyPress(TObject *Sender,
 
 void __fastcall TCashInputForm::FormShow(TObject *Sender)
 {
+    OKBtn->SetFocus();
 	CashEdit->SetFocus();
 }
 //---------------------------------------------------------------------------

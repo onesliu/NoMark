@@ -33,8 +33,10 @@ extern SoundPlay soundplay;
 #define URL_ORDER_BALANCE       ("http://%s/admin/index.php?route=qingyou/order_query/balance")
 #define URL_ORDER_SETBALANCE    ("http://%s/admin/index.php?route=qingyou/order_query/setbalance")
 #define URL_ORDER_ALERT    		("http://%s/admin/index.php?route=qingyou/order_query/alertpay")
+#define URL_PAY_QUERY    		("http://%s/admin/index.php?route=qingyou/order_query/payquery")
 #define URL_GET_PRODUCT_INFO    ("http://%s/admin/index.php?route=qingyou/cq_product_info")
 #define URL_GET_ALL_PRODUCT_INFO    ("http://%s/admin/index.php?route=qingyou/cq_product_info/all")
+#define URL_ORDER_SPECIAL        ("http://%s/admin/index.php?route=qingyou/order_query/special")
 
 void __fastcall THttpThread::Execute()
 {
@@ -406,6 +408,33 @@ bool __fastcall THttpThread::OrderAlert(Order * order)
 }
 //---------------------------------------------------------------------------
 
+bool __fastcall THttpThread::PayQuery(Order * order)
+{
+	if (order == 0) return false;
+
+	AnsiString url;
+    url.printf(URL_PAY_QUERY, server.c_str());
+    url += "&order_id=" + AnsiString(order->order_id);
+    url += "&token=" + token;
+    lock->Acquire();
+    AnsiString ret = http->Get(url);
+    lock->Release();
+	if (ret.Length() > 0) {
+    	Json::Reader reader;
+		Json::Value json;
+
+		istrstream istr(ret.c_str());
+		if (reader.parse(istr, json, false) == true) {
+			int status = json["status"].asInt();
+			if (status == 0) {
+				return true;
+			}
+		}
+	}
+    return false;
+}
+//---------------------------------------------------------------------------
+
 bool __fastcall THttpThread::ParseProductInfo(AnsiString str)
 {
     Product *   pProduct = NULL;
@@ -438,7 +467,7 @@ bool __fastcall THttpThread::ParseProductInfo(AnsiString str)
         pProduct->price         = UTF8toGBK(productInfo[i]["price"].asCString()).ToDouble();
         pProduct->product_type  = UTF8toGBK(productInfo[i]["product_type"].asCString()).ToInt();
 
-        if      (pProduct->product_type == 0 )
+        if (pProduct->product_type != 1 )
         {
             pProduct->product_type = 1;
             strPrice.sprintf("%06d", (int)(pProduct->price * 100));

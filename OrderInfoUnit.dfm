@@ -326,9 +326,9 @@ object OrderInfoForm: TOrderInfoForm
   end
   object Cancel: TButton
     Left = 608
-    Top = 448
+    Top = 480
     Width = 89
-    Height = 65
+    Height = 41
     Caption = #20851#38381
     ModalResult = 2
     TabOrder = 4
@@ -386,5 +386,14 @@ object OrderInfoForm: TOrderInfoForm
     Caption = #21457#36865#20184#27454#25552#37266
     TabOrder = 10
     OnClick = SendAlertClick
+  end
+  object PayQueryBtn: TButton
+    Left = 608
+    Top = 448
+    Width = 89
+    Height = 25
+    Caption = #25903#20184#26597#35810
+    TabOrder = 11
+    OnClick = PayQueryBtnClick
   end
 end

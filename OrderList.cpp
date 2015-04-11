@@ -56,9 +56,9 @@ OrderList * OrderList::ParseOrders(AnsiString str_order)
         pOrder->costpay = UTF8toGBK(order[i]["costpay"].asCString()).ToDouble();
         pOrder->cashpay = UTF8toGBK(order[i]["cashpay"].asCString()).ToDouble();
         pOrder->ismodify = UTF8toGBK(order[i]["ismodify"].asCString()).ToInt();
+        pOrder->order_type = UTF8toGBK(order[i]["order_type"].asCString()).ToInt();
 
         productSubject = "";
-        int ordertype = 0;
         for ( unsigned int j=0; j<order[i]["products"].size(); j++ )
         {
             product = order[i]["products"];
@@ -82,7 +82,8 @@ OrderList * OrderList::ParseOrders(AnsiString str_order)
 
             if ( pOrder->order_status > OrderStatus::ORDER_STATUS_WAITING )
 			    pProduct->finishScan();
-            else if (pProduct->product_type == 0) {
+
+            if (pProduct->product_type != 1) {
             	if (pProduct->ean == AnsiString("1")) {
 					pProduct->realweight = 0;
                     pProduct->realtotal = 0;
@@ -93,15 +94,9 @@ OrderList * OrderList::ParseOrders(AnsiString str_order)
                 pProduct->finishScan();
             }
 
-            ordertype += pProduct->product_type;
             pOrder->add_product(pProduct);
             productSubject += pProduct->product_name + " ";
         }
-
-        if ( ordertype == 0 )
-            pOrder->order_type = 0; //0:固定客单价订单, 1:变客单价订单
-        else
-            pOrder->order_type = 1;
 
         pOrder->productSubject = productSubject;
         pOrderlist->add(pOrder);

@@ -55,6 +55,7 @@ __published:	// IDE-managed Components
 	TLabel *Label15;
 	TLabel *CashPayLabel;
 	TButton *SendAlert;
+	TButton *PayQueryBtn;
 	void __fastcall ProductListDblClick(TObject *Sender);
 	void __fastcall ProductListKeyPress(TObject *Sender, char &Key);
 	void __fastcall FormShow(TObject *Sender);
@@ -66,6 +67,7 @@ __published:	// IDE-managed Components
 	void __fastcall CostPayBtnClick(TObject *Sender);
 	void __fastcall CashPayBtnClick(TObject *Sender);
 	void __fastcall SendAlertClick(TObject *Sender);
+	void __fastcall PayQueryBtnClick(TObject *Sender);
 private:	// User declarations
 	Order * order;
     AnsiString m_strKeyInput;

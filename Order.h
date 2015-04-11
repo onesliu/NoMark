@@ -126,7 +126,7 @@ public:
 
     int getScanedOver() {
     	if (order_status == OrderStatus::ORDER_STATUS_WAITING) {
-	   		if (order_type == 0)
+	   		if (order_type != 1)
 				return OrderStatus::ORDER_STATUS_SCALED;
 			else
 				return OrderStatus::ORDER_STATUS_PAYING;

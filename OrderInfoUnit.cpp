@@ -109,7 +109,7 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         Product *p = *itr;
         if (p == NULL) continue;
         AnsiString prefix = "";
-        if (p->product_type > 0)
+        if (p->product_type == 1)
             prefix = "约";
         TListItem * item = ProductList->Items->Add();
         item->Caption = p->product_name;
@@ -158,7 +158,7 @@ bool __fastcall  TOrderInfoForm::ScanningGun(char &Key)
         {
             Product *p = (Product*)ProductList->Items->Item[i]->Data;
 
-            if ( p->product_type == 0 ) // 计件商品
+            if ( p->product_type != 1) // 计件商品
             {
                 continue;
             }
@@ -256,9 +256,6 @@ void __fastcall TOrderInfoForm::ConfirmBtnClick1(TObject *Sender)
 
 void __fastcall TOrderInfoForm::ConfirmBtnClick2(TObject *Sender)
 {
-	if (order->costpay <= 0)
-		ShowCostPay();
-    
 	if (order->iscash > 0) {
 	    ShowCashPay();
 
@@ -403,6 +400,19 @@ void __fastcall TOrderInfoForm::SendAlertClick(TObject *Sender)
     }
     else {
     	ShowInfo("付款提醒消息发送失败！");
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::PayQueryBtnClick(TObject *Sender)
+{
+    if (order == 0) return;
+
+    if (MainOrderForm->httpThread->PayQuery(order) == true) {
+    	ShowInfo("订单支付成功");
+    }
+    else {
+    	ShowInfo("订单支付不成功");
     }
 }
 //---------------------------------------------------------------------------
