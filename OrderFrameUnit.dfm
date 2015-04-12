@@ -87,5 +87,18 @@ object OrderFrame: TOrderFrame
     object RefundOrder: TMenuItem
       Caption = #35746#21333#36864#27454
     end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object Export: TMenuItem
+      Caption = #23548#20986#21040#25991#20214
+      OnClick = ExportClick
+    end
+  end
+  object SaveDialog: TSaveDialog
+    DefaultExt = 'csv'
+    Filter = '*.csv|*.csv'
+    Left = 152
+    Top = 56
   end
 end

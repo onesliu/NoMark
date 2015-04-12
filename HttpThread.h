@@ -25,9 +25,10 @@ public:
     bool __fastcall ParseOrders();
     void __fastcall Execute();
     AnsiString __fastcall GetOrders();
-    bool __fastcall SearchOrders(AnsiString date);
+    bool __fastcall SearchOrders(AnsiString date, int status, int specialid);
     AnsiString __fastcall GetStatus();
     AnsiString __fastcall GetDistricts();
+    AnsiString __fastcall GetSpecials();
     AnsiString __fastcall GetBalance();
     AnsiString __fastcall SetBalance();
     AnsiString __fastcall GetProductInfo(bool all = false);

@@ -49,7 +49,8 @@ OrderList * OrderList::ParseOrders(AnsiString str_order)
         pOrder->customer_phone = UTF8toGBK(order[i]["customer_phone"].asCString());
         pOrder->shipping_phone = UTF8toGBK(order[i]["shipping_telephone"].asCString());
         pOrder->shipping_addr = UTF8toGBK(order[i]["shipping_addr"].asCString());
-        pOrder->shipping_time = UTF8toGBK(order[i]["shipping_time"].asCString());
+        if (order[i]["shipping_time"].isNull() == false)
+	        pOrder->shipping_time = UTF8toGBK(order[i]["shipping_time"].asCString());
         pOrder->comment = UTF8toGBK(order[i]["comment"].asCString());
         pOrder->iscash = UTF8toGBK(order[i]["iscash"].asCString()).ToInt();
         pOrder->order_status_orign = pOrder->order_status;
@@ -83,7 +84,7 @@ OrderList * OrderList::ParseOrders(AnsiString str_order)
             if ( pOrder->order_status > OrderStatus::ORDER_STATUS_WAITING )
 			    pProduct->finishScan();
 
-            if (pProduct->product_type != 1) {
+            if (pProduct->product_type != 1 && pOrder->order_status < OrderStatus::ORDER_STATUS_FINISHED) {
             	if (pProduct->ean == AnsiString("1")) {
 					pProduct->realweight = 0;
                     pProduct->realtotal = 0;

@@ -15,7 +15,7 @@
 #include "Janitor.h"
 #include "MessageBoxes.h"
 #include "Scale.h"
-
+#include "SpecialProductsUnit.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "OrderFrameUnit"
@@ -80,6 +80,24 @@ void __fastcall TMainOrderForm::TabSheet3Show(TObject *Sender)
 void __fastcall TMainOrderForm::TabSheet5Show(TObject *Sender)
 {
 	OrderDate->Date = Now();
+
+    OrderStatus->Items->Clear();
+    OrderStatus->Items->Add("所有状态");
+    for( int i = 1; i <= 6; i++)
+	    OrderStatus->Items->Add(OrderStatus::getInstance()->getStatus(i));
+    OrderStatus->Items->Add("未完成订单");
+    OrderStatus->Items->Add("已完成订单");
+    OrderStatus->ItemIndex = 0;
+
+    SpecialProduct->Items->Clear();
+    SpecialProduct->Items->Add("无预订");
+    int pid = SpecialProducts::getInstance()->firstProduct();
+    while (pid > 0) {
+    	SpecialProduct->AddItem(SpecialProducts::getInstance()->getProduct(pid), (TObject*)pid);
+        pid = SpecialProducts::getInstance()->nextProduct();
+    }
+    SpecialProduct->ItemIndex = 0;
+
     OrderFrame5->FreshOrderList(querylist, 0);
 }
 //---------------------------------------------------------------------------
@@ -87,7 +105,7 @@ void __fastcall TMainOrderForm::TabSheet5Show(TObject *Sender)
 void __fastcall TMainOrderForm::BtnQueryClick(TObject *Sender)
 {
 	AnsiString date = OrderDate->Date.DateString();
-    if (httpThread->SearchOrders(date) == false) {
+    if (httpThread->SearchOrders(date, OrderStatus->ItemIndex, (int)SpecialProduct->Items->Objects[SpecialProduct->ItemIndex]) == false) {
     	ShowError("查询失败");
         return;
     }
@@ -129,13 +147,6 @@ void __fastcall TMainOrderForm::FormShow(TObject *Sender)
   	httpThread->Resume();
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TMainOrderForm::OrderDateChange(TObject *Sender)
-{
-	BtnQuery->Click();	
-}
-//---------------------------------------------------------------------------
-
 
 void __fastcall TMainOrderForm::Button1Click(TObject *Sender)
 {

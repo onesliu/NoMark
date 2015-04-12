@@ -11,6 +11,7 @@
 #include <Forms.hpp>
 #include <ComCtrls.hpp>
 #include <Menus.hpp>
+#include <Dialogs.hpp>
 //---------------------------------------------------------------------------
 class TOrderFrame : public TFrame
 {
@@ -21,6 +22,9 @@ __published:	// IDE-managed Components
 	TMenuItem *RefundOrder;
 	TMenuItem *N1;
 	TMenuItem *CashPay;
+	TMenuItem *N2;
+	TMenuItem *Export;
+	TSaveDialog *SaveDialog;
 	void __fastcall OrderListViewDblClick(TObject *Sender);
 	void __fastcall OrderListViewKeyPress(TObject *Sender, char &Key);
 	void __fastcall PopupMenu1Popup(TObject *Sender);
@@ -28,6 +32,7 @@ __published:	// IDE-managed Components
 	void __fastcall CashPayClick(TObject *Sender);
 	void __fastcall OrderListViewCustomDrawItem(TCustomListView *Sender,
           TListItem *Item, TCustomDrawState State, bool &DefaultDraw);
+	void __fastcall ExportClick(TObject *Sender);
 private:	// User declarations
 	OrderList * olist;
     int ostatus;

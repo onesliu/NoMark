@@ -1,10 +1,10 @@
 object MainOrderForm: TMainOrderForm
-  Left = 6
-  Top = 99
+  Left = 334
+  Top = 120
   BorderStyle = bsSingle
   Caption = #38738#24736#24736#25509#21333#31995#32479
-  ClientHeight = 462
-  ClientWidth = 788
+  ClientHeight = 579
+  ClientWidth = 834
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,13 +21,13 @@ object MainOrderForm: TMainOrderForm
   object PageControl1: TPageControl
     Left = 0
     Top = 44
-    Width = 788
-    Height = 388
-    ActivePage = TabSheet1
+    Width = 834
+    Height = 505
+    ActivePage = TabSheet5
     Align = alClient
     Images = ImageList1
     Style = tsButtons
-    TabIndex = 0
+    TabIndex = 3
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #24453#31216#37325#35746#21333
@@ -36,8 +36,8 @@ object MainOrderForm: TMainOrderForm
       inline OrderFrame1: TOrderFrame
         Left = 0
         Top = 0
-        Width = 780
-        Height = 340
+        Width = 826
+        Height = 457
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -47,8 +47,8 @@ object MainOrderForm: TMainOrderForm
         ParentFont = False
         TabOrder = 0
         inherited OrderListView: TListView
-          Width = 780
-          Height = 340
+          Width = 826
+          Height = 457
         end
       end
     end
@@ -59,8 +59,8 @@ object MainOrderForm: TMainOrderForm
       inline OrderFrame2: TOrderFrame
         Left = 0
         Top = 0
-        Width = 780
-        Height = 340
+        Width = 826
+        Height = 457
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -70,8 +70,8 @@ object MainOrderForm: TMainOrderForm
         ParentFont = False
         TabOrder = 0
         inherited OrderListView: TListView
-          Width = 780
-          Height = 340
+          Width = 826
+          Height = 457
         end
       end
     end
@@ -82,8 +82,8 @@ object MainOrderForm: TMainOrderForm
       inline OrderFrame3: TOrderFrame
         Left = 0
         Top = 0
-        Width = 780
-        Height = 340
+        Width = 826
+        Height = 457
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -93,8 +93,8 @@ object MainOrderForm: TMainOrderForm
         ParentFont = False
         TabOrder = 0
         inherited OrderListView: TListView
-          Width = 780
-          Height = 340
+          Width = 826
+          Height = 457
         end
       end
     end
@@ -105,8 +105,8 @@ object MainOrderForm: TMainOrderForm
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 780
-        Height = 57
+        Width = 826
+        Height = 81
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
@@ -117,19 +117,33 @@ object MainOrderForm: TMainOrderForm
           Height = 16
           Caption = #35746#21333#26085#26399#65306
         end
+        object Label2: TLabel
+          Left = 160
+          Top = 16
+          Width = 80
+          Height = 16
+          Caption = #35746#21333#29366#24577#65306
+        end
+        object Label3: TLabel
+          Left = 304
+          Top = 16
+          Width = 80
+          Height = 16
+          Caption = #39044#35746#21830#21697#65306
+        end
         object BtnQuery: TButton
-          Left = 312
-          Top = 8
+          Left = 456
+          Top = 16
           Width = 121
-          Height = 33
+          Height = 49
           Caption = #26597#35810
           TabOrder = 0
           OnClick = BtnQueryClick
         end
         object OrderDate: TDateTimePicker
-          Left = 104
-          Top = 12
-          Width = 186
+          Left = 16
+          Top = 36
+          Width = 121
           Height = 24
           CalAlignment = dtaLeft
           Date = 0.487694039402413
@@ -140,10 +154,9 @@ object MainOrderForm: TMainOrderForm
           Kind = dtkDate
           ParseInput = False
           TabOrder = 1
-          OnChange = OrderDateChange
         end
         object Button1: TButton
-          Left = 496
+          Left = 696
           Top = 8
           Width = 89
           Height = 25
@@ -152,12 +165,30 @@ object MainOrderForm: TMainOrderForm
           Visible = False
           OnClick = Button1Click
         end
+        object OrderStatus: TComboBox
+          Left = 160
+          Top = 36
+          Width = 121
+          Height = 24
+          Style = csDropDownList
+          ItemHeight = 16
+          TabOrder = 3
+        end
+        object SpecialProduct: TComboBox
+          Left = 304
+          Top = 36
+          Width = 121
+          Height = 24
+          Style = csDropDownList
+          ItemHeight = 16
+          TabOrder = 4
+        end
       end
       inline OrderFrame5: TOrderFrame
         Left = 0
-        Top = 57
-        Width = 780
-        Height = 283
+        Top = 81
+        Width = 826
+        Height = 376
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -167,8 +198,8 @@ object MainOrderForm: TMainOrderForm
         ParentFont = False
         TabOrder = 1
         inherited OrderListView: TListView
-          Width = 780
-          Height = 283
+          Width = 826
+          Height = 376
         end
       end
     end
@@ -176,7 +207,7 @@ object MainOrderForm: TMainOrderForm
   object CoolBar1: TCoolBar
     Left = 0
     Top = 0
-    Width = 788
+    Width = 834
     Height = 44
     AutoSize = True
     Bands = <
@@ -184,12 +215,12 @@ object MainOrderForm: TMainOrderForm
         Control = ToolBar1
         ImageIndex = -1
         MinHeight = 40
-        Width = 784
+        Width = 830
       end>
     object ToolBar1: TToolBar
       Left = 9
       Top = 0
-      Width = 771
+      Width = 817
       Height = 40
       AutoSize = True
       ButtonHeight = 38
@@ -233,8 +264,8 @@ object MainOrderForm: TMainOrderForm
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 432
-    Width = 788
+    Top = 549
+    Width = 834
     Height = 30
     Panels = <
       item

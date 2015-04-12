@@ -163,3 +163,44 @@ void __fastcall TOrderFrame::OrderListViewCustomDrawItem(
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TOrderFrame::ExportClick(TObject *Sender)
+{
+	AnsiString file;
+	if (SaveDialog->Execute())
+    	file = SaveDialog->FileName;
+    else {
+    	return;
+    }
+
+    FILE *fp;
+    fp = fopen(file.c_str(), "w");
+    if (!fp) {
+    	ShowError("文件打开失败");
+        return;
+    }
+
+	for (int i = 0; i < OrderListView->Items->Count; i++) {
+    	AnsiString str = OrderListView->Items->Item[i]->Caption.Trim();
+        Order * order = (Order*)OrderListView->Items->Item[i]->Data;
+
+    	if (str.c_str()[0] == '-') continue;
+    	fwrite(str.c_str(), str.Length(), 1, fp);
+        fwrite(",", 1, 1, fp);
+
+        for (int j = 0; j < OrderListView->Items->Item[i]->SubItems->Count; j++) {
+        	str = OrderListView->Items->Item[i]->SubItems->Strings[j].Trim();
+        	fwrite(str.c_str(), str.Length(), 1, fp);
+            fwrite(",", 1, 1, fp);
+        }
+
+        str = (*(order->products.begin()))->quantity;
+        fwrite(str.c_str(), str.Length(), 1, fp);
+        fwrite("\r\n", 2, 1, fp);
+    }
+
+    fclose(fp);
+
+    ShowInfo("导出文件成功");
+}
+//---------------------------------------------------------------------------
+
