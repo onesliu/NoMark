@@ -34,6 +34,7 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
     list<Order*>::iterator itr;
     OrderStatus * os = OrderStatus::getInstance();
     AnsiString lastOrderdate = "";
+    double total = 0, realtotal = 0, cash = 0, weixin = 0;
 
     for(itr = olist->orders.begin(); itr != olist->orders.end(); ++itr) {
         if (order_status != 0 && (*itr)->order_status != order_status) continue;
@@ -55,7 +56,13 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
         item->SubItems->Add(FormatCurrency((*itr)->getOrderTotal()));
         item->SubItems->Add(FormatCurrency((*itr)->getOrderRealTotal()));
         AnsiString cashpay = "";
-        if ((*itr)->iscash > 0) cashpay = "（到付）";
+        if ((*itr)->iscash > 0) {
+        	cashpay = "（到付）";
+            cash += (*itr)->getOrderRealTotal();
+        }
+        else {
+        	weixin += (*itr)->getOrderRealTotal();
+        }
         item->SubItems->Add(os->getStatus((*itr)->order_status) + cashpay);
         item->SubItems->Add((*itr)->customer_name);
         item->SubItems->Add((*itr)->shipping_name);
@@ -65,7 +72,21 @@ void TOrderFrame::FreshOrderList(OrderList * olist, int order_status)
         item->SubItems->Add("");
         item->Data = *itr;
         lastOrderdate = (*itr)->order_date;
+
+        total += (*itr)->getOrderTotal();
+        realtotal += (*itr)->getOrderRealTotal();
     }
+
+    item = OrderListView->Items->Add();
+    item->Caption = "----------";
+    item->SubItems->Add("合计：");
+    item->SubItems->Add(FormatCurrency(total));
+    item->SubItems->Add(FormatCurrency(realtotal));
+    item->SubItems->Add("微信支付：");
+    item->SubItems->Add(FormatCurrency(weixin));
+    item->SubItems->Add("到付：");
+    item->SubItems->Add(FormatCurrency(cash));
+    item->Data = NULL;
 
     OrderListView->Items->EndUpdate();
     OrderListView->Columns->BeginUpdate();

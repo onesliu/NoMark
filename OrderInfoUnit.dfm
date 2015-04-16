@@ -326,9 +326,9 @@ object OrderInfoForm: TOrderInfoForm
   end
   object Cancel: TButton
     Left = 608
-    Top = 480
+    Top = 448
     Width = 89
-    Height = 41
+    Height = 65
     Caption = #20851#38381
     ModalResult = 2
     TabOrder = 4
@@ -342,23 +342,14 @@ object OrderInfoForm: TOrderInfoForm
     TabOrder = 5
     OnClick = PrintBtnClick
   end
-  object CancelOrder: TButton
-    Left = 416
-    Top = 488
-    Width = 89
-    Height = 25
-    Caption = #21462#28040#35746#21333
-    TabOrder = 6
-    OnClick = CancelOrderClick
-  end
-  object CashPay: TButton
+  object ChangeStatus: TButton
     Left = 320
-    Top = 488
+    Top = 448
     Width = 89
     Height = 25
-    Caption = #36135#21040#20184#27454
-    TabOrder = 7
-    OnClick = CashPayClick
+    Caption = #25913#35746#21333#29366#24577
+    TabOrder = 6
+    OnClick = ChangeStatusClick
   end
   object CostPayBtn: TButton
     Left = 512
@@ -366,7 +357,7 @@ object OrderInfoForm: TOrderInfoForm
     Width = 89
     Height = 25
     Caption = #37319#36141#25903#20986
-    TabOrder = 8
+    TabOrder = 7
     OnClick = CostPayBtnClick
   end
   object CashPayBtn: TButton
@@ -375,25 +366,57 @@ object OrderInfoForm: TOrderInfoForm
     Width = 89
     Height = 25
     Caption = #21040#20184#37329#39069
-    TabOrder = 9
+    TabOrder = 8
     OnClick = CashPayBtnClick
   end
   object SendAlert: TButton
     Left = 320
-    Top = 448
+    Top = 488
     Width = 89
     Height = 25
     Caption = #21457#36865#20184#27454#25552#37266
-    TabOrder = 10
+    TabOrder = 9
     OnClick = SendAlertClick
   end
   object PayQueryBtn: TButton
-    Left = 608
-    Top = 448
+    Left = 416
+    Top = 488
     Width = 89
     Height = 25
     Caption = #25903#20184#26597#35810
-    TabOrder = 11
+    TabOrder = 10
     OnClick = PayQueryBtnClick
+  end
+  object SatusPopup: TPopupMenu
+    Left = 464
+    Top = 400
+    object OrderWaiting: TMenuItem
+      Caption = #24453#31216#37325
+      OnClick = OrderWaitingClick
+    end
+    object OrderScaled: TMenuItem
+      Caption = #24453#20184#27454
+      OnClick = OrderScaledClick
+    end
+    object CashPay: TMenuItem
+      Caption = #36135#21040#20184#27454
+      OnClick = CashPayClick
+    end
+    object WeixinPay: TMenuItem
+      Caption = #24453#37197#36865#65288#24494#20449#25903#20184#65289
+      OnClick = WeixinPayClick
+    end
+    object CancelOrder: TMenuItem
+      Caption = #21462#28040#35746#21333
+      OnClick = CancelOrderClick
+    end
+    object OrderRefund: TMenuItem
+      Caption = #24050#36864#27454
+      OnClick = OrderRefundClick
+    end
+    object OrderComplete: TMenuItem
+      Caption = #24050#23436#25104
+      OnClick = OrderCompleteClick
+    end
   end
 end

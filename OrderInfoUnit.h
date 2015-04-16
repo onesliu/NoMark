@@ -10,6 +10,7 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "Order.h"
+#include <Menus.hpp>
 //---------------------------------------------------------------------------
 class TOrderInfoForm : public TForm
 {
@@ -46,8 +47,7 @@ __published:	// IDE-managed Components
 	TLabel *Label12;
 	TLabel *Comment;
 	TButton *PrintBtn;
-	TButton *CancelOrder;
-	TButton *CashPay;
+	TButton *ChangeStatus;
 	TButton *CostPayBtn;
 	TButton *CashPayBtn;
 	TLabel *Label13;
@@ -56,18 +56,32 @@ __published:	// IDE-managed Components
 	TLabel *CashPayLabel;
 	TButton *SendAlert;
 	TButton *PayQueryBtn;
+	TPopupMenu *SatusPopup;
+	TMenuItem *OrderWaiting;
+	TMenuItem *OrderScaled;
+	TMenuItem *CashPay;
+	TMenuItem *WeixinPay;
+	TMenuItem *CancelOrder;
+	TMenuItem *OrderRefund;
+	TMenuItem *OrderComplete;
 	void __fastcall ProductListDblClick(TObject *Sender);
 	void __fastcall ProductListKeyPress(TObject *Sender, char &Key);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall ConfirmBtnClick1(TObject *Sender);
     void __fastcall ConfirmBtnClick2(TObject *Sender);
 	void __fastcall PrintBtnClick(TObject *Sender);
-	void __fastcall CashPayClick(TObject *Sender);
+	void __fastcall ChangeStatusClick(TObject *Sender);
 	void __fastcall CancelOrderClick(TObject *Sender);
 	void __fastcall CostPayBtnClick(TObject *Sender);
 	void __fastcall CashPayBtnClick(TObject *Sender);
 	void __fastcall SendAlertClick(TObject *Sender);
 	void __fastcall PayQueryBtnClick(TObject *Sender);
+	void __fastcall CashPayClick(TObject *Sender);
+	void __fastcall OrderWaitingClick(TObject *Sender);
+	void __fastcall OrderScaledClick(TObject *Sender);
+	void __fastcall WeixinPayClick(TObject *Sender);
+	void __fastcall OrderRefundClick(TObject *Sender);
+	void __fastcall OrderCompleteClick(TObject *Sender);
 private:	// User declarations
 	Order * order;
     AnsiString m_strKeyInput;

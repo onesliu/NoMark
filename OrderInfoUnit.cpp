@@ -51,11 +51,6 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         StoreSelect->Enabled = true;
         ChangeStoreBtn->Enabled = true;
         EnableProductList(true);
-        PrintBtn->Enabled = false;
-        CancelOrder->Enabled = true;
-        CashPay->Enabled = false;
-        CashPayBtn->Enabled = false;
-        CostPayBtn->Enabled = true;
         SendAlert->Enabled = false;
         break;
     case OrderStatus::ORDER_STATUS_PAYING:
@@ -64,9 +59,6 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         ChangeStoreBtn->Enabled = false;
         EnableProductList(false);
         PrintBtn->Enabled = true;
-        CancelOrder->Enabled = true;
-        CashPay->Enabled = true;
-        CostPayBtn->Enabled = true;
         SendAlert->Enabled = true;
         break;
     case OrderStatus::ORDER_STATUS_SCALED:
@@ -77,16 +69,6 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         ChangeStoreBtn->Enabled = false;
         EnableProductList(false);
         PrintBtn->Enabled = true;
-        if (order->iscash > 0) {
-            CancelOrder->Enabled = true;
-            CashPayBtn->Enabled = true;
-        }
-        else {
-            CancelOrder->Enabled = false;
-            CashPayBtn->Enabled = false;
-        }
-        CashPay->Enabled = false;
-        CostPayBtn->Enabled = true;
         SendAlert->Enabled = false;
         break;
     default:
@@ -95,10 +77,6 @@ void __fastcall TOrderInfoForm::ShowOrder(Order *order)
         ChangeStoreBtn->Enabled = false;
         EnableProductList(false);
         PrintBtn->Enabled = true;
-        CancelOrder->Enabled = false;
-        CashPay->Enabled = false;
-        CostPayBtn->Enabled = false;
-        CashPayBtn->Enabled = false;
         SendAlert->Enabled = false;
     }
 
@@ -342,13 +320,11 @@ void __fastcall TOrderInfoForm::PrintBtnClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TOrderInfoForm::CashPayClick(TObject *Sender)
+void __fastcall TOrderInfoForm::ChangeStatusClick(TObject *Sender)
 {
-    if (order == 0) return;
-
-    if (MainOrderForm->httpThread->CashPay(order) == true) {
-        ModalResult = mrOk;
-    }
+    TButton *b = (TButton*)Sender;
+    TPoint p = ClientToScreen(TPoint(b->Left, b->Top+b->Height));
+    SatusPopup->Popup(p.x, p.y);
 }
 //---------------------------------------------------------------------------
 
@@ -414,6 +390,117 @@ void __fastcall TOrderInfoForm::PayQueryBtnClick(TObject *Sender)
     else {
     	ShowInfo("订单支付不成功");
     }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::CashPayClick(TObject *Sender)
+{
+    if (order == 0) return;
+
+    if (MainOrderForm->httpThread->CashPay(order) == true) {
+        ModalResult = mrOk;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::OrderWaitingClick(TObject *Sender)
+{
+    if (order == 0) return;
+
+    if (order->order_status <= OrderStatus::ORDER_STATUS_WAITING)
+    	return;
+
+	if (ShowYesNo("要修改订单状态为待称重吗？") == false)
+    	return;
+
+    order->iscash = 0;
+
+    if ( MainOrderForm->httpThread->CommitOrder(order, OrderStatus::ORDER_STATUS_WAITING) == false) {
+        ShowError("提交到服务器失败");
+        return;
+    }
+
+    ModalResult = mrOk;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::OrderScaledClick(TObject *Sender)
+{
+    if (order == 0) return;
+
+    if (order->order_status <= OrderStatus::ORDER_STATUS_PAYING)
+    	return;
+
+	if (ShowYesNo("要修改订单状态为待付款吗？") == false)
+    	return;
+
+    order->iscash = 0;
+
+    if ( MainOrderForm->httpThread->CommitOrder(order, OrderStatus::ORDER_STATUS_PAYING) == false) {
+        ShowError("提交到服务器失败");
+        return;
+    }
+
+    ModalResult = mrOk;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::WeixinPayClick(TObject *Sender)
+{
+	if (order == 0) return;
+
+    if (order->order_status <= OrderStatus::ORDER_STATUS_SCALED)
+    	return;
+
+	if (ShowYesNo("要修改订单状态为待配送（微信支付）吗？") == false)
+    	return;
+
+    order->iscash = 0;
+
+    if ( MainOrderForm->httpThread->CommitOrder(order, OrderStatus::ORDER_STATUS_SCALED) == false) {
+        ShowError("提交到服务器失败");
+        return;
+    }
+
+    ModalResult = mrOk;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::OrderRefundClick(TObject *Sender)
+{
+	if (order == 0) return;
+
+    if (order->order_status < OrderStatus::ORDER_STATUS_FINISHED)
+    	return;
+
+	if (ShowYesNo("要修改订单状态为已退款吗？") == false)
+    	return;
+
+    if ( MainOrderForm->httpThread->CommitOrder(order, OrderStatus::ORDER_STATUS_REFUND) == false) {
+        ShowError("提交到服务器失败");
+        return;
+    }
+
+    ModalResult = mrOk;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TOrderInfoForm::OrderCompleteClick(TObject *Sender)
+{
+	if (order == 0) return;
+
+    if (order->order_status < OrderStatus::ORDER_STATUS_FINISHED)
+    	return;
+
+	if (ShowYesNo("要修改订单状态为已完成吗？") == false)
+    	return;
+
+    if ( MainOrderForm->httpThread->CommitOrder(order, OrderStatus::ORDER_STATUS_FINISHED) == false) {
+        ShowError("提交到服务器失败");
+        return;
+    }
+
+    ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------
 
